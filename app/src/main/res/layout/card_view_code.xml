@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="4dp"
+    android:layout_marginStart="4dp"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_main_task"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_linear_difficulty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:minWidth="30dp"
+                android:scaleType="center"
+                app:srcCompat="@drawable/ic_level_3" />
+
+            <TextView
+                android:id="@+id/tv_task"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="18"
+                android:gravity="center"
+                android:minHeight="45dp"
+                android:text="@string/default_task"
+                android:textAlignment="gravity"
+                android:textColor="@color/default_text_color"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/iv_linear_favor"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="invisible"
+                app:srcCompat="@android:drawable/btn_star_big_off" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_quiz_score"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="12dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:id="@+id/tv_quiz_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="18"
+                    android:text="@string/quiz_progress"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_quiz_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="18"
+                    android:text="@string/quiz_score"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progress_bar_quiz"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <com.pddstudio.highlightjs.HighlightJsView
+            android:id="@+id/highlight_view_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.pddstudio.highlightjs.HighlightJsView>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
+

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/favourites"
+            android:icon="@drawable/ic_favorite_black_24dp"
+            android:title="@string/favourites"
+            android:visible="false" />
+        <item
+            android:id="@+id/res_progress"
+            android:checkable="false"
+            android:icon="@drawable/ic_delete_black_24dp"
+            android:title="@string/reset_progress" />
+        <item
+            android:id="@+id/update_base"
+            android:checkable="false"
+            android:icon="@drawable/ic_update_black_24dp"
+            android:title="@string/update_base" />
+        <item
+            android:id="@+id/go_to"
+            android:checkable="false"
+            android:icon="@drawable/ic_trending_flat_black_24dp"
+            android:title="@string/go_to" />
+        <item
+            android:id="@+id/start_new_quiz"
+            android:checkable="false"
+            android:icon="@drawable/ic_trending_flat_black_24dp"
+            android:title="@string/start_a_new_quiz"
+            android:visible="false" />
+        <item
+            android:id="@+id/training_mode"
+            android:checkable="false"
+            android:icon="@drawable/ic_trending_flat_black_24dp"
+            android:title="@string/training_mode"
+            android:visible="false" />
+    </group>
+
+    <item
+        android:id="@+id/nav_about"
+        android:icon="@drawable/ic_info_outline_black_24dp"
+        android:title="@string/about" />
+
+    <item android:title="@string/communicate">
+        <menu>
+            <item
+                android:id="@+id/share_question"
+                android:checkable="false"
+                android:icon="@drawable/ic_share_black_24dp"
+                android:title="@string/share_question" />
+            <item
+                android:id="@+id/share_quiz"
+                android:checkable="false"
+                android:icon="@drawable/ic_share_black_24dp"
+                android:title="@string/share_quiz"
+                android:visible="false" />
+        </menu>
+    </item>
+
+    <item
+        android:title="@string/debug"
+        android:visible="false">
+        <menu>
+            <item
+                android:id="@+id/debug_no_questions"
+                android:title="@string/debug_no_questions" />
+        </menu>
+    </item>
+
+</menu>

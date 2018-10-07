@@ -1,0 +1,148 @@
+<resources>
+    <string name="app_name">C++ Quiz</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="load_screen_title">No connection</string>
+
+    <string name="nav_header_title">C++Quiz by @knatten</string>
+    <string name="nav_header_text">Android app by @vsklamm</string>
+
+    // TOOLBAR
+    <string name="toolbar_title_training">Question #%d (%d of %d)</string>
+    <string name="toolbar_title_quiz">Question #%d</string>
+    <string name="toolbar_give_up">You gave up! #%d</string>
+    <string name="toolbar_correct">Correct! #%d</string>
+
+    // TASK
+    <string name="default_task">According to the C++XX standard, what is the output of this program?</string>
+    <string name="task_whole">According to the %s standard, what is the output of this program?</string>
+
+    // QUIZ STATS
+    <string name="quiz_progress">Progress: %d of %d</string>
+    <string name="quiz_score">Score: %f</string>
+
+    // HIGHLIGHT VIEW SETTINGS
+    <string name="dialog_theme_selection_title">Pick a Theme:</string>
+    <string name="menu_entry_switch_theme">Switch Highlighting Theme</string>
+    <string name="enable_zooming">Enable Zooming</string>
+    <string name="show_line_numbers">Show Line Numbers</string>
+
+    // SPINNER
+    <string-array name="result_behaviour_type">
+        <item>The program is guaranteed to output:</item>
+        <item>The program has a compilation error</item>
+        <item>The program is unspecified /\n implementation defined</item>
+        <item>The program is undefined</item>
+    </string-array>
+
+    // INPUT FIELD
+    <string name="default_answer_hint">result</string>
+
+    // BUTTONS
+    <string name="another_question">SKIP</string>
+    <string name="next">NEXT</string>
+    <string name="hint">HINT</string>
+    <string name="give_up_default">GIVE UP</string>
+    <string name="answer">ANSWER</string>
+    <string name="give_up_attempts">GIVE UP (%d)</string>
+    <string name="explanation">EXPLANATION</string>
+    <string name="next_question">NEXT QUESTION</string>
+
+    // NAVIGATION VIEW
+    <string name="favourites">Favourites</string>
+    <string name="reset_progress">Reset progress</string>
+    <string name="update_base">Update questions</string>
+    <string name="go_to">Go to question</string>
+
+    <string name="start_a_new_quiz">"Start a new quiz"</string>
+    <string name="training_mode">Training mode</string>
+    <string name="about">About</string>
+
+    <string name="communicate">Communicate</string>
+    <string name="share_question">Share question</string>
+    <string name="share_quiz">Share quiz</string>
+
+    <string name="debug">Debug</string>
+    <string name="debug_no_questions">No questions view</string>
+
+    <string name="follow">Follow @CppQuiz</string>
+    <string name="version">Version</string>
+
+    // ABOUT HINT
+    <string name="dialog_hint_title">Show hint?</string>
+    <string name="dialog_hint_text">Have you really thought through the question?</string>
+    <string name="show_hint">SHOW HINT</string>
+    <string name="hide_hint">HIDE HINT</string>
+    <string name="hint_tv_default_text">No hint</string>
+
+    // ABOUT EXPLANATION
+    <string name="explanation_tv_default_text">No explanation</string>
+
+    // ERROR DIALOG
+    <string name="no_internet_dialog_title">Whoops!</string>
+    <string name="no_internet_dialog_text">No Internet connection found. Check your connection or try again</string>
+    <string name="unavailable_update_dialog_text">Update of questions database is unavailable. Check your connection or try again</string>
+    <string name="error_text">Something went wrong :( Please, try again</string>
+
+    // GOTO DIALOG
+    <string name="goto_dialog_title">Go to</string>
+    <string name="goto_dialog_text">Enter id of the question</string>
+    <string name="et_number_default">Number</string>
+
+    // DELETE DIALOG
+    <string name="reset_dialog_title">Reset progress?</string>
+
+    // SELECT QUIZ DIALOG
+    <string name="select_quiz_title">Start new quiz</string>
+
+    // TOAST MESSAGES
+    <string name="please_try_again">Wrong answer, please, try again</string>
+    <string name="give_up_help">You have to try at least 3 times before giving up.</string>
+    <string name="skip_quiz_question">"You have to try at least 1 time before giving up.\nYou won't get another shot at it.</string>
+    <string name="show_explanation_quiz">You have to answer correctly first.</string>
+
+    // NO INTERNET VIEW
+    <string name="no_internet_view_text">No Internet connection found.\n
+        Check your connection or try again
+    </string>
+    <string name="loading_questions">Loading questions</string>
+    <string name="retry">RETRY</string>
+
+    // NO QUESTIONS VIEW
+    <string name="no_questions_view_title">No questions</string>
+    <string name="no_questions_view_text">There are no questions in the database yet</string>
+
+    // COMMUNICATION
+    <string name="send_question_to">Send current question to</string>
+    <string name="send_quiz_to">Send quiz to</string>
+
+    <string name="share_q_unans">Can you answer the question №%d from @CppQuiz?</string>
+    <string name="share_q_right">I correctly answered the question №%d from @CppQuiz. But how could you?</string>
+    <string name="share_question_text">%s Visit the site: %s\nOr open it in the android app: %s
+    </string>
+    <string name="share_quiz_text">I got %1%f of %2%d points on this @CppQuiz %3%s ! Can you match that?</string>
+
+    <string name="google_play_link">https://play.google.com/store/apps/details?id=com.vsklamm.cppquiz</string>
+
+    // ABOUT TEXT
+    <string name="about_text">App created by Sergey Vasilchenko\
+        \
+        Questions and game logic were taken\
+            from the site cppquiz.org\
+        created by Anders Schau Knatten\
+        \
+        For questions about this application, please e-mail:\
+            klammvs@gmail.com\
+        \
+        For questions about everything else, please visit
+        github.com/knatten/cppquiz\
+        or\
+        cppquiz.org/quiz/about\
+        \
+        If you like this app - put 5 stars in Google Play\
+        \
+        Thanks to Anders Knatten for support and Ana Coimbra for help with design!
+</string>
+
+</resources>

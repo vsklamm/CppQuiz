@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer-array name="difficulty_levels">
+        <item>@drawable/ic_level_1</item>
+        <item>@drawable/ic_level_2</item>
+        <item>@drawable/ic_level_3</item>
+    </integer-array>
+
+</resources>
