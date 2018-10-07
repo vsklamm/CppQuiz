@@ -8,12 +8,6 @@ Screenshots
 
 <img src="https://github.com/vsklamm/CppQuiz/blob/master/gfx/1.jpg" width="170"> <img src="https://github.com/vsklamm/CppQuiz/blob/master/gfx/2.jpg" width="170"> <img src="https://github.com/vsklamm/CppQuiz/blob/master/gfx/3.jpg" width="170"> <img src="https://github.com/vsklamm/CppQuiz/blob/master/gfx/4.jpg" width="170">
 
-APK Download
-------------
-
--   [Download on GitHub](https://github.com/vsklamm/CppQuizDroid/releases)
--   [Get it on Google Play](https://play.google.com/store/apps/details?id=com.vsklamm.cppquiz)
-
 A special thanks to...
 ----------------------
 
