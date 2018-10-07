@@ -6,7 +6,7 @@ C++ Quiz for android
 Screenshots
 -----------
 
-<img src="https://github.com/vsklamm/CppQuizDroid/blob/master/gfx/app.png" width="239"> <img src="https://github.com/vsklamm/CppQuizDroid/blob/master/gfx/site.png" width="239">
+<img src="https://github.com/vsklamm/CppQuiz/blob/master/gfx/1.jpg" width="170"> <img src="https://github.com/vsklamm/CppQuiz/blob/master/gfx/2.jpg" width="170"> <img src="https://github.com/vsklamm/CppQuiz/blob/master/gfx/3.jpg" width="170"> <img src="https://github.com/vsklamm/CppQuiz/blob/master/gfx/4.jpg" width="170">
 
 APK Download
 ------------
@@ -35,6 +35,6 @@ Third Party Libraries
 License
 -------
 
-C++ Quiz is made available under the terms of the \[GPLv3\]\[gplv3\].
+C++ Quiz is made available under the terms of the [GPLv3](http://www.gnu.org/licenses/gpl.html).
 
-See the \[LICENSE\]\[license\] file that accompanies this distribution for the full text of the license.
+See the [LICENSE](https://github.com/vsklamm/CppQuiz/blob/master/LICENSE) file that accompanies this distribution for the full text of the license.
