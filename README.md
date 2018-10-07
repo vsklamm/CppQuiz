@@ -11,8 +11,8 @@ Screenshots
 A special thanks to...
 ----------------------
 
--   Anders Knatten for the support
--   Ana Coimbra for help with UI
+-   [Anders Knatten](https://github.com/knatten) for the support
+-   [Ana Coimbra](https://github.com/anacoimbrag) for help with UI
 
 Third Party Libraries
 ---------------------
@@ -29,6 +29,6 @@ Third Party Libraries
 License
 -------
 
-C++ Quiz is made available under the terms of the [GPLv3](http://www.gnu.org/licenses/gpl.html).
+C++ Quiz for android is made available under the terms of the [GPLv3](http://www.gnu.org/licenses/gpl.html).
 
 See the [LICENSE](https://github.com/vsklamm/CppQuiz/blob/master/LICENSE) file that accompanies this distribution for the full text of the license.
