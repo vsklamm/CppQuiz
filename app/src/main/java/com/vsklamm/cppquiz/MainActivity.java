@@ -645,7 +645,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             btnGiveUp.setText(getResources().getString(R.string.give_up_default));
         } else {
             btnGiveUp.setText(String.format(getResources().getString(R.string.give_up_attempts), attemptsRequired));
-        }//kukarek
+        }
     }
     @Override
     public void onCorrectAnswered(@NonNull final Question question, final int attemptsRequired) {
