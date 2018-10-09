@@ -117,7 +117,7 @@ public class GameLogic implements Serializable { // TODO: rename methods
             UserData.getInstance().registerCorrectAnswer(currentId);
             UserData.getInstance().saveUserData();
             updateGameState();
-            listener.get().onCorrectAnswered(currentQuestion);
+            listener.get().onCorrectAnswered(currentQuestion, max(3 - UserData.getInstance().attemptsGivenFor(currentId), 0));
         } else {
             UserData.getInstance().saveUserData();
             listener.get().onIncorrectAnswered(max(3 - UserData.getInstance().attemptsGivenFor(currentId), 0));
@@ -129,7 +129,7 @@ public class GameLogic implements Serializable { // TODO: rename methods
         if (attemptsGivenFor >= 3) {
             listener.get().onGiveUp(currentQuestion);
         } else {
-            listener.get().tooEarlyToGiveUp(max(3 - attemptsGivenFor, 0));
+            listener.get().tooEarlyToGiveUp(3 - attemptsGivenFor);
         }
     }
 
@@ -179,11 +179,11 @@ public class GameLogic implements Serializable { // TODO: rename methods
 
         void onGameStateChanged(final int questionId, final int correct, final int all); // diff
 
-        void onQuestionLoaded(@NonNull final Question question, final int attemptsRequired); // diff or with extra method (progress)
+        void onQuestionLoaded(@NonNull final Question question, int attemptsRequired); // diff or with extra method (progress)
 
         void onHintReceived(@NonNull final String hint); // diff or with extra method (score)
 
-        void onCorrectAnswered(@NonNull final Question question); // diff or with extra method (progress)
+        void onCorrectAnswered(@NonNull final Question question, final int attemptsRequired); // diff or with extra method (progress)
 
         void onIncorrectAnswered(final int attemptsRequired); // diff or with extra method (progress)
 

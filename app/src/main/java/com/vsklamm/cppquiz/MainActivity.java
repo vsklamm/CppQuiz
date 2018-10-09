@@ -639,8 +639,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setExpandablePanel(View.VISIBLE);
     }
 
+    public void fixGiveUp(final int attemptsRequired) {
+        Button btnGiveUp = findViewById(R.id.btn_give_up);
+        if (attemptsRequired == 0) {
+            btnGiveUp.setText(getResources().getString(R.string.give_up_default));
+        } else {
+            btnGiveUp.setText(String.format(getResources().getString(R.string.give_up_attempts), attemptsRequired));
+        }
+    }
     @Override
-    public void onCorrectAnswered(@NonNull final Question question) {
+    public void onCorrectAnswered(@NonNull final Question question, final int attemptsRequired) {
+        fixGiveUp(attemptsRequired);
         FloatingActionButton btnAnswer = findViewById(R.id.btn_answer);
         btnAnswer.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.btn_answer_right));
 
@@ -656,12 +665,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onIncorrectAnswered(final int attemptsRequired) {
-        Button btnGiveUp = findViewById(R.id.btn_give_up);
-        if (attemptsRequired == 0) {
-            btnGiveUp.setText(getResources().getString(R.string.give_up_default));
-        } else {
-            btnGiveUp.setText(String.format(getResources().getString(R.string.give_up_attempts), attemptsRequired));
-        }
+        fixGiveUp(attemptsRequired);
 
         FloatingActionButton btnAnswer = findViewById(R.id.btn_answer);
         btnAnswer.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.btn_answer_error));
