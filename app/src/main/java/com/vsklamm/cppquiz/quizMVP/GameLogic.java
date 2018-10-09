@@ -1,4 +1,4 @@
-package com.vsklamm.cppquiz.quiz;
+package com.vsklamm.cppquiz.quizMVP;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -129,7 +129,7 @@ public class GameLogic implements Serializable { // TODO: rename methods
         if (attemptsGivenFor >= 3) {
             listener.get().onGiveUp(currentQuestion);
         } else {
-            listener.get().tooEarlyToGiveUp(max(3 - attemptsGivenFor, 0));
+            listener.get().tooEarlyToGiveUp(3 - attemptsGivenFor);
         }
     }
 
