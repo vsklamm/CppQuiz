@@ -13,6 +13,7 @@ A special thanks to...
 
 -   [Anders Knatten](https://github.com/knatten) for the support
 -   [Ana Coimbra](https://github.com/anacoimbrag) for help with UI
+-   [Sasha Drozdova](https://github.com/demon1999) for some commits :D
 
 Third Party Libraries
 ---------------------
