@@ -187,7 +187,7 @@ public class GameLogic implements Serializable { // TODO: rename methods
 
         void onIncorrectAnswered(final int attemptsRequired); // diff or with extra method (progress)
 
-        void onGiveUp(@NonNull final Question question); // nonez
+        void onGiveUp(@NonNull final Question question); // none
 
         void tooEarlyToGiveUp(final int attemptsRequired); // none
 
