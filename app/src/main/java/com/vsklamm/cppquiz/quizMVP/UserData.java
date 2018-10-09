@@ -1,4 +1,4 @@
-package com.vsklamm.cppquiz.quiz;
+package com.vsklamm.cppquiz.quizMVP;
 
 import android.content.SharedPreferences;
 import android.util.SparseIntArray;

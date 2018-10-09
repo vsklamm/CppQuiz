@@ -46,8 +46,8 @@ import com.vsklamm.cppquiz.loader.LoadResult;
 import com.vsklamm.cppquiz.model.Question;
 import com.vsklamm.cppquiz.model.ResultBehaviourType;
 import com.vsklamm.cppquiz.model.UsersAnswer;
-import com.vsklamm.cppquiz.quiz.GameLogic;
-import com.vsklamm.cppquiz.quiz.UserData;
+import com.vsklamm.cppquiz.quizMVP.GameLogic;
+import com.vsklamm.cppquiz.quizMVP.UserData;
 import com.vsklamm.cppquiz.utils.FlipperChild;
 import com.vsklamm.cppquiz.utils.RequestType;
 import com.vsklamm.cppquiz.utils.SharedPreferencesUtils;
@@ -65,7 +65,7 @@ import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import ru.noties.markwon.Markwon;
 
-import static com.vsklamm.cppquiz.quiz.GameLogic.CPP_STANDARD;
+import static com.vsklamm.cppquiz.quizMVP.GameLogic.CPP_STANDARD;
 import static com.vsklamm.cppquiz.utils.TimeWork.LAST_UPDATE;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
