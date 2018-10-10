@@ -1,4 +1,4 @@
-package com.vsklamm.cppquiz.quizMVP;
+package com.vsklamm.cppquiz.quiz;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
