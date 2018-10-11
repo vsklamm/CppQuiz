@@ -1,4 +1,4 @@
-package com.vsklamm.cppquiz;
+package com.vsklamm.cppquiz.ui.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -8,7 +8,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 
-public class ConfirmHintDialog extends AppCompatDialogFragment {
+import com.vsklamm.cppquiz.R;
+
+public class SelectQuizDialog extends AppCompatDialogFragment {
 
     private DialogListener listener;
 
@@ -18,8 +20,7 @@ public class ConfirmHintDialog extends AppCompatDialogFragment {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
 
         alertDialogBuilder
-                .setTitle(R.string.dialog_hint_title)
-                .setMessage(R.string.dialog_hint_text)
+                .setTitle(R.string.select_quiz_title)
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -29,7 +30,7 @@ public class ConfirmHintDialog extends AppCompatDialogFragment {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        listener.onConfirmedHintLoad();
+                        listener.onQuizSelected();
                     }
                 });
         return alertDialogBuilder.create();
@@ -46,6 +47,6 @@ public class ConfirmHintDialog extends AppCompatDialogFragment {
     }
 
     public interface DialogListener {
-        void onConfirmedHintLoad();
+        void onQuizSelected();
     }
 }

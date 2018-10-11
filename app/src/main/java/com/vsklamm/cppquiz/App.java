@@ -3,9 +3,9 @@ package com.vsklamm.cppquiz;
 import android.app.Application;
 import android.arch.persistence.room.Room;
 
-import com.vsklamm.cppquiz.database.AppDatabase;
-import com.vsklamm.cppquiz.quiz.GameLogic;
-import com.vsklamm.cppquiz.quiz.UserData;
+import com.vsklamm.cppquiz.data.database.AppDatabase;
+import com.vsklamm.cppquiz.ui.main.GameLogic;
+import com.vsklamm.cppquiz.data.UserData;
 
 public class App extends Application {
 

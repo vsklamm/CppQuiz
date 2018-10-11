@@ -1,4 +1,4 @@
-package com.vsklamm.cppquiz;
+package com.vsklamm.cppquiz.ui.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
+
+import com.vsklamm.cppquiz.R;
 
 public class ConfirmResetDialog extends AppCompatDialogFragment {
 

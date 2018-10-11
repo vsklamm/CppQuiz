@@ -1,4 +1,4 @@
-package com.vsklamm.cppquiz.api;
+package com.vsklamm.cppquiz.data.api;
 
 import android.net.Uri;
 

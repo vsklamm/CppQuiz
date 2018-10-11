@@ -1,4 +1,4 @@
-package com.vsklamm.cppquiz;
+package com.vsklamm.cppquiz.ui.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+
+import com.vsklamm.cppquiz.R;
 
 import java.util.Objects;
 

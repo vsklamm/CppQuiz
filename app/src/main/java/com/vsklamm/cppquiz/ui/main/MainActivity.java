@@ -1,4 +1,4 @@
-package com.vsklamm.cppquiz;
+package com.vsklamm.cppquiz.ui.main;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -38,21 +38,26 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.pddstudio.highlightjs.HighlightJsView;
 import com.pddstudio.highlightjs.models.Language;
 import com.pddstudio.highlightjs.models.Theme;
-import com.vsklamm.cppquiz.api.CppQuizLiteApi;
-import com.vsklamm.cppquiz.database.AppDatabase;
+import com.vsklamm.cppquiz.App;
+import com.vsklamm.cppquiz.data.UserData;
+import com.vsklamm.cppquiz.ui.explanation.ExplanationActivity;
+import com.vsklamm.cppquiz.R;
+import com.vsklamm.cppquiz.data.api.CppQuizLiteApi;
+import com.vsklamm.cppquiz.data.database.AppDatabase;
 import com.vsklamm.cppquiz.loader.ConnectSuccessType;
 import com.vsklamm.cppquiz.loader.DumpLoader;
 import com.vsklamm.cppquiz.loader.LoadResult;
-import com.vsklamm.cppquiz.model.Question;
+import com.vsklamm.cppquiz.data.Question;
 import com.vsklamm.cppquiz.model.ResultBehaviourType;
-import com.vsklamm.cppquiz.model.UsersAnswer;
-import com.vsklamm.cppquiz.quiz.GameLogic;
-import com.vsklamm.cppquiz.quiz.MainView;
-import com.vsklamm.cppquiz.quiz.UserData;
+import com.vsklamm.cppquiz.data.UsersAnswer;
+import com.vsklamm.cppquiz.ui.about.AboutActivity;
+import com.vsklamm.cppquiz.ui.dialogs.ConfirmHintDialog;
+import com.vsklamm.cppquiz.ui.dialogs.ConfirmResetDialog;
+import com.vsklamm.cppquiz.ui.dialogs.GoToDialog;
 import com.vsklamm.cppquiz.utils.FlipperChild;
 import com.vsklamm.cppquiz.utils.RequestType;
-import com.vsklamm.cppquiz.utils.SharedPreferencesUtils;
-import com.vsklamm.cppquiz.utils.ThemeChangerDialog;
+import com.vsklamm.cppquiz.data.prefs.SharedPreferencesHelper;
+import com.vsklamm.cppquiz.ui.dialogs.ThemeChangerDialog;
 import com.vsklamm.cppquiz.utils.TimeWork;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
@@ -66,7 +71,7 @@ import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import ru.noties.markwon.Markwon;
 
-import static com.vsklamm.cppquiz.quiz.GameLogic.CPP_STANDARD;
+import static com.vsklamm.cppquiz.ui.main.GameLogic.CPP_STANDARD;
 import static com.vsklamm.cppquiz.utils.TimeWork.LAST_UPDATE;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
@@ -403,18 +408,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void onShowLineNumbersToggled(final boolean enableLineNumbers) {
         codeView.setShowLineNumbers(enableLineNumbers);
         codeView.refresh();
-        SharedPreferencesUtils.save(appPreferences, APP_PREF_LINE_NUMBERS, enableLineNumbers);
+        SharedPreferencesHelper.save(appPreferences, APP_PREF_LINE_NUMBERS, enableLineNumbers);
     }
 
     private void onZoomSupportToggled(final boolean enableZooming) {
         codeView.setZoomSupportEnabled(enableZooming);
         codeView.refresh();
-        SharedPreferencesUtils.save(appPreferences, APP_PREF_ZOOM, enableZooming);
+        SharedPreferencesHelper.save(appPreferences, APP_PREF_ZOOM, enableZooming);
     }
 
     @Override
     public void onThemeChanged(@NonNull Theme theme) {
-        SharedPreferencesUtils.save(appPreferences, THEME, theme.name());
+        SharedPreferencesHelper.save(appPreferences, THEME, theme.name());
     }
 
     @Override

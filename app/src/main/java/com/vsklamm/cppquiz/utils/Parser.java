@@ -3,7 +3,7 @@ package com.vsklamm.cppquiz.utils;
 import android.util.JsonReader;
 
 import com.vsklamm.cppquiz.model.DumpDataType;
-import com.vsklamm.cppquiz.model.Question;
+import com.vsklamm.cppquiz.data.Question;
 import com.vsklamm.cppquiz.model.ResultBehaviourType;
 
 import java.io.IOException;

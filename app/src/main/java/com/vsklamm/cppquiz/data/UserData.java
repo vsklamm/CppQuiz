@@ -1,11 +1,11 @@
-package com.vsklamm.cppquiz.quiz;
+package com.vsklamm.cppquiz.data;
 
 import android.content.SharedPreferences;
 import android.util.SparseIntArray;
 
 import com.vsklamm.cppquiz.App;
-import com.vsklamm.cppquiz.model.UsersAnswer;
-import com.vsklamm.cppquiz.utils.SharedPreferencesUtils;
+import com.vsklamm.cppquiz.data.prefs.SharedPreferencesHelper;
+import com.vsklamm.cppquiz.ui.main.GameLogic;
 
 import java.io.Serializable;
 import java.util.LinkedHashSet;
@@ -31,8 +31,8 @@ public class UserData implements Serializable {
         }
         userQuizData = App.getInstance().getSharedPreferences(USER_QUIZ_DATA, MODE_PRIVATE);
 
-        correctlyAnswered = SharedPreferencesUtils.getFromGson(userQuizData, CORRECTLY_ANSWERED);
-        attempts = SharedPreferencesUtils.getSparseInt(userQuizData, ATTEMPTS);
+        correctlyAnswered = SharedPreferencesHelper.getFromGson(userQuizData, CORRECTLY_ANSWERED);
+        attempts = SharedPreferencesHelper.getSparseInt(userQuizData, ATTEMPTS);
     }
 
     public static UserData getInstance() {
@@ -84,8 +84,8 @@ public class UserData implements Serializable {
     }
 
     public void saveUserData() {
-        SharedPreferencesUtils.saveCollection(userQuizData, ATTEMPTS, attempts);
-        SharedPreferencesUtils.saveCollection(userQuizData, CORRECTLY_ANSWERED, correctlyAnswered);
+        SharedPreferencesHelper.saveCollection(userQuizData, ATTEMPTS, attempts);
+        SharedPreferencesHelper.saveCollection(userQuizData, CORRECTLY_ANSWERED, correctlyAnswered);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.vsklamm.cppquiz.utils;
+package com.vsklamm.cppquiz.data.prefs;
 
 import android.content.SharedPreferences;
 import android.util.SparseIntArray;
@@ -8,7 +8,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.LinkedHashSet;
 
-public class SharedPreferencesUtils {
+public class SharedPreferencesHelper {
 
     public static void save(SharedPreferences prefs, String key, Object value) {
         SharedPreferences.Editor editor = prefs.edit();

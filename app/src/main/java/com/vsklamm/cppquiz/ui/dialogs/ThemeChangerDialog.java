@@ -1,4 +1,4 @@
-package com.vsklamm.cppquiz.utils;
+package com.vsklamm.cppquiz.ui.dialogs;
 
 import android.content.Context;
 import android.content.DialogInterface;

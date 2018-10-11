@@ -12,7 +12,7 @@
         android:isScrollContainer="false"
         android:nestedScrollingEnabled="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".MainActivity"
+        tools:context=".ui.main.MainActivity"
         tools:showIn="@layout/app_bar_main">
 
         <include

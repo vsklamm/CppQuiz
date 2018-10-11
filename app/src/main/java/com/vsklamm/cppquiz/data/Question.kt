@@ -1,9 +1,10 @@
-package com.vsklamm.cppquiz.model
+package com.vsklamm.cppquiz.data
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
 import android.arch.persistence.room.TypeConverters
+import com.vsklamm.cppquiz.model.ResultBehaviourType
 
 import java.io.Serializable
 

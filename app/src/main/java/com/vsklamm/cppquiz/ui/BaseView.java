@@ -1,4 +1,4 @@
-package com.vsklamm.cppquiz.quiz;
+package com.vsklamm.cppquiz.ui;
 
 public interface BaseView<T> {
 

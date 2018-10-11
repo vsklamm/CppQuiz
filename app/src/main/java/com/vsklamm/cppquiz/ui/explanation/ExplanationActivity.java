@@ -1,4 +1,4 @@
-package com.vsklamm.cppquiz;
+package com.vsklamm.cppquiz.ui.explanation;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,17 +15,18 @@ import android.widget.TextView;
 import com.pddstudio.highlightjs.HighlightJsView;
 import com.pddstudio.highlightjs.models.Language;
 import com.pddstudio.highlightjs.models.Theme;
-import com.vsklamm.cppquiz.model.Question;
+import com.vsklamm.cppquiz.R;
+import com.vsklamm.cppquiz.data.Question;
 import com.vsklamm.cppquiz.model.ResultBehaviourType;
 
 import ru.noties.markwon.Markwon;
 
-import static com.vsklamm.cppquiz.MainActivity.APP_PREFERENCES;
-import static com.vsklamm.cppquiz.MainActivity.APP_PREF_LINE_NUMBERS;
-import static com.vsklamm.cppquiz.MainActivity.APP_PREF_ZOOM;
-import static com.vsklamm.cppquiz.MainActivity.IS_GIVE_UP;
-import static com.vsklamm.cppquiz.MainActivity.QUESTION;
-import static com.vsklamm.cppquiz.MainActivity.THEME;
+import static com.vsklamm.cppquiz.ui.main.MainActivity.APP_PREFERENCES;
+import static com.vsklamm.cppquiz.ui.main.MainActivity.APP_PREF_LINE_NUMBERS;
+import static com.vsklamm.cppquiz.ui.main.MainActivity.APP_PREF_ZOOM;
+import static com.vsklamm.cppquiz.ui.main.MainActivity.IS_GIVE_UP;
+import static com.vsklamm.cppquiz.ui.main.MainActivity.QUESTION;
+import static com.vsklamm.cppquiz.ui.main.MainActivity.THEME;
 
 public class ExplanationActivity extends AppCompatActivity {
 

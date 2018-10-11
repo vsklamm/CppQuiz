@@ -1,6 +1,8 @@
-package com.vsklamm.cppquiz.model;
+package com.vsklamm.cppquiz.data;
 
 import android.support.annotation.NonNull;
+
+import com.vsklamm.cppquiz.model.ResultBehaviourType;
 
 import java.io.Serializable;
 
@@ -13,11 +15,6 @@ public class UsersAnswer implements Serializable {
 
     @NonNull
     public final String answer;
-
-    /*
-    @NonNull
-    public final Date dateTime;
-    */
 
     public UsersAnswer(int questionId) {
         this(questionId, ResultBehaviourType.OK, "");
