@@ -39,7 +39,7 @@ public class ExplanationActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        final boolean isGiveUp = intent.getBooleanExtra(IS_GIVE_UP, true);
+        final boolean isGiveUp = intent.getBooleanExtra(IS_GIVE_UP, false);
         final Question question = (Question) intent.getSerializableExtra(QUESTION);
 
         final ActionBar ab = getSupportActionBar();

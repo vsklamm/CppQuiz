@@ -2,10 +2,10 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@color/hint_exp_title" />
     <corners
-        android:topRightRadius="6dp"
-        android:topLeftRadius="6dp"
+        android:bottomLeftRadius="0dp"
         android:bottomRightRadius="0dp"
-        android:bottomLeftRadius="0dp"/>
+        android:topLeftRadius="6dp"
+        android:topRightRadius="6dp" />
     <padding
         android:bottom="0dp"
         android:left="0dp"

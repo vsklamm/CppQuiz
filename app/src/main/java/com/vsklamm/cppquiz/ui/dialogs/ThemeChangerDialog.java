@@ -10,7 +10,6 @@ import com.pddstudio.highlightjs.models.Theme;
 import com.vsklamm.cppquiz.R;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class ThemeChangerDialog implements DialogInterface.OnClickListener {
 
@@ -57,12 +56,12 @@ public class ThemeChangerDialog implements DialogInterface.OnClickListener {
     private String[] buildThemeList() {
         String[] temp = new String[styleArray.size()];
         int arrayIterator = 0;
-        for(Pair<String, Theme> entry : styleArray) { // TODO: copy-paste
+        for (Pair<String, Theme> entry : styleArray) { // TODO: copy-paste
             if (entry.second.isPopular()) {
                 temp[arrayIterator++] = entry.first;
             }
         }
-        for(Pair<String, Theme> entry : styleArray) {
+        for (Pair<String, Theme> entry : styleArray) {
             if (!entry.second.isPopular()) {
                 temp[arrayIterator++] = entry.first;
             }

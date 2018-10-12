@@ -39,25 +39,25 @@ import com.pddstudio.highlightjs.HighlightJsView;
 import com.pddstudio.highlightjs.models.Language;
 import com.pddstudio.highlightjs.models.Theme;
 import com.vsklamm.cppquiz.App;
-import com.vsklamm.cppquiz.data.UserData;
-import com.vsklamm.cppquiz.ui.explanation.ExplanationActivity;
 import com.vsklamm.cppquiz.R;
+import com.vsklamm.cppquiz.data.Question;
+import com.vsklamm.cppquiz.data.UserData;
+import com.vsklamm.cppquiz.data.UsersAnswer;
 import com.vsklamm.cppquiz.data.api.CppQuizLiteApi;
 import com.vsklamm.cppquiz.data.database.AppDatabase;
+import com.vsklamm.cppquiz.data.prefs.SharedPreferencesHelper;
 import com.vsklamm.cppquiz.loader.ConnectSuccessType;
 import com.vsklamm.cppquiz.loader.DumpLoader;
 import com.vsklamm.cppquiz.loader.LoadResult;
-import com.vsklamm.cppquiz.data.Question;
 import com.vsklamm.cppquiz.model.ResultBehaviourType;
-import com.vsklamm.cppquiz.data.UsersAnswer;
 import com.vsklamm.cppquiz.ui.about.AboutActivity;
 import com.vsklamm.cppquiz.ui.dialogs.ConfirmHintDialog;
 import com.vsklamm.cppquiz.ui.dialogs.ConfirmResetDialog;
 import com.vsklamm.cppquiz.ui.dialogs.GoToDialog;
+import com.vsklamm.cppquiz.ui.dialogs.ThemeChangerDialog;
+import com.vsklamm.cppquiz.ui.explanation.ExplanationActivity;
 import com.vsklamm.cppquiz.utils.FlipperChild;
 import com.vsklamm.cppquiz.utils.RequestType;
-import com.vsklamm.cppquiz.data.prefs.SharedPreferencesHelper;
-import com.vsklamm.cppquiz.ui.dialogs.ThemeChangerDialog;
 import com.vsklamm.cppquiz.utils.TimeWork;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
@@ -81,9 +81,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ConfirmHintDialog.DialogListener,
         GoToDialog.DialogListener,
         ConfirmResetDialog.DialogListener,
-        MainView,
+        // QuizModeContract.View,
+        // TrainingModeContract.View,
         GameLogic.GameLogicCallbacks,
-        View.OnClickListener{
+        View.OnClickListener {
 
     public static final String APP_PREFERENCES = "APP_PREFERENCES", APP_PREF_ZOOM = "APP_PREF_ZOOM",
             APP_PREF_LINE_NUMBERS = "APP_PREF_LINE_NUMBERS", THEME = "THEME";

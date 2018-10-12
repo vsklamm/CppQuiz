@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="4dp"
     android:layout_marginStart="4dp"
+    android:layout_marginEnd="4dp"
     app:cardCornerRadius="6dp"
     app:cardElevation="4dp"
     app:cardUseCompatPadding="true">
@@ -13,10 +13,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:layout_marginEnd="12dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -104,7 +104,10 @@
         <com.pddstudio.highlightjs.HighlightJsView
             android:id="@+id/highlight_view_card_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:overScrollMode="ifContentScrolls"
+            android:scrollbarStyle="insideOverlay"
+            android:verticalScrollbarPosition="right">
 
         </com.pddstudio.highlightjs.HighlightJsView>
 

@@ -5,9 +5,9 @@ import android.support.annotation.NonNull;
 import android.util.SparseIntArray;
 
 import com.vsklamm.cppquiz.App;
+import com.vsklamm.cppquiz.data.Question;
 import com.vsklamm.cppquiz.data.UserData;
 import com.vsklamm.cppquiz.data.database.AppDatabase;
-import com.vsklamm.cppquiz.data.Question;
 
 import java.io.Serializable;
 import java.lang.ref.WeakReference;

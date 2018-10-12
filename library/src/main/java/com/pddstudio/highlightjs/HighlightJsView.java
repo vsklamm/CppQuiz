@@ -90,7 +90,7 @@ public class HighlightJsView extends WebView implements FileUtils.Callback {
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        settings.setCacheMode(WebSettings.LOAD_CACHE_ONLY);
         settings.setDomStorageEnabled(true);
 
         setLayerType(View.LAYER_TYPE_HARDWARE, null);
