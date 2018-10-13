@@ -5,6 +5,7 @@ C++ Quiz for android
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
 [![follow @vsklamm](https://img.shields.io/twitter/follow/vsklamm.svg?style=social&label=Follow)](https://twitter.com/vsklamm)
 [![follow @knatten](https://img.shields.io/twitter/follow/knatten.svg?style=social&label=Follow)](https://twitter.com/knatten)
+[![follow @knatten](https://img.shields.io/twitter/follow/CppQuiz.svg?style=social&label=Follow)](https://twitter.com/CppQuiz)
 
 
 <a href="https://play.google.com/store/apps/details?id=com.vsklamm.cppquiz"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="75"></a>
