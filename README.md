@@ -32,11 +32,8 @@ Third Party Libraries
 -   [Android View Animations](https://github.com/daimajia/AndroidViewAnimations)
 -   and others...
 
-------------------------------------------------------------------------
-
 License
 -------
 
 C++ Quiz for android is made available under the terms of the [GPLv3](http://www.gnu.org/licenses/gpl.html).
-
 See the [LICENSE](https://github.com/vsklamm/CppQuiz/blob/master/LICENSE) file that accompanies this distribution for the full text of the license.
