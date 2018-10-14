@@ -248,5 +248,4 @@ public class HighlightJsView extends WebView implements FileUtils.Callback {
         this.showLineNumbers = showLineNumbers;
     }
 
-
 }

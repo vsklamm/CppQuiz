@@ -30,7 +30,7 @@ android {
                     "v${defaultConfig.versionName}${versionNameSuffix}"
         }
     }
-    buildToolsVersion '28.0.2'
+    buildToolsVersion '28.0.3'
     productFlavors {
     }
     compileOptions {
