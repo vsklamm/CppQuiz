@@ -25,6 +25,10 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class DumpLoader extends AsyncTaskLoader<LoadResult<String, LinkedHashSet<Integer>>> {
 
     private final RequestType requestType;
@@ -52,16 +56,17 @@ public class DumpLoader extends AsyncTaskLoader<LoadResult<String, LinkedHashSet
         if (!isOnline()) {
             return new LoadResult<>(ConnectSuccessType.NO_INTERNET, null, null, requestType, false);
         }
-        HttpURLConnection connection = null;
-        try {
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = CppQuizLiteApi.getDumpRequest();
+        try (Response response = client.newCall(request).execute()) {
             LinkedHashSet<Integer> result = new LinkedHashSet<>();
             DumpDataType<List<Question>> newDump;
 
             updateProgress(System.currentTimeMillis(), "Loading questions");
             long startTime = System.currentTimeMillis();
 
-            connection = CppQuizLiteApi.getDumpRequest();
-            newDump = Parser.readJsonStream(connection.getInputStream());
+            newDump = Parser.readJsonStream(response.body().byteStream());
 
             updateProgress(System.currentTimeMillis() - startTime, "Database processing");
 
@@ -96,15 +101,10 @@ public class DumpLoader extends AsyncTaskLoader<LoadResult<String, LinkedHashSet
             }
 
             this.result = new LoadResult<>(ConnectSuccessType.OK, newDump.cppStandard, result, requestType, updated);
-            connection.disconnect();
             return this.result;
         } catch (IOException | InterruptedException ex) {
             ConnectSuccessType connectSuccessType = isOnline() ? ConnectSuccessType.ERROR : ConnectSuccessType.NO_INTERNET;
             return new LoadResult<>(connectSuccessType, null, null, requestType, false);
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
         }
     }
 

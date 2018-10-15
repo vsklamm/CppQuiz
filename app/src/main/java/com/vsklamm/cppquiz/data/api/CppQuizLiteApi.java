@@ -1,51 +1,53 @@
 package com.vsklamm.cppquiz.data.api;
 
-import android.net.Uri;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import okhttp3.HttpUrl;
+import okhttp3.Request;
 
 public class CppQuizLiteApi {
 
-    private static final Uri BASE_URI = Uri.parse("http://cppquiz.org");
+    private static final HttpUrl URL = HttpUrl.parse("http://cppquiz.org");
 
     private CppQuizLiteApi() {
     }
 
     /**
-     * Returns {@link HttpURLConnection} for executing request to load dump
+     * Returns {@link Request} for executing request to load dump
      */
-    public static HttpURLConnection getDumpRequest() throws IOException {
-        String request = BASE_URI.buildUpon()
-                .appendPath("static")
-                .appendPath("published.json")
-                .toString();
+    public static Request getDumpRequest() {
 
-        return (HttpURLConnection) new URL(request).openConnection();
+        HttpUrl url = new HttpUrl.Builder()
+                .scheme(URL.scheme())
+                .host(URL.host())
+                .addPathSegments("static\\published.json")
+                .build();
+
+        return new Request.Builder()
+                .url(url)
+                .build();
     }
 
     /**
-     * Returns {@link HttpURLConnection} for executing request to load quiz by key
+     * Returns {@link Request} for executing request to load quiz by key
      */
-    public static HttpURLConnection getQuizRequest(final String quizKey) throws IOException {
-        String request = BASE_URI.buildUpon()
-                .appendPath("api")
-                .appendPath("v1")
-                .appendPath("quiz")
-                .appendPath("quiz")
-                .appendQueryParameter("key", quizKey)
-                .toString();
 
-        return (HttpURLConnection) new URL(request).openConnection();
+    public static Request getQuizRequest(final String quizKey) {
+        HttpUrl url = new HttpUrl.Builder()
+                .scheme(URL.scheme())
+                .host(URL.host())
+                .addPathSegment("api\\v1\\quiz\\quiz")
+                .addQueryParameter("key", quizKey)
+                .build();
+        return new Request.Builder().url(url).build();
     }
 
 
     public static String getQuestionURL(final int questionId) {
-        return BASE_URI.buildUpon()
-                .appendPath("quiz")
-                .appendPath("question")
-                .appendPath(Integer.toString(questionId))
+        return new HttpUrl.Builder()
+                .scheme(URL.scheme())
+                .host(URL.host())
+                .addPathSegment("quiz\\question")
+                .addPathSegment(Integer.toString(questionId))
+                .build()
                 .toString();
     }
 
