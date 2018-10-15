@@ -1,12 +1,17 @@
 package com.vsklamm.cppquiz.data.prefs;
 
 import android.content.SharedPreferences;
-import android.util.SparseIntArray;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
+import com.squareup.moshi.Types;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class SharedPreferencesHelper {
 
@@ -28,31 +33,42 @@ public class SharedPreferencesHelper {
 
     public static <T> void saveCollection(SharedPreferences prefs, String key, T collection) {
         SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(collection);
+        Moshi moshi = new Moshi.Builder().build();
+        Type type = Types.newParameterizedType(collection.getClass());
+        JsonAdapter<T> jsonAdapter = moshi.adapter(type);
+        String json = jsonAdapter.toJson(collection);
         editor.putString(key, json);
         editor.apply();
     }
 
-    public static LinkedHashSet<Integer> getFromGson(SharedPreferences prefs, String key) { // TODO: erase copy-paste #3
-        Gson gson = new Gson();
+    public static LinkedHashSet<Integer> getFromJson(SharedPreferences prefs, String key)
+    {
         String json = prefs.getString(key, "");
         if (json.equals("")) {
             return new LinkedHashSet<>();
         }
-        java.lang.reflect.Type type = new TypeToken<LinkedHashSet<Integer>>() {
-        }.getType();
-        return gson.fromJson(json, type);
+        Type type = Types.newParameterizedType(Set.class, Integer.class);
+        Moshi moshi = new Moshi.Builder().build();
+        JsonAdapter<Set<Integer>> adapter = moshi.adapter(type);
+        try {
+            return (LinkedHashSet<Integer>) adapter.fromJson(json);
+        } catch (IOException e) {
+            return new LinkedHashSet<>();
+        }
     }
 
-    public static SparseIntArray getSparseInt(SharedPreferences prefs, String key) { // TODO: erase copy-paste #4
-        Gson gson = new Gson();
+    public static HashMap<Integer, Integer> getSparseInt(SharedPreferences prefs, String key) { // TODO: erase copy-paste #4
         String json = prefs.getString(key, "");
         if (json.equals("")) {
-            return new SparseIntArray();
+            return new HashMap<>();
         }
-        java.lang.reflect.Type type = new TypeToken<SparseIntArray>() {
-        }.getType();
-        return gson.fromJson(json, type);
+        Moshi moshi = new Moshi.Builder().build();
+        Type type = Types.newParameterizedType(Map.class, Integer.class, Integer.class);
+        JsonAdapter<Map<Integer, Integer>> adapter = moshi.adapter(type);
+        try {
+            return (HashMap<Integer, Integer>) adapter.fromJson(json);
+        } catch (IOException e) {
+            return new HashMap<>();
+        }
     }
 }

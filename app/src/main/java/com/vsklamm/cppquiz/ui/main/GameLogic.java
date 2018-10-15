@@ -12,6 +12,7 @@ import com.vsklamm.cppquiz.data.database.AppDatabase;
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
@@ -62,12 +63,16 @@ public class GameLogic implements Serializable { // TODO: rename methods
                 correctlyAnswered.remove(id);
             }
         }
-        SparseIntArray attempts = UserData.getInstance().getAttempts();
-        for (int it = 0; it < attempts.size(); ++it) {
-            if (!questionsIds.contains(attempts.keyAt(it))) {
-                attempts.removeAt(it);
+        HashMap<Integer, Integer> attempts = UserData.getInstance().getAttempts();
+        List<Integer> erased = new ArrayList<>();
+        for (Integer id : attempts.keySet()) {
+            if (!questionsIds.contains(id)) {
+                erased.add(id);
             }
         }
+        for (Integer id : erased)
+            attempts.remove(id);
+
         updateGameState();
     }
 

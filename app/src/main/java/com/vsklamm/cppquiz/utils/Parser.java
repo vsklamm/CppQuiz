@@ -1,21 +1,22 @@
 package com.vsklamm.cppquiz.utils;
 
-import android.util.JsonReader;
-
+import com.squareup.moshi.JsonReader;
 import com.vsklamm.cppquiz.data.Question;
 import com.vsklamm.cppquiz.model.DumpDataType;
 import com.vsklamm.cppquiz.model.ResultBehaviourType;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+
+import okio.Okio;
 
 public class Parser {
 
     public static DumpDataType<List<Question>> readJsonStream(InputStream in) throws IOException {
-        try (JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"))) {
+
+        try (JsonReader reader = JsonReader.of(Okio.buffer(Okio.source(in)))) {
             return readQuestionList(reader);
         }
     }

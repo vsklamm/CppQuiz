@@ -7,7 +7,9 @@ import com.vsklamm.cppquiz.App;
 import com.vsklamm.cppquiz.data.prefs.SharedPreferencesHelper;
 import com.vsklamm.cppquiz.ui.main.GameLogic;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -23,7 +25,7 @@ public class UserData implements Serializable {
     private SharedPreferences userQuizData;
 
     private LinkedHashSet<Integer> correctlyAnswered;
-    private SparseIntArray attempts;
+    private HashMap<Integer, Integer> attempts;
 
     private UserData() {
         if (sSoleInstance != null) {
@@ -31,7 +33,8 @@ public class UserData implements Serializable {
         }
         userQuizData = App.getInstance().getSharedPreferences(USER_QUIZ_DATA, MODE_PRIVATE);
 
-        correctlyAnswered = SharedPreferencesHelper.getFromGson(userQuizData, CORRECTLY_ANSWERED);
+
+        correctlyAnswered = SharedPreferencesHelper.getFromJson(userQuizData, CORRECTLY_ANSWERED);
         attempts = SharedPreferencesHelper.getSparseInt(userQuizData, ATTEMPTS);
     }
 
@@ -59,7 +62,7 @@ public class UserData implements Serializable {
         return correctlyAnswered;
     }
 
-    public SparseIntArray getAttempts() {
+    public HashMap<Integer, Integer> getAttempts() {
         return attempts;
     }
 
@@ -68,7 +71,9 @@ public class UserData implements Serializable {
     }
 
     public void registerAttempt(final int questionId) {
-        int old = attempts.get(questionId, 0);
+        if (attempts.get(questionId) == null)
+            attempts.put(questionId, 0);
+        Integer old = attempts.get(questionId);
         attempts.put(questionId, old + 1);
     }
 
@@ -80,7 +85,9 @@ public class UserData implements Serializable {
     }
 
     public int attemptsGivenFor(final int questionId) {
-        return attempts.get(questionId, 0);
+        if (attempts.get(questionId) == null)
+            attempts.put(questionId, 0);
+        return attempts.get(questionId);
     }
 
     public void saveUserData() {
