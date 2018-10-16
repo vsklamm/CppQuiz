@@ -31,11 +31,21 @@ public class SharedPreferencesHelper {
         editor.apply();
     }
 
-    public static <T> void saveCollection(SharedPreferences prefs, String key, T collection) {
+    public static void saveCollection(SharedPreferences prefs, String key, Set<Integer> collection) {
         SharedPreferences.Editor editor = prefs.edit();
         Moshi moshi = new Moshi.Builder().build();
-        Type type = Types.newParameterizedType(collection.getClass());
-        JsonAdapter<T> jsonAdapter = moshi.adapter(type);
+        Type type = Types.newParameterizedType(Set.class, Integer.class);
+        JsonAdapter<Set<Integer>> jsonAdapter = moshi.adapter(type);
+        String json = jsonAdapter.toJson(collection);
+        editor.putString(key, json);
+        editor.apply();
+    }
+
+    public static void saveCollection(SharedPreferences prefs, String key, Map<Integer, Integer> collection) {
+        SharedPreferences.Editor editor = prefs.edit();
+        Moshi moshi = new Moshi.Builder().build();
+        Type type = Types.newParameterizedType(Map.class, Integer.class, Integer.class);
+        JsonAdapter<Map<Integer, Integer>> jsonAdapter = moshi.adapter(type);
         String json = jsonAdapter.toJson(collection);
         editor.putString(key, json);
         editor.apply();
@@ -51,8 +61,8 @@ public class SharedPreferencesHelper {
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<Set<Integer>> adapter = moshi.adapter(type);
         try {
-            return (LinkedHashSet<Integer>) adapter.fromJson(json);
-        } catch (IOException e) {
+            return new LinkedHashSet<>(adapter.fromJson(json));
+        } catch (IOException | NullPointerException ex) {
             return new LinkedHashSet<>();
         }
     }
@@ -66,8 +76,8 @@ public class SharedPreferencesHelper {
         Type type = Types.newParameterizedType(Map.class, Integer.class, Integer.class);
         JsonAdapter<Map<Integer, Integer>> adapter = moshi.adapter(type);
         try {
-            return (HashMap<Integer, Integer>) adapter.fromJson(json);
-        } catch (IOException e) {
+            return new HashMap<>(adapter.fromJson(json));
+        } catch (IOException | NullPointerException ex) {
             return new HashMap<>();
         }
     }

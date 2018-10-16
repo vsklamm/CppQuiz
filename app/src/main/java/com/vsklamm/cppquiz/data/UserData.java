@@ -1,13 +1,11 @@
 package com.vsklamm.cppquiz.data;
 
 import android.content.SharedPreferences;
-import android.util.SparseIntArray;
 
 import com.vsklamm.cppquiz.App;
 import com.vsklamm.cppquiz.data.prefs.SharedPreferencesHelper;
 import com.vsklamm.cppquiz.ui.main.GameLogic;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -32,7 +30,6 @@ public class UserData implements Serializable {
             throw new RuntimeException("Use getInstance() method to get the single instance of this class.");
         }
         userQuizData = App.getInstance().getSharedPreferences(USER_QUIZ_DATA, MODE_PRIVATE);
-
 
         correctlyAnswered = SharedPreferencesHelper.getFromJson(userQuizData, CORRECTLY_ANSWERED);
         attempts = SharedPreferencesHelper.getSparseInt(userQuizData, ATTEMPTS);
