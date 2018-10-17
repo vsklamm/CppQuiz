@@ -641,6 +641,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    public void onQuestionNotFound(final int questionId) {
+        showToast(getString(R.string.question_not_found));
+    }
+
+    @Override
     public void onHintReceived(@NonNull final String hint) {
         TextView tvHint = findViewById(R.id.tv_hint);
         Markwon.setMarkdown(tvHint, hint);

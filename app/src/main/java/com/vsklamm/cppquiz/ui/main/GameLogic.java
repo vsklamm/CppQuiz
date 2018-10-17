@@ -103,7 +103,7 @@ public class GameLogic implements Serializable { // TODO: rename methods
 
                     @Override
                     public void onError(Throwable e) {
-                        // ignore
+                        listener.get().onQuestionNotFound(questionId);
                     }
                 });
     }
@@ -185,6 +185,8 @@ public class GameLogic implements Serializable { // TODO: rename methods
         void onGameStateChanged(final int questionId, final int correct, final int all); // diff
 
         void onQuestionLoaded(@NonNull final Question question, int attemptsRequired); // diff or with extra method (progress)
+
+        void onQuestionNotFound(final int questionId);
 
         void onHintReceived(@NonNull final String hint); // diff or with extra method (score)
 

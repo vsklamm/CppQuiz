@@ -101,6 +101,7 @@
     <string name="give_up_help">You have to try at least 3 times before giving up.</string>
     <string name="skip_quiz_question">"You have to try at least 1 time before giving up.\nYou won't get another shot at it.</string>
     <string name="show_explanation_quiz">You have to answer correctly first.</string>
+    <string name="question_not_found">There is no question with such number</string>
 
     // NO INTERNET VIEW
     <string name="no_internet_view_text">No Internet connection found.\n
