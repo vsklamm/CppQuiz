@@ -11,15 +11,15 @@ public interface TrainingModeContract extends BaseModeContract {
 
     interface View extends BaseView<Presenter> {
 
-        void onGameStateChanged(final int questionId, final int correct, final int all);
+        void onTrainingStateChanged(final int questionId, final int correct, final int all);
 
         void onQuestionLoaded(@NonNull final Question question, int attemptsRequired);
 
-        void onHintReceived(@NonNull final String hint);
+        void onTrainingHintReceived(@NonNull final String hint);
 
-        void onCorrectAnswered(@NonNull final Question question, final int attemptsRequired);
+        void onTrainingCorrectAnswered(@NonNull final Question question, final int attemptsRequired);
 
-        void onIncorrectAnswered(final int attemptsRequired);
+        void onTrainingIncorrectAnswered(final int attemptsRequired);
 
         void onGiveUp(@NonNull final Question question);
 
