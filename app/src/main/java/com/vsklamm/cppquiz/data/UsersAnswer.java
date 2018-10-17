@@ -2,7 +2,7 @@ package com.vsklamm.cppquiz.data;
 
 import android.support.annotation.NonNull;
 
-import com.vsklamm.cppquiz.model.ResultBehaviourType;
+import com.vsklamm.cppquiz.utils.ResultBehaviourType;
 
 import java.io.Serializable;
 

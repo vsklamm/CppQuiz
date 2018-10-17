@@ -104,6 +104,9 @@ public class GameLogic implements Serializable { // TODO: rename methods
                     @Override
                     public void onError(Throwable e) {
                         listener.get().onQuestionNotFound(questionId);
+                        if (currentQuestion == null) {
+                            randomQuestion();
+                        }
                     }
                 });
     }

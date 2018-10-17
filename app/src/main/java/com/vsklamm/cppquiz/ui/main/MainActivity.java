@@ -50,15 +50,16 @@ import com.vsklamm.cppquiz.data.prefs.SharedPreferencesHelper;
 import com.vsklamm.cppquiz.loader.ConnectSuccessType;
 import com.vsklamm.cppquiz.loader.DumpLoader;
 import com.vsklamm.cppquiz.loader.LoadResult;
-import com.vsklamm.cppquiz.model.ResultBehaviourType;
 import com.vsklamm.cppquiz.ui.about.AboutActivity;
 import com.vsklamm.cppquiz.ui.dialogs.ConfirmHintDialog;
 import com.vsklamm.cppquiz.ui.dialogs.ConfirmResetDialog;
 import com.vsklamm.cppquiz.ui.dialogs.GoToDialog;
 import com.vsklamm.cppquiz.ui.dialogs.ThemeChangerDialog;
 import com.vsklamm.cppquiz.ui.explanation.ExplanationActivity;
+import com.vsklamm.cppquiz.utils.DeepLinksUtils;
 import com.vsklamm.cppquiz.utils.FlipperChild;
 import com.vsklamm.cppquiz.utils.RequestType;
+import com.vsklamm.cppquiz.utils.ResultBehaviourType;
 import com.vsklamm.cppquiz.utils.TimeWork;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
@@ -125,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (TimeWork.isNextDay(appPreferences)) {
                 initDumpLoader(RequestType.UPDATE);
             }
+
             AppDatabase db = App.getInstance().getDatabase();
             db.questionDao().getAllIds()
                     .subscribeOn(Schedulers.io())
@@ -138,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     MainActivity.this,
                                     cppStandard,
                                     new LinkedHashSet<>(questionIds));
-                            gameLogic.randomQuestion();
+                            showFirstQuestion();
                         }
 
                         @Override
@@ -510,7 +512,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 gameLogic.initNewData(this, data.cppStandard, data.questionsIds);
                 Question currentQuestion = gameLogic.getCurrentQuestion();
                 if (currentQuestion == null || !data.questionsIds.contains(currentQuestion.getId())) {
-                    gameLogic.randomQuestion();
+                    showFirstQuestion();
                 }
             }
 
@@ -518,7 +520,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 case LOAD_DUMP:
                     editor.putBoolean(HAS_VISITED, true);
                     viewFlipper.setDisplayedChild(FlipperChild.MAIN_CONTENT.ordinal());
-
                     DrawerLayout drawer = findViewById(R.id.drawer_layout);
                     drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                     break;
@@ -555,6 +556,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
         getSupportLoaderManager().destroyLoader(0);
+    }
+
+    private void showFirstQuestion() {
+        final Intent intent = getIntent();
+        final String action = intent.getAction();
+        final String data = intent.getDataString();
+        if (Intent.ACTION_VIEW.equals(action) && data != null) {
+            DeepLinksUtils deepLinksUtils = new DeepLinksUtils(data);
+            if (deepLinksUtils.isQuestionLink()) {
+                GameLogic.getInstance().questionById(deepLinksUtils.getQuestionId());
+            } else if (deepLinksUtils.isQuizLink()) {
+                // TODO: handle quiz links
+            } else {
+                GameLogic.getInstance().randomQuestion();
+            }
+        } else {
+            GameLogic.getInstance().randomQuestion();
+        }
     }
 
     private void openConfirmDialog() {

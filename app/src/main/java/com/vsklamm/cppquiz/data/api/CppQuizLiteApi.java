@@ -29,15 +29,18 @@ public class CppQuizLiteApi {
     /**
      * Returns {@link Request} for executing request to load quiz by key
      */
-
     public static Request getQuizRequest(final String quizKey) {
+
         HttpUrl url = new HttpUrl.Builder()
                 .scheme(URL.scheme())
                 .host(URL.host())
                 .addPathSegment("api\\v1\\quiz\\quiz")
                 .addQueryParameter("key", quizKey)
                 .build();
-        return new Request.Builder().url(url).build();
+
+        return new Request.Builder()
+                .url(url)
+                .build();
     }
 
 

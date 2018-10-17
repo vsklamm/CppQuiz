@@ -20,6 +20,5 @@ public interface BaseModeContract {
         public void randomQuestion();
 
 
-
     }
 }
