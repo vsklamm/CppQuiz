@@ -12,15 +12,14 @@ import com.vsklamm.cppquiz.data.Question;
 import com.vsklamm.cppquiz.data.api.CppQuizLiteApi;
 import com.vsklamm.cppquiz.data.database.AppDatabase;
 import com.vsklamm.cppquiz.data.database.QuestionDao;
-import com.vsklamm.cppquiz.model.DumpDataType;
 import com.vsklamm.cppquiz.ui.main.MainActivity;
+import com.vsklamm.cppquiz.utils.DumpDataType;
 import com.vsklamm.cppquiz.utils.Parser;
 import com.vsklamm.cppquiz.utils.RequestType;
 import com.vsklamm.cppquiz.utils.TimeWork;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;

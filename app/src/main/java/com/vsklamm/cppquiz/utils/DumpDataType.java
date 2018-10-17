@@ -1,4 +1,4 @@
-package com.vsklamm.cppquiz.model;
+package com.vsklamm.cppquiz.utils;
 
 import android.support.annotation.NonNull;
 

@@ -1,4 +1,4 @@
-package com.vsklamm.cppquiz.model;
+package com.vsklamm.cppquiz.utils;
 
 import android.arch.persistence.room.TypeConverter;
 import android.support.annotation.NonNull;
@@ -55,22 +55,4 @@ public enum ResultBehaviourType {
         return OK;
     }
 
-    public static String getString(final int numeral) {
-        for (ResultBehaviourType res : values()) {
-            if (res.ordinal() == numeral) {
-                return res.toString();
-            }
-        }
-        return OK.toString();
-    }
-
-    /* @TypeConverter
-    @NonNull
-    public static String toString(final ResultBehaviourType status) {
-        return status.toString();
-    }
-
-    public static String[] valuesToString() {
-        return Arrays.toString(ResultBehaviourType.values()).split("");
-    } */
 }

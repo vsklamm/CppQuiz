@@ -51,8 +51,7 @@ public class SharedPreferencesHelper {
         editor.apply();
     }
 
-    public static LinkedHashSet<Integer> getFromJson(SharedPreferences prefs, String key)
-    {
+    public static LinkedHashSet<Integer> getFromJson(SharedPreferences prefs, String key) {
         String json = prefs.getString(key, "");
         if (json.equals("")) {
             return new LinkedHashSet<>();
