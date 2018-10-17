@@ -38,6 +38,7 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.pddstudio.highlightjs.HighlightJsView;
 import com.pddstudio.highlightjs.models.Language;
 import com.pddstudio.highlightjs.models.Theme;
+import com.sackcentury.shinebuttonlib.ShineButton;
 import com.vsklamm.cppquiz.App;
 import com.vsklamm.cppquiz.R;
 import com.vsklamm.cppquiz.data.Question;
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private HighlightJsView codeView;
     private ViewFlipper viewFlipper;
     private Toolbar toolbar;
+    private ShineButton shineButton;
     private ExpandableLayout expandableHint;
 
     @Override
@@ -268,6 +270,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 viewFlipper.setDisplayedChild(FlipperChild.MAIN_CONTENT.ordinal());
             }
         });
+
+        /* BUTTON FAVOURITE */
+        shineButton = findViewById(R.id.shine_button);
+        shineButton.init(this);
+        shineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GameLogic gameLogic = GameLogic.getInstance();
+                if (shineButton.isChecked()) {
+                    UserData.getInstance().addToFavouriteQuestions(gameLogic.getCurrentQuestion().getId());
+                } else {
+                    UserData.getInstance().deleteFromFavouriteQuestions(gameLogic.getCurrentQuestion().getId());
+                }
+            }
+        });
+
     }
 
     @Override
@@ -618,6 +636,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         EditText etAnswer = findViewById(R.id.et_card_view_answer);
         etAnswer.getText().clear();
+
+        ShineButton shineButton = findViewById(R.id.shine_button);
+        boolean checked = UserData.getInstance().isFavouriteQuestion(question.getId());
+        shineButton.setChecked(checked, false);
 
         Button btnGiveUp = findViewById(R.id.btn_give_up);
         if (attemptsRequired == 0) {

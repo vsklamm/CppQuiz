@@ -15,6 +15,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class UserData implements Serializable {
 
     private static final String USER_QUIZ_DATA = "USER_QUIZ_DATA";
+    private static final String FAVOURITE_QUESTIONS = "FAVOURITE_QUESTIONS";
     private static final String CORRECTLY_ANSWERED = "CORRECTLY_ANSWERED", ATTEMPTS = "ATTEMPTS";
     private static volatile UserData sSoleInstance;
 
@@ -24,13 +25,14 @@ public class UserData implements Serializable {
 
     private LinkedHashSet<Integer> correctlyAnswered;
     private HashMap<Integer, Integer> attempts;
+    private LinkedHashSet<Integer> favouriteQuestions;
 
     private UserData() {
         if (sSoleInstance != null) {
             throw new RuntimeException("Use getInstance() method to get the single instance of this class.");
         }
         userQuizData = App.getInstance().getSharedPreferences(USER_QUIZ_DATA, MODE_PRIVATE);
-
+        favouriteQuestions = SharedPreferencesHelper.getFromJson(userQuizData, FAVOURITE_QUESTIONS);
         correctlyAnswered = SharedPreferencesHelper.getFromJson(userQuizData, CORRECTLY_ANSWERED);
         attempts = SharedPreferencesHelper.getSparseInt(userQuizData, ATTEMPTS);
     }
@@ -53,6 +55,10 @@ public class UserData implements Serializable {
 
     public boolean isCorrectlyAnswered(final int questionId) {
         return correctlyAnswered.contains(questionId);
+    }
+
+    public boolean isFavouriteQuestion(final int questionId) {
+        return favouriteQuestions.contains(questionId);
     }
 
     public LinkedHashSet<Integer> getCorrectlyAnsweredQuestions() {
@@ -81,6 +87,14 @@ public class UserData implements Serializable {
         GameLogic.getInstance().randomQuestion();
     }
 
+    public void addToFavouriteQuestions(final int questionId) {
+        favouriteQuestions.add(questionId);
+    }
+
+    public void deleteFromFavouriteQuestions(final int questionId) {
+        favouriteQuestions.remove(questionId);
+    }
+
     public int attemptsGivenFor(final int questionId) {
         if (attempts.get(questionId) == null)
             attempts.put(questionId, 0);
@@ -89,6 +103,7 @@ public class UserData implements Serializable {
 
     public void saveUserData() {
         SharedPreferencesHelper.saveCollection(userQuizData, ATTEMPTS, attempts);
+        SharedPreferencesHelper.saveCollection(userQuizData, FAVOURITE_QUESTIONS, favouriteQuestions);
         SharedPreferencesHelper.saveCollection(userQuizData, CORRECTLY_ANSWERED, correctlyAnswered);
     }
 

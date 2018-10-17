@@ -2,6 +2,7 @@
 
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="4dp"
@@ -48,13 +49,20 @@
                 android:textColor="@color/default_text_color"
                 android:textSize="16sp" />
 
-            <ImageView
-                android:id="@+id/iv_linear_favor"
+
+            <com.sackcentury.shinebuttonlib.ShineButton
+                android:id="@+id/shine_button"
                 android:layout_width="30dp"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_gravity="center"
-                android:visibility="invisible"
-                app:srcCompat="@android:drawable/btn_star_big_off" />
+                android:src="@android:color/darker_gray"
+                app:allow_random_color="false"
+                app:big_shine_color="#C0C0C0"
+                app:btn_color="@android:color/darker_gray"
+                app:btn_fill_color="#FFD700"
+                app:enable_flashing="false"
+                app:siShape="@raw/star"
+                app:small_shine_color="#00bfff" />
 
         </LinearLayout>
 
