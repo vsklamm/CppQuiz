@@ -11,15 +11,15 @@ public interface QuizModeContract extends BaseModeContract {
 
     interface View extends BaseView<Presenter> {
 
-        void onGameStateChanged(final int questionId, final int correct, final int all); // diff
+        void onQuizStateChanged(final int passedQuestions, final int totalQuestions, final float points);
 
-        void onQuestionLoaded(@NonNull final Question question, int attemptsRequired); // diff or with extra method (progress)
+        void onQuestionLoaded(@NonNull final Question question);
 
-        void onHintReceived(@NonNull final String hint); // diff or with extra method (score)
+        void onQuizHintReceived(@NonNull final String hint);
 
-        void onCorrectAnswered(@NonNull final Question question, final int attemptsRequired); // diff or with extra method (progress)
+        void onQuizCorrectAnswered(@NonNull final Question question);
 
-        void onIncorrectAnswered(final int attemptsRequired); // diff or with extra method (progress)
+        void onQuizIncorrectAnswered();
 
         void onFinishQuiz();
 
