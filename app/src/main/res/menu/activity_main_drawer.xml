@@ -6,9 +6,9 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/favourites"
+            android:checkable="false"
             android:icon="@drawable/ic_star_black_24dp"
-            android:title="@string/favourites"
-            />
+            android:title="@string/favourites" />
         <item
             android:id="@+id/res_progress"
             android:checkable="false"

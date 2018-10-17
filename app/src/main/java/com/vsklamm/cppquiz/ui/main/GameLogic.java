@@ -120,11 +120,13 @@ public class GameLogic implements Serializable { // TODO: rename methods
         boolean correct = currentQuestion.compareWithAnswer(UserData.getInstance().givenAnswer);
         if (correct) {
             UserData.getInstance().registerCorrectAnswer(currentId);
-            UserData.getInstance().saveUserData();
+            UserData.getInstance().saveAttempts();
+            UserData.getInstance().saveCorrectlyAnswered();
             updateGameState();
             listener.get().onCorrectAnswered(currentQuestion, max(3 - UserData.getInstance().attemptsGivenFor(currentId), 0));
         } else {
-            UserData.getInstance().saveUserData();
+            UserData.getInstance().saveAttempts();
+            UserData.getInstance().saveCorrectlyAnswered();
             listener.get().onIncorrectAnswered(max(3 - UserData.getInstance().attemptsGivenFor(currentId), 0));
         }
     }

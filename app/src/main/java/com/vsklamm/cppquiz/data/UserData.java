@@ -81,18 +81,21 @@ public class UserData implements Serializable {
     }
 
     public void clearCorrectAnswers() {
-        correctlyAnswered.clear();
         attempts.clear();
-        saveUserData();
+        correctlyAnswered.clear();
+        saveAttempts();
+        saveCorrectlyAnswered();
         GameLogic.getInstance().randomQuestion();
     }
 
     public void addToFavouriteQuestions(final int questionId) {
         favouriteQuestions.add(questionId);
+        saveFavouriteQuestions();
     }
 
     public void deleteFromFavouriteQuestions(final int questionId) {
         favouriteQuestions.remove(questionId);
+        saveFavouriteQuestions();
     }
 
     public int attemptsGivenFor(final int questionId) {
@@ -101,9 +104,15 @@ public class UserData implements Serializable {
         return attempts.get(questionId);
     }
 
-    public void saveUserData() {
+    public void saveAttempts() {
         SharedPreferencesHelper.saveCollection(userQuizData, ATTEMPTS, attempts);
+    }
+
+    public void saveFavouriteQuestions() {
         SharedPreferencesHelper.saveCollection(userQuizData, FAVOURITE_QUESTIONS, favouriteQuestions);
+    }
+
+    public void saveCorrectlyAnswered() {
         SharedPreferencesHelper.saveCollection(userQuizData, CORRECTLY_ANSWERED, correctlyAnswered);
     }
 
