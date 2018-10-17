@@ -93,21 +93,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String REQUEST_TYPE = "REQUEST_TYPE", IS_GIVE_UP = "IS_GIVE_UP", QUESTION = "QUESTION";
     public static final int EXPLANATION_ACTIVITY = 0;
     private static final String HAS_VISITED = "HAS_VISITED";
-    public TextView progressTextViewLoading;
+
     private SharedPreferences appPreferences;
+
     private ConfirmHintDialog confirmHintDialog;
     private GoToDialog goToDialog;
     private ConfirmResetDialog resetDialog;
     private ThemeChangerDialog themeChangerDialog;
-    private HighlightJsView codeView;
+
     private ViewFlipper viewFlipper;
     private Toolbar toolbar;
-    private ShineButton shineButton;
+
+    private HighlightJsView codeView;
     private ExpandableLayout expandableHint;
+    public TextView progressTextViewLoading;
+    private ShineButton shineButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // presenter = new MainPresenter();
+        // presenter.subscribe(this);
         setContentView(R.layout.activity_main);
 
         toolbar = findViewById(R.id.toolbar); // TODO: disable OverflowMenu on non-MainContent views

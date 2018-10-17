@@ -21,4 +21,9 @@ public class MainPresenter implements QuizModeContract.Presenter, TrainingModeCo
     public void unsubscribe() {
 
     }
+
+    @Override
+    public void randomQuestion() {
+
+    }
 }

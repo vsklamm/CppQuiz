@@ -7,9 +7,9 @@ import com.vsklamm.cppquiz.ui.BaseModeContract;
 import com.vsklamm.cppquiz.ui.BasePresenter;
 import com.vsklamm.cppquiz.ui.BaseView;
 
-public interface TrainingModeContract extends BaseModeContract {
+public interface TrainingModeContract {
 
-    interface View extends BaseView<Presenter> {
+    interface View extends BaseModeContract.View {
 
         void onTrainingStateChanged(final int questionId, final int correct, final int all);
 
@@ -29,7 +29,7 @@ public interface TrainingModeContract extends BaseModeContract {
 
     }
 
-    interface Presenter extends BasePresenter {
+    interface Presenter extends BaseModeContract.Presenter {
 
     }
 
