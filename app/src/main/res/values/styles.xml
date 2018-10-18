@@ -27,4 +27,15 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
+    <style name="DarkTheme" parent="AppTheme.NoActionBar" >
+        <item name="colorPrimaryDark">@color/colorDarkPrimaryDark</item>
+        <item name="colorPrimary">@color/colorDarkPrimary</item>
+        <item name="android:colorBackground">@color/colorDarkBackground</item>
+        <item name="android:colorForeground">@color/foregroundMaterialLight</item>
+        <item name="colorAccent">@color/colorDarkAccent</item>
+        <item name="android:textColorPrimary">@color/colorDarkTextPrimary</item>
+
+        <item name="cardViewStyle">@style/CardView.Dark</item>
+    </style>
+
 </resources>
