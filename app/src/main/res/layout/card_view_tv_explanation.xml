@@ -17,9 +17,9 @@
 
         <TextView
             android:id="@+id/tv_explanation"
+            style="@style/AppTheme"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#B2DFDB"
             android:fadingEdge="vertical"
             android:focusable="true"
             android:minHeight="100dp"

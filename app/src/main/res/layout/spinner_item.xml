@@ -6,8 +6,9 @@
     android:layout_height="wrap_content"
     android:ellipsize="none"
     android:minHeight="55dp"
-    android:padding="8dp"
+    android:paddingStart="12dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
     android:singleLine="false"
     android:textAlignment="gravity"
-    android:textColor="@color/default_text_color"
     android:textSize="17sp" />

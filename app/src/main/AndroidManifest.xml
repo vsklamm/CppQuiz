@@ -44,7 +44,8 @@
             android:name=".ui.explanation.ExplanationActivity"
             android:label="Answer and Explanation"
             android:parentActivityName=".ui.main.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/DarkTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.vsklamm.cppquiz.ui.main.MainActivity" />
@@ -53,7 +54,8 @@
             android:name=".ui.about.AboutActivity"
             android:label="@string/about"
             android:parentActivityName=".ui.main.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/DarkTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.vsklamm.cppquiz.ui.main.MainActivity" />

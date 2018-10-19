@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
@@ -9,16 +10,6 @@
             android:checkable="false"
             android:icon="@drawable/ic_star_black_24dp"
             android:title="@string/favourites" />
-        <item
-            android:id="@+id/res_progress"
-            android:checkable="false"
-            android:icon="@drawable/ic_delete_black_24dp"
-            android:title="@string/reset_progress" />
-        <item
-            android:id="@+id/update_base"
-            android:checkable="false"
-            android:icon="@drawable/ic_update_black_24dp"
-            android:title="@string/update_base" />
         <item
             android:id="@+id/go_to"
             android:checkable="false"
@@ -36,6 +27,23 @@
             android:icon="@drawable/ic_trending_flat_black_24dp"
             android:title="@string/training_mode"
             android:visible="false" />
+        <item
+            android:id="@+id/dark_side"
+            android:checkable="false"
+            android:icon="@drawable/ic_darth_vader"
+            android:title="@string/dark_side"
+            app:actionLayout="@layout/switch_item"
+            app:showAsAction="always" />
+        <item
+            android:id="@+id/update_base"
+            android:checkable="false"
+            android:icon="@drawable/ic_update_black_24dp"
+            android:title="@string/update_base" />
+        <item
+            android:id="@+id/res_progress"
+            android:checkable="false"
+            android:icon="@drawable/ic_delete_black_24dp"
+            android:title="@string/reset_progress" />
     </group>
 
     <item

@@ -51,6 +51,7 @@
 
             <EditText
                 android:id="@+id/et_card_view_answer"
+                style="@style/AppTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -95,30 +96,27 @@
 
             <Button
                 android:id="@+id/btn_random"
+                style="@style/AppTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="@color/btn_answer_default"
-                android:text="@string/another_question"
-                android:textColor="@android:color/white" />
+                android:text="@string/another_question" />
 
             <Button
                 android:id="@+id/btn_give_up"
+                style="@style/AppTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="@color/btn_answer_default"
-                android:text="@string/give_up_default"
-                android:textColor="@android:color/white" />
+                android:text="@string/give_up_default" />
 
             <Button
                 android:id="@+id/btn_hint"
+                style="@style/AppTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="@color/btn_answer_default"
-                android:text="@string/hint"
-                android:textColor="@android:color/white" />
+                android:text="@string/hint" />
         </LinearLayout>
 
         <include

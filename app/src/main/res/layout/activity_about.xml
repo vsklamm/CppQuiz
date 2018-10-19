@@ -32,6 +32,7 @@
 
         <TextView
             android:id="@+id/tv_about"
+            style="@style/AppTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -41,7 +42,6 @@
             android:paddingEnd="8dp"
             android:text="@string/about_text"
             android:textAlignment="center"
-            android:textColor="@android:color/black"
             android:textSize="18sp" />
 
 

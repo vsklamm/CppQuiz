@@ -7,10 +7,9 @@
     <!-- dark theme -->
     <color name="colorDarkPrimary">#212121</color>
     <color name="colorDarkPrimaryDark">#000000</color>
-    <color name="colorDarkAccent">#40C4FF</color>
+    <color name="colorDarkAccent">#feb650</color>
     <color name="colorDarkBackground">#303030</color>
     <color name="colorDarkTextPrimary">#ddffffff</color>
-    <color name="foregroundMaterialLight">#ffffff</color>
 
     <color name="default_text_color">#757575</color>
     <color name="edit_text_hint_color">#737373</color>

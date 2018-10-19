@@ -51,10 +51,11 @@
 
     // NAVIGATION VIEW
     <string name="favourites">Favourites</string>
-    <string name="reset_progress">Reset progress</string>
-    <string name="update_base">Update questions</string>
     <string name="go_to">Go to question</string>
+    <string name="update_base">Update questions</string>
+    <string name="reset_progress">Reset progress</string>
 
+    <string name="dark_side">Dark side</string>
     <string name="start_a_new_quiz">"Start a new quiz"</string>
     <string name="training_mode">Training mode</string>
     <string name="about">About</string>
