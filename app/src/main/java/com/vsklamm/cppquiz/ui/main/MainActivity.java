@@ -25,10 +25,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -56,6 +58,7 @@ import com.vsklamm.cppquiz.ui.dialogs.ConfirmResetDialog;
 import com.vsklamm.cppquiz.ui.dialogs.GoToDialog;
 import com.vsklamm.cppquiz.ui.dialogs.ThemeChangerDialog;
 import com.vsklamm.cppquiz.ui.explanation.ExplanationActivity;
+import com.vsklamm.cppquiz.utils.ActivityUtils;
 import com.vsklamm.cppquiz.utils.DeepLinksUtils;
 import com.vsklamm.cppquiz.utils.FlipperChild;
 import com.vsklamm.cppquiz.utils.RequestType;
@@ -86,13 +89,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // QuizModeContract.View,
         // TrainingModeContract.View,
         GameLogic.GameLogicCallbacks,
-        View.OnClickListener {
+        View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     public static final String APP_PREFERENCES = "APP_PREFERENCES", APP_PREF_ZOOM = "APP_PREF_ZOOM",
             APP_PREF_LINE_NUMBERS = "APP_PREF_LINE_NUMBERS", THEME = "THEME";
     public static final String REQUEST_TYPE = "REQUEST_TYPE", IS_GIVE_UP = "IS_GIVE_UP", QUESTION = "QUESTION";
     public static final int EXPLANATION_ACTIVITY = 0;
-    private static final String HAS_VISITED = "HAS_VISITED";
+    private static final String HAS_VISITED = "HAS_VISITED", APP_THEME_IS_LIGHT = "APP_THEME_IS_LIGHT";
 
     private SharedPreferences appPreferences;
 
@@ -111,6 +114,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        appPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
+        ActivityUtils.setUpTheme(this, appPreferences);
         super.onCreate(savedInstanceState);
         // presenter = new MainPresenter();
         // presenter.subscribe(this);
@@ -121,8 +126,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         viewFlipper = findViewById(R.id.view_flipper_main);
         progressTextViewLoading = findViewById(R.id.tv_progress);
-
-        appPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
 
         boolean hasVisited = appPreferences.getBoolean(HAS_VISITED, false);
         if (!hasVisited) {
@@ -194,8 +197,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        final MenuItem item = navigationView.getMenu().findItem(R.id.dark_side);
+        final Switch mySwitch = item.getActionView().findViewById(R.id.switch_app_theme);
+        mySwitch.setOnCheckedChangeListener(this);
 
         /* BUTTON RANDOM */
         Button btnRandom = findViewById(R.id.btn_random);
@@ -372,26 +379,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
                 toast.show();
                 break;
-            case R.id.res_progress:
-                openResetDialog();
+            case R.id.go_to:
+                openGoToDialog();
+                break;
+            case R.id.dark_side:
+                Switch switchOffline = findViewById(R.id.switch_app_theme);
+                switchOffline.toggle();
                 break;
             case R.id.update_base:
                 Bundle args = new Bundle();
                 args.putInt(REQUEST_TYPE, RequestType.UPDATE.ordinal());
                 getSupportLoaderManager().initLoader(0, args, MainActivity.this);
                 break;
-            case R.id.nav_about:
-                Intent intent = new Intent(MainActivity.this, AboutActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.go_to:
-                openGoToDialog();
+            case R.id.res_progress:
+                openResetDialog();
                 break;
             case R.id.start_new_quiz:
 
                 break;
             case R.id.training_mode:
 
+                break;
+            case R.id.nav_about:
+                Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+                startActivity(intent);
                 break;
             case R.id.share_question: {
                 shareQuestion();
@@ -430,6 +441,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        SharedPreferencesHelper.save(appPreferences, APP_THEME_IS_LIGHT, !isChecked);
     }
 
     private void onShowLineNumbersToggled(final boolean enableLineNumbers) {

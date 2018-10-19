@@ -17,6 +17,7 @@ import com.pddstudio.highlightjs.models.Language;
 import com.pddstudio.highlightjs.models.Theme;
 import com.vsklamm.cppquiz.R;
 import com.vsklamm.cppquiz.data.Question;
+import com.vsklamm.cppquiz.utils.ActivityUtils;
 import com.vsklamm.cppquiz.utils.ResultBehaviourType;
 
 import ru.noties.markwon.Markwon;
@@ -30,10 +31,14 @@ import static com.vsklamm.cppquiz.ui.main.MainActivity.THEME;
 
 public class ExplanationActivity extends AppCompatActivity {
 
+    private static final String APP_THEME = "APP_THEME";
+
     HighlightJsView codeView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        SharedPreferences appPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
+        ActivityUtils.setUpTheme(this, appPreferences);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explanation);
 
@@ -53,8 +58,6 @@ public class ExplanationActivity extends AppCompatActivity {
             }
             ab.setTitle(title);
         }
-
-        SharedPreferences appPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
 
         final String theme = appPreferences.getString(THEME, "GITHUB");
         codeView = findViewById(R.id.highlight_view_card_view_2);

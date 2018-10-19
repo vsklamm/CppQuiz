@@ -16,8 +16,7 @@
         <activity
             android:name=".ui.main.MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/DarkTheme">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,8 +43,7 @@
             android:name=".ui.explanation.ExplanationActivity"
             android:label="Answer and Explanation"
             android:parentActivityName=".ui.main.MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/DarkTheme">
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.vsklamm.cppquiz.ui.main.MainActivity" />
@@ -54,8 +52,7 @@
             android:name=".ui.about.AboutActivity"
             android:label="@string/about"
             android:parentActivityName=".ui.main.MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/DarkTheme">
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.vsklamm.cppquiz.ui.main.MainActivity" />
