@@ -18,7 +18,7 @@
         <item name="cardViewStyle">@style/CardView</item>
 
         <item name="android:buttonStyle">@style/LightThemeButton</item>
-        <item name="android:popupTheme">@style/ThemeOverlay.AppCompat</item>
+        <!--<item name="android:popupTheme">@style/ThemeOverlay.AppCompat.Light</item>-->
     </style>
 
     <style name="DarkTheme" parent="Theme.AppCompat.NoActionBar">
@@ -26,7 +26,7 @@
         <item name="colorPrimary">@color/colorDarkPrimary</item>
         <item name="colorAccent">@color/colorDarkAccent</item>
 
-        <item name="android:popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <!--<item name="android:popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>-->
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

@@ -91,11 +91,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         GameLogic.GameLogicCallbacks,
         View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
-    public static final String APP_PREFERENCES = "APP_PREFERENCES", APP_PREF_ZOOM = "APP_PREF_ZOOM",
-            APP_PREF_LINE_NUMBERS = "APP_PREF_LINE_NUMBERS", THEME = "THEME";
+    public static final String APP_PREFERENCES = "APP_PREFERENCES", APP_PREF_ZOOM = "APP_PREF_ZOOM";
+    public static final String APP_PREF_LINE_NUMBERS = "APP_PREF_LINE_NUMBERS", THEME = "THEME";
     public static final String REQUEST_TYPE = "REQUEST_TYPE", IS_GIVE_UP = "IS_GIVE_UP", QUESTION = "QUESTION";
+    private static final String HAS_VISITED = "HAS_VISITED", APP_THEME_IS_DARK = "APP_THEME_IS_DARK";
+    private static final String USER_ANSWER = "USER_ANSWER";
     public static final int EXPLANATION_ACTIVITY = 0;
-    private static final String HAS_VISITED = "HAS_VISITED", APP_THEME_IS_LIGHT = "APP_THEME_IS_LIGHT";
 
     private SharedPreferences appPreferences;
 
@@ -202,6 +203,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         final MenuItem item = navigationView.getMenu().findItem(R.id.dark_side);
         final Switch mySwitch = item.getActionView().findViewById(R.id.switch_app_theme);
+        mySwitch.setChecked(appPreferences.getBoolean(APP_THEME_IS_DARK, false));
         mySwitch.setOnCheckedChangeListener(this);
 
         /* BUTTON RANDOM */
@@ -385,7 +387,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.dark_side:
                 Switch switchOffline = findViewById(R.id.switch_app_theme);
                 switchOffline.toggle();
-                break;
+                return true;
             case R.id.update_base:
                 Bundle args = new Bundle();
                 args.putInt(REQUEST_TYPE, RequestType.UPDATE.ordinal());
@@ -445,7 +447,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        SharedPreferencesHelper.save(appPreferences, APP_THEME_IS_LIGHT, !isChecked);
+        final EditText etAnswer = findViewById(R.id.et_card_view_answer);
+        final Spinner spResult = findViewById(R.id.sp_main_result);
+        SharedPreferences.Editor editor = appPreferences.edit();
+
+        editor.putBoolean(APP_THEME_IS_DARK, isChecked);
+        editor.commit(); // TODO: commit or apply
+        Intent intent = getIntent();
+        intent.putExtra(USER_ANSWER, new UsersAnswer(
+                GameLogic.getInstance().getCurrentQuestion().getId(),
+                ResultBehaviourType.getType(spResult.getSelectedItemPosition()),
+                etAnswer.getText().toString()
+        ));
+        finish();
+        startActivity(intent);
     }
 
     private void onShowLineNumbersToggled(final boolean enableLineNumbers) {
@@ -594,7 +609,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 GameLogic.getInstance().randomQuestion();
             }
         } else {
-            GameLogic.getInstance().randomQuestion();
+            UsersAnswer usersAnswer = (UsersAnswer) intent.getSerializableExtra(USER_ANSWER);
+            if (usersAnswer != null) {
+                GameLogic.getInstance().questionById(usersAnswer.questionId);
+            } else {
+                GameLogic.getInstance().randomQuestion();
+            }
         }
     }
 

@@ -7,11 +7,11 @@ import com.vsklamm.cppquiz.R;
 
 public class ActivityUtils {
 
-    private static final String APP_THEME_IS_LIGHT = "APP_THEME_IS_LIGHT";
+    private static final String APP_THEME_IS_DARK = "APP_THEME_IS_DARK";
 
     public static void setUpTheme(Context context, SharedPreferences preferences) {
-        boolean isLight = preferences.getBoolean(APP_THEME_IS_LIGHT, true);
-        context.setTheme(isLight ? R.style.AppTheme_NoActionBar : R.style.DarkTheme);
+        boolean isDark = preferences.getBoolean(APP_THEME_IS_DARK, false);
+        context.setTheme(isDark ? R.style.DarkTheme : R.style.AppTheme_NoActionBar);
     }
 
 }

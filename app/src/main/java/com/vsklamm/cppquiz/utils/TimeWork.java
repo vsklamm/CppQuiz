@@ -11,7 +11,7 @@ public class TimeWork {
 
     public static final String LAST_UPDATE = "LAST_UPDATE";
 
-    public static final long LOADING_VIEW_DELAY = 800;
+    public static final long LOADING_VIEW_DELAY = 500;
 
     public static boolean isNextDay(SharedPreferences appPreferences) { // TODO: is it legal
         DateTime lastUpdate = new DateTime(appPreferences.getLong(LAST_UPDATE, 0));
