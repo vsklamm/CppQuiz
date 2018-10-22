@@ -34,7 +34,7 @@ public class CppQuizLiteApi {
         HttpUrl url = new HttpUrl.Builder()
                 .scheme(URL.scheme())
                 .host(URL.host())
-                .addPathSegment("api\\v1\\quiz\\quiz")
+                .addPathSegments("api\\v1\\quiz\\quiz")
                 .addQueryParameter("key", quizKey)
                 .build();
 
@@ -48,7 +48,7 @@ public class CppQuizLiteApi {
         return new HttpUrl.Builder()
                 .scheme(URL.scheme())
                 .host(URL.host())
-                .addPathSegment("quiz\\question")
+                .addPathSegments("quiz\\question")
                 .addPathSegment(Integer.toString(questionId))
                 .build()
                 .toString();

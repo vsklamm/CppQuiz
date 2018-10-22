@@ -58,6 +58,7 @@ import com.vsklamm.cppquiz.ui.dialogs.ConfirmResetDialog;
 import com.vsklamm.cppquiz.ui.dialogs.GoToDialog;
 import com.vsklamm.cppquiz.ui.dialogs.ThemeChangerDialog;
 import com.vsklamm.cppquiz.ui.explanation.ExplanationActivity;
+import com.vsklamm.cppquiz.ui.favourites.FavouritesActivity;
 import com.vsklamm.cppquiz.utils.ActivityUtils;
 import com.vsklamm.cppquiz.utils.DeepLinksUtils;
 import com.vsklamm.cppquiz.utils.FlipperChild;
@@ -377,10 +378,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         String message = "See me later";
         switch (id) {
-            case R.id.favourites:
-                Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
-                toast.show();
+            case R.id.favourites: {
+                Intent intent = new Intent(MainActivity.this, FavouritesActivity.class);
+                startActivity(intent);
+                //Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
+                //toast.show();
                 break;
+            }
             case R.id.go_to:
                 openGoToDialog();
                 break;
