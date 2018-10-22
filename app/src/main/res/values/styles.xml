@@ -3,12 +3,23 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
+
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="cardViewStyle">@style/CardView</item>
 
+        <item name="cardViewStyle">@style/CardView</item>
         <item name="android:buttonStyle">@style/LightThemeButton</item>
+    </style>
+
+    <style name="AppTheme.Dark" parent="AppTheme">
+        <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
+
+        <item name="colorPrimaryDark">@color/colorDarkPrimaryDark</item>
+        <item name="colorPrimary">@color/colorDarkPrimary</item>
+        <item name="colorAccent">@color/colorDarkAccent</item>
+
+        <item name="cardViewStyle">@style/CardView</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -21,7 +32,7 @@
         <!--<item name="android:popupTheme">@style/ThemeOverlay.AppCompat.Light</item>-->
     </style>
 
-    <style name="DarkTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme.Dark.NoActionBar" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimaryDark">@color/colorDarkPrimaryDark</item>
         <item name="colorPrimary">@color/colorDarkPrimary</item>
         <item name="colorAccent">@color/colorDarkAccent</item>

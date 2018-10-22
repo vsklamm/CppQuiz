@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         appPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
-        ActivityUtils.setUpTheme(this, appPreferences);
+        ActivityUtils.setUpThemeNoActionBar(this, appPreferences);
         super.onCreate(savedInstanceState);
         // presenter = new MainPresenter();
         // presenter.subscribe(this);
