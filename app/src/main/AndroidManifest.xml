@@ -22,7 +22,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -33,10 +32,12 @@
                     android:host="cppquiz.org"
                     android:pathPrefix="/quiz/question"
                     android:scheme="http" />
-                <!--<data
+                <!--
+                    <data
                     android:host="cppquiz.org"
                     android:pathPrefix="/q"
-                    android:scheme="http" />-->
+                    android:scheme="http" />
+                -->
             </intent-filter>
         </activity>
         <activity
@@ -51,6 +52,15 @@
         <activity
             android:name=".ui.about.AboutActivity"
             android:label="@string/about"
+            android:parentActivityName=".ui.main.MainActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.vsklamm.cppquiz.ui.main.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ui.favourites.FavouritesActivity"
+            android:label="@string/favourite_questions"
             android:parentActivityName=".ui.main.MainActivity"
             android:screenOrientation="portrait">
             <meta-data
