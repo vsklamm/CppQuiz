@@ -31,8 +31,6 @@ import static com.vsklamm.cppquiz.ui.main.MainActivity.THEME;
 
 public class ExplanationActivity extends AppCompatActivity {
 
-    private static final String APP_THEME = "APP_THEME";
-
     HighlightJsView codeView;
 
     @Override
@@ -43,7 +41,6 @@ public class ExplanationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_explanation);
 
         Intent intent = getIntent();
-
         final boolean isGiveUp = intent.getBooleanExtra(IS_GIVE_UP, false);
         final Question question = (Question) intent.getSerializableExtra(QUESTION);
 

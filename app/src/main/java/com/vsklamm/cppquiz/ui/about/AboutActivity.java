@@ -12,8 +12,6 @@ import static com.vsklamm.cppquiz.ui.main.MainActivity.APP_PREFERENCES;
 
 public class AboutActivity extends AppCompatActivity {
 
-    private static final String APP_THEME = "APP_THEME";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences appPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);

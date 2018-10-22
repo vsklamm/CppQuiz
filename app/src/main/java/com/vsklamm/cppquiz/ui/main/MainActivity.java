@@ -376,13 +376,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        String message = "See me later";
         switch (id) {
             case R.id.favourites: {
                 Intent intent = new Intent(MainActivity.this, FavouritesActivity.class);
                 startActivity(intent);
-                //Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
-                //toast.show();
                 break;
             }
             case R.id.go_to:
