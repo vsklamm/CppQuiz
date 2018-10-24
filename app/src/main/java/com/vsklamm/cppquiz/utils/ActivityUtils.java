@@ -7,7 +7,7 @@ import com.vsklamm.cppquiz.R;
 
 public class ActivityUtils {
 
-    private static final String APP_THEME_IS_DARK = "APP_THEME_IS_DARK";
+    public static final String APP_THEME_IS_DARK = "APP_THEME_IS_DARK";
 
     public static void setUpThemeNoActionBar(Context context, SharedPreferences preferences) {
         boolean isDark = preferences.getBoolean(APP_THEME_IS_DARK, false);

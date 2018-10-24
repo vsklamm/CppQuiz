@@ -3,23 +3,36 @@ package com.vsklamm.cppquiz.ui.dialogs;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.support.v7.view.ContextThemeWrapper;
 
 import com.vsklamm.cppquiz.R;
 
+import static android.content.Context.MODE_PRIVATE;
+import static com.vsklamm.cppquiz.ui.main.MainActivity.APP_PREFERENCES;
+
 public class ConfirmHintDialog extends AppCompatDialogFragment {
+
+    private static final String APP_THEME_IS_DARK = "APP_THEME_IS_DARK";
 
     private DialogListener listener;
 
     @Override
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        /* WELCOME THIS IS KLUDGE */
+        SharedPreferences appPreferences = getActivity().getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
+        boolean isDark = appPreferences.getBoolean(APP_THEME_IS_DARK, false);
+        int theme = isDark ? R.style.DarkAlertDialog : R.style.AlertDialog;
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
+                new ContextThemeWrapper(getActivity(), theme)
+        );
 
-        alertDialogBuilder
+        dialogBuilder
                 .setTitle(R.string.dialog_hint_title)
                 .setMessage(R.string.dialog_hint_text)
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -34,7 +47,7 @@ public class ConfirmHintDialog extends AppCompatDialogFragment {
                         listener.onConfirmedHintLoad();
                     }
                 });
-        return alertDialogBuilder.create();
+        return dialogBuilder.create();
     }
 
     @Override

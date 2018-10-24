@@ -37,7 +37,6 @@
 
             <TextView
                 android:id="@+id/tv_task"
-                style="@style/AppTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -111,9 +110,7 @@
             android:id="@+id/highlight_view_card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:overScrollMode="ifContentScrolls"
-            android:scrollbarStyle="insideOverlay"
-            android:verticalScrollbarPosition="right">
+            android:scrollbarStyle="insideOverlay">
 
         </com.pddstudio.highlightjs.HighlightJsView>
 

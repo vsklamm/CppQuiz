@@ -19,7 +19,6 @@
             android:id="@+id/tv_answer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFF9C4"
             android:gravity="center"
             android:minHeight="70dp"
             android:padding="24dp"

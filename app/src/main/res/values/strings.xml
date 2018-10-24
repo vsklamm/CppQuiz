@@ -13,6 +13,7 @@
     <string name="toolbar_title_quiz">Question #%d</string>
     <string name="toolbar_give_up">You gave up! #%d</string>
     <string name="toolbar_correct">Correct! #%d</string>
+    <string name="toolbar_no_questions">The end</string>
 
     // TASK
     <string name="default_task">According to the C++XX standard, what is the output of this program?</string>

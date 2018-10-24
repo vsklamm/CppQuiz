@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.pddstudio.highlightjs.HighlightJsView;
@@ -28,6 +29,7 @@ import static com.vsklamm.cppquiz.ui.main.MainActivity.APP_PREF_ZOOM;
 import static com.vsklamm.cppquiz.ui.main.MainActivity.IS_GIVE_UP;
 import static com.vsklamm.cppquiz.ui.main.MainActivity.QUESTION;
 import static com.vsklamm.cppquiz.ui.main.MainActivity.THEME;
+import static com.vsklamm.cppquiz.utils.ActivityUtils.APP_THEME_IS_DARK;
 
 public class ExplanationActivity extends AppCompatActivity {
 
@@ -39,6 +41,11 @@ public class ExplanationActivity extends AppCompatActivity {
         ActivityUtils.setUpTheme(this, appPreferences);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explanation);
+
+        ScrollView scrollView = findViewById(R.id.scroll_explanation);
+        boolean isDark = appPreferences.getBoolean(APP_THEME_IS_DARK, false);
+        int background = isDark ? R.drawable.style_dark_triangular_halves : R.drawable.style_triangular_halves;
+        scrollView.setBackground(getDrawable(background));
 
         Intent intent = getIntent();
         final boolean isGiveUp = intent.getBooleanExtra(IS_GIVE_UP, false);
@@ -72,14 +79,14 @@ public class ExplanationActivity extends AppCompatActivity {
         String resultText = results[question.getResult().ordinal()];
         String answerText = (question.getResult() == ResultBehaviourType.OK) ? (" `" + question.getAnswer() + "`") : "";
 
-        int color;
+        /*int color;
         if (isGiveUp) {
             color = ContextCompat.getColor(this, R.color.git_background);
         } else {
             color = ContextCompat.getColor(this, R.color.explanation_correct);
         }
         tvAnswer.setBackgroundColor(color);
-        tvExplanation.setBackgroundColor(color);
+        tvExplanation.setBackgroundColor(color);*/
 
         Markwon.setMarkdown(tvAnswer, resultText + answerText);
         Markwon.setMarkdown(tvExplanation, question.getExplanation());

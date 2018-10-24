@@ -4,10 +4,12 @@
     <color name="colorPrimary">#3f51b5</color>
     <color name="colorPrimaryDark">#2c387e</color>
     <color name="colorAccent">#37474f</color>
+    <color name="navigationBarColor">#ebebeb</color>
     <!-- dark theme -->
     <color name="colorDarkPrimary">#212121</color>
     <color name="colorDarkPrimaryDark">#000000</color>
-    <color name="colorDarkAccent">#feb650</color>
+    <color name="colorDarkAccent">#FFB74D</color>
+    <color name="navigationBarDarkColor">#000000</color>
     <color name="colorDarkBackground">#303030</color>
     <color name="colorDarkTextPrimary">#ddffffff</color>
 
@@ -24,5 +26,7 @@
     <color name="explanation_correct">#B2DFDB</color>
 
     <color name="shackbar_action_retry">#feb650</color>
+
+    <color name="default_text">#FFF9C4</color>
 
 </resources>

@@ -18,7 +18,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/no_questions_view_title"
-            android:textColor="@color/colorPrimaryDark"
             android:textSize="36sp"
             android:textStyle="bold" />
 
@@ -29,19 +28,17 @@
             android:singleLine="false"
             android:text="@string/no_questions_view_text"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp" />
 
         <Button
             android:id="@+id/btn_reset"
+            android:theme="@style/AppTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
             android:layout_marginStart="50dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="50dp"
-            android:background="@color/btn_answer_default"
             android:text="@string/reset_progress"
             android:textColor="@android:color/white" />
 

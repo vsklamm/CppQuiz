@@ -7,15 +7,15 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@color/navigationBarColor</item>
 
         <item name="cardViewStyle">@style/CardView</item>
         <item name="android:buttonStyle">@style/LightThemeButton</item>
     </style>
 
-    <style name="AppTheme.Dark" parent="AppTheme">
+    <style name="AppTheme.Dark" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
 
-        <item name="colorPrimaryDark">@color/colorDarkPrimaryDark</item>
         <item name="colorPrimary">@color/colorDarkPrimary</item>
         <item name="colorAccent">@color/colorDarkAccent</item>
 
@@ -24,20 +24,21 @@
 
     <style name="AppTheme.NoActionBar">
         <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
+        <item name="android:navigationBarColor">@color/navigationBarColor</item>
+
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="cardViewStyle">@style/CardView</item>
 
-        <item name="android:buttonStyle">@style/LightThemeButton</item>
-        <!--<item name="android:popupTheme">@style/ThemeOverlay.AppCompat.Light</item>-->
+        <item name="cardViewStyle">@style/CardView</item>
     </style>
 
     <style name="AppTheme.Dark.NoActionBar" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimaryDark">@color/colorDarkPrimaryDark</item>
         <item name="colorPrimary">@color/colorDarkPrimary</item>
         <item name="colorAccent">@color/colorDarkAccent</item>
+        <item name="android:navigationBarColor">@color/navigationBarDarkColor</item>
 
-        <!--<item name="android:popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>-->
+        <item name="cardViewStyle">@style/CardView</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -51,6 +52,14 @@
     <style name="LightThemeButton" parent="Widget.AppCompat.Button">
         <item name="android:backgroundTint">@color/btn_answer_default</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="colorAccent">@color/colorDarkAccent</item>
+    </style>
+
+    <style name="AlertDialog" parent="Theme.AppCompat.Light">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="DarkAlertDialog" parent="AppTheme.Dark.NoActionBar">
     </style>
 
 </resources>

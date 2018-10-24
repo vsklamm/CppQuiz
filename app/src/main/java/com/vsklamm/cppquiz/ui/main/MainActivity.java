@@ -78,6 +78,7 @@ import io.reactivex.schedulers.Schedulers;
 import ru.noties.markwon.Markwon;
 
 import static com.vsklamm.cppquiz.ui.main.GameLogic.CPP_STANDARD;
+import static com.vsklamm.cppquiz.utils.ActivityUtils.APP_THEME_IS_DARK;
 import static com.vsklamm.cppquiz.utils.TimeWork.LAST_UPDATE;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String APP_PREFERENCES = "APP_PREFERENCES", APP_PREF_ZOOM = "APP_PREF_ZOOM";
     public static final String APP_PREF_LINE_NUMBERS = "APP_PREF_LINE_NUMBERS", THEME = "THEME";
     public static final String REQUEST_TYPE = "REQUEST_TYPE", IS_GIVE_UP = "IS_GIVE_UP", QUESTION = "QUESTION";
-    private static final String HAS_VISITED = "HAS_VISITED", APP_THEME_IS_DARK = "APP_THEME_IS_DARK";
+    private static final String HAS_VISITED = "HAS_VISITED";
     private static final String USER_ANSWER = "USER_ANSWER";
     public static final int EXPLANATION_ACTIVITY = 0;
 
@@ -416,7 +417,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             }
             case R.id.debug_no_questions:
-                viewFlipper.setDisplayedChild(FlipperChild.NO_QUESTIONS_VIEW.ordinal());
+                noMoreQuestions();
+                // viewFlipper.setDisplayedChild(FlipperChild.NO_QUESTIONS_VIEW.ordinal());
                 break;
         }
 
@@ -788,6 +790,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void noMoreQuestions() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(getResources().getString(R.string.toolbar_no_questions));
         viewFlipper.setDisplayedChild(FlipperChild.NO_QUESTIONS_VIEW.ordinal());
     }
 
