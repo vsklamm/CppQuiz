@@ -44,13 +44,13 @@ public class GoToDialog extends AppCompatDialogFragment {
         dialogBuilder.setView(view)
                 .setTitle(R.string.goto_dialog_title)
                 .setMessage(R.string.goto_dialog_text)
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
                 })
-                .setPositiveButton("Go", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.go, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         try {

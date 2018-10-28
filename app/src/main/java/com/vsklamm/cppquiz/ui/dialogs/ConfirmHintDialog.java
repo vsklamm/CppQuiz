@@ -35,13 +35,13 @@ public class ConfirmHintDialog extends AppCompatDialogFragment {
         dialogBuilder
                 .setTitle(R.string.dialog_hint_title)
                 .setMessage(R.string.dialog_hint_text)
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
                 })
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         listener.onConfirmedHintLoad();

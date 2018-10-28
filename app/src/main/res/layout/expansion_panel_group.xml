@@ -9,6 +9,7 @@
 
     <TextView
         android:id="@+id/expand_header_hint"
+        android:theme="@style/AppTheme"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@drawable/style_round_expanded"
@@ -18,7 +19,6 @@
         android:paddingEnd="24dp"
         android:text="@string/show_hint"
         android:textAlignment="gravity"
-        android:textColor="#616161"
         android:textSize="16sp" />
 
     <net.cachapa.expandablelayout.ExpandableLayout
@@ -30,9 +30,9 @@
 
         <TextView
             android:id="@+id/tv_hint"
+            android:theme="@style/AppTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFF9C4"
             android:clipToPadding="false"
             android:elevation="4dp"
             android:focusable="true"

@@ -71,6 +71,11 @@
     <string name="follow">Follow @CppQuiz</string>
     <string name="version">Version</string>
 
+    // COMMON IN DIALOGS
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="go">Go</string>
+
     // ABOUT HINT
     <string name="dialog_hint_title">Show hint?</string>
     <string name="dialog_hint_text">Have you really thought through the question?</string>
@@ -104,6 +109,10 @@
     <string name="skip_quiz_question">"You have to try at least 1 time before giving up.\nYou won't get another shot at it.</string>
     <string name="show_explanation_quiz">You have to answer correctly first.</string>
     <string name="question_not_found">There is no question with such number</string>
+
+    // SNACKBAR MESSAGES
+    <string name="update_new_questions">Update complete: new questions added</string>
+    <string name="update_no_change">Update complete: no change</string>
 
     // NO INTERNET VIEW
     <string name="no_internet_view_text">No Internet connection found.\n
@@ -146,7 +155,10 @@
         \
         If you like this app - put 5 stars in Google Play\
         \
-        Thanks to Anders Knatten for support and Ana Coimbra for help with design!
+        Thanks to Anders Knatten for support,\
+        Ana Coimbra for help with design\
+        and\
+        Sasha Drozdova for new features!
 </string>
     <string name="favourite_questions">Favourite questions</string>
 

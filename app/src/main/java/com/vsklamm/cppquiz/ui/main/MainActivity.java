@@ -566,9 +566,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 case UPDATE:
                     String message;
                     if (data.updated) {
-                        message = "Update complete: new questions added";
+                        message = getResources().getString(R.string.update_new_questions);
                     } else {
-                        message = "Update complete: no change";
+                        message = getResources().getString(R.string.update_no_change);
                     }
                     Snackbar.make(findViewById(R.id.ll_main_task), message, Snackbar.LENGTH_LONG).show(); // TODO: make button orange
                     break;

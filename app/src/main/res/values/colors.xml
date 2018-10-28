@@ -22,7 +22,7 @@
     <color name="btn_answer_right">#009688</color>
     <color name="btn_answer_default">#607d8b</color>
 
-    <color name="hint_exp_title">#edcc29</color>
+    <color name="hint_exp_title">#fdd835</color>
     <color name="explanation_correct">#B2DFDB</color>
 
     <color name="shackbar_action_retry">#feb650</color>
