@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.pddstudio.highlightjs.HighlightJsView;
+import com.pddstudio.highlightjs.models.Language;
+import com.pddstudio.highlightjs.models.Theme;
 import com.vsklamm.cppquiz.App;
 import com.vsklamm.cppquiz.R;
 import com.vsklamm.cppquiz.data.Question;
@@ -88,6 +90,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 .subscribe(new DisposableSingleObserver<Question>() {
                     @Override
                     public void onSuccess(Question question) {
+                        holder.mCodeView.setTheme(Theme.GITHUB);
+                        holder.mCodeView.setHighlightLanguage(Language.C_PLUS_PLUS);
                         holder.mCodeView.setSource(question.getCode());
                     }
 
