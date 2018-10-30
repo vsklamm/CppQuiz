@@ -69,6 +69,7 @@ public class UserData implements Serializable {
         return attempts;
     }
 
+    public LinkedHashSet<Integer> getFavouriteQuestions() { return favouriteQuestions; }
     public void registerCorrectAnswer(final int questionId) {
         correctlyAnswered.add(questionId);
     }
