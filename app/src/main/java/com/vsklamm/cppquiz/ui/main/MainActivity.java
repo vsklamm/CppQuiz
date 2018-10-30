@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String REQUEST_TYPE = "REQUEST_TYPE", IS_GIVE_UP = "IS_GIVE_UP", QUESTION = "QUESTION";
     private static final String HAS_VISITED = "HAS_VISITED";
     private static final String USER_ANSWER = "USER_ANSWER";
-    public static final int EXPLANATION_ACTIVITY = 0;
+    public static final int EXPLANATION_ACTIVITY = 0, FAVOURITES_ACTIVITY = 1;
 
     private SharedPreferences appPreferences;
 
@@ -335,6 +335,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     GameLogic.getInstance().randomQuestion();
                     break;
                 }
+            case FAVOURITES_ACTIVITY:
+                if (resultCode == RESULT_FIRST_USER && data != null) {
+                    GameLogic.getInstance().questionById(data.getIntExtra(QUESTION, 1));
+                    break;
+                }
         }
     }
 
@@ -380,7 +385,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (id) {
             case R.id.favourites: {
                 Intent intent = new Intent(MainActivity.this, FavouritesActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, FAVOURITES_ACTIVITY);
                 break;
             }
             case R.id.go_to:

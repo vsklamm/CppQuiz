@@ -66,7 +66,7 @@ public class SharedPreferencesHelper {
         }
     }
 
-    public static HashMap<Integer, Integer> getSparseInt(SharedPreferences prefs, String key) { // TODO: erase copy-paste #4
+    public static HashMap<Integer, Integer> getHashMap(SharedPreferences prefs, String key) { // TODO: erase copy-paste #4
         String json = prefs.getString(key, "");
         if (json.equals("")) {
             return new HashMap<>();

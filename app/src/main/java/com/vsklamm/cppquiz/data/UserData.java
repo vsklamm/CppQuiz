@@ -34,7 +34,7 @@ public class UserData implements Serializable {
         userQuizData = App.getInstance().getSharedPreferences(USER_QUIZ_DATA, MODE_PRIVATE);
         favouriteQuestions = SharedPreferencesHelper.getFromJson(userQuizData, FAVOURITE_QUESTIONS);
         correctlyAnswered = SharedPreferencesHelper.getFromJson(userQuizData, CORRECTLY_ANSWERED);
-        attempts = SharedPreferencesHelper.getSparseInt(userQuizData, ATTEMPTS);
+        attempts = SharedPreferencesHelper.getHashMap(userQuizData, ATTEMPTS);
     }
 
     public static UserData getInstance() {
@@ -69,7 +69,10 @@ public class UserData implements Serializable {
         return attempts;
     }
 
-    public LinkedHashSet<Integer> getFavouriteQuestions() { return favouriteQuestions; }
+    public LinkedHashSet<Integer> getFavouriteQuestions() {
+        return favouriteQuestions;
+    }
+
     public void registerCorrectAnswer(final int questionId) {
         correctlyAnswered.add(questionId);
     }

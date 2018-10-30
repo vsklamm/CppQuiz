@@ -160,6 +160,10 @@
         and\
         Sasha Drozdova for new features!
 </string>
+
+    // FAVOURITES ACTIVITY
     <string name="favourite_questions">Favourite questions</string>
+    <string name="question_item_text">Question #%d</string>
+
 
 </resources>

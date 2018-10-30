@@ -1,65 +1,114 @@
 package com.vsklamm.cppquiz.ui.favourites;
 
+import android.app.Activity;
+import android.content.res.Resources;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.pddstudio.highlightjs.HighlightJsView;
+import com.vsklamm.cppquiz.App;
 import com.vsklamm.cppquiz.R;
+import com.vsklamm.cppquiz.data.Question;
+import com.vsklamm.cppquiz.data.database.AppDatabase;
 
-import org.w3c.dom.Text;
-
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.SortedSet;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+
     private ArrayList<Integer> mDataset;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        //public CardView mCardView;
+    private final ClickListener listener;
+
+    @NonNull
+    @Override
+    public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new MyViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.card_view_favourites, parent, false), listener);
+    }
+
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+
+        public CardView mCardView;
         public TextView mTextView;
-        public MyViewHolder(/*CardView v,*/ TextView v2) {
-            super(v2);
-          //  mCardView = v;
-            mTextView = v2;
+        public HighlightJsView mCodeView;
+        private WeakReference<ClickListener> listenerRef;
+
+        public MyViewHolder(View itemView, ClickListener clickListener) {
+            super(itemView);
+            this.mCardView = itemView.findViewById(R.id.cv_recycler);
+            this.mTextView = itemView.findViewById(R.id.question_name);
+            this.mCodeView = itemView.findViewById(R.id.highlight_code_card_view);
+
+            this.listenerRef = new WeakReference<>(clickListener);
+
+            this.mCardView.setOnClickListener(this);
+            this.mTextView.setOnClickListener(this);
+            this.mCodeView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            listenerRef.get().onPositionClicked( getAdapterPosition());
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            return false;
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(ArrayList<Integer> myDataset) {
-        mDataset = myDataset;
+    public MyAdapter(@NonNull ArrayList<Integer> myDataset, ClickListener listener) {
+        this.mDataset = myDataset;
+        this.listener = listener;
     }
 
-    // Create new views (invoked by the layout manager)
     @Override
-    public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                     int viewType) {
-        // create a new view
-        /*CardView v = (CardView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_view_favourites, parent, false);*/
-        TextView v2 = (TextView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.favourite_question_text, parent, false);
-        MyViewHolder vh = new MyViewHolder(/*v, */v2);
-        return vh;
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
+        Resources resources = holder.itemView.getContext().getResources();
+
+        Integer questionId = mDataset.get(position);
+        holder.mTextView.setText(String.format(resources.getString(R.string.question_item_text),
+                questionId));
+
+        AppDatabase db = App.getInstance().getDatabase();
+
+        db.questionDao().findById(questionId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<Question>() {
+                    @Override
+                    public void onSuccess(Question question) {
+                        holder.mCodeView.setSource(question.getCode());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // ignored
+                    }
+                });
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
-    @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        holder.mTextView.setText(mDataset.get(position).toString());
-
-    }
-
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return mDataset.size();
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    public interface ClickListener {
+        void onPositionClicked(int position);
     }
 }
