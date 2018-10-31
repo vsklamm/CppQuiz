@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
- <attr name="popupOverlayStyle" format="reference"/>
+    <attr name="popupOverlayStyle" format="reference" />
+    <attr name="primaryTextViewStyle" format="reference" />
+    <attr name="primaryFlatButtonStyle" format="reference" />
 </resources>

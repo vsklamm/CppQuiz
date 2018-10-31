@@ -1,6 +1,6 @@
 package com.vsklamm.cppquiz.ui.favourites;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.pddstudio.highlightjs.HighlightJsView;
@@ -27,35 +28,40 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
-    private ArrayList<Integer> mDataset;
+    private ArrayList<Integer> favouritesIds;
 
     private final ClickListener listener;
 
-    @NonNull
-    @Override
-    public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MyViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.card_view_favourites, parent, false), listener);
+    private final String codeTheme;
+
+    public MyAdapter(@NonNull ArrayList<Integer> favouritesIds, final String codeTheme, ClickListener listener) {
+        this.codeTheme = codeTheme;
+        this.favouritesIds = favouritesIds;
+        this.listener = listener;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
-        public CardView mCardView;
-        public TextView mTextView;
-        public HighlightJsView mCodeView;
+        public CardView cardView;
+        public TextView textView;
+        public ImageButton imageButton;
+        public HighlightJsView codeView;
         private WeakReference<ClickListener> listenerRef;
 
+        @SuppressLint("ClickableViewAccessibility")
         public MyViewHolder(View itemView, ClickListener clickListener) {
             super(itemView);
-            this.mCardView = itemView.findViewById(R.id.cv_recycler);
-            this.mTextView = itemView.findViewById(R.id.question_name);
-            this.mCodeView = itemView.findViewById(R.id.highlight_code_card_view);
+            this.cardView = itemView.findViewById(R.id.cv_recycler);
+            this.textView = itemView.findViewById(R.id.question_name);
+            this.codeView = itemView.findViewById(R.id.highlight_code_card_view);
+            this.imageButton = itemView.findViewById(R.id.btn_run_question);
 
             this.listenerRef = new WeakReference<>(clickListener);
 
-            this.mCardView.setOnClickListener(this);
-            this.mTextView.setOnClickListener(this);
-            this.mCodeView.setOnClickListener(this);
+            itemView.setOnClickListener(this);
+            this.cardView.setOnClickListener(this);
+            this.textView.setOnClickListener(this);
+            this.imageButton.setOnClickListener(this);
         }
 
         @Override
@@ -69,47 +75,42 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         }
     }
 
-    public MyAdapter(@NonNull ArrayList<Integer> myDataset, ClickListener listener) {
-        this.mDataset = myDataset;
-        this.listener = listener;
+    @NonNull
+    @Override
+    public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new MyViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.card_view_favourites, parent, false), listener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
         Resources resources = holder.itemView.getContext().getResources();
 
-        Integer questionId = mDataset.get(position);
-        holder.mTextView.setText(String.format(resources.getString(R.string.question_item_text),
-                questionId));
+        Integer questionId = favouritesIds.get(position);
+        holder.textView.setText(String.format(resources.getString(R.string.question_item_text), questionId));
+        holder.codeView.setTheme(Theme.valueOf(codeTheme));
+        holder.codeView.setHighlightLanguage(Language.C_PLUS_PLUS);
 
         AppDatabase db = App.getInstance().getDatabase();
-
         db.questionDao().findById(questionId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<Question>() {
                     @Override
                     public void onSuccess(Question question) {
-                        holder.mCodeView.setTheme(Theme.GITHUB);
-                        holder.mCodeView.setHighlightLanguage(Language.C_PLUS_PLUS);
-                        holder.mCodeView.setSource(question.getCode());
+                        holder.codeView.setSource(question.getCode());
                     }
 
                     @Override
-                    public void onError(Throwable e) {
-                        // ignored
+                    public void onError(Throwable ignored) {
+                        holder.codeView.setSource("This question is retracted"); // TODO: -> strings
                     }
                 });
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
-    }
-
-    @Override
-    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
+        return favouritesIds.size();
     }
 
     public interface ClickListener {

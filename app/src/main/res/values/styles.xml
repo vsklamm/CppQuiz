@@ -3,25 +3,16 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
-
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:navigationBarColor">@color/navigationBarColor</item>
 
         <item name="cardViewStyle">@style/CardView</item>
+        <item name="primaryTextViewStyle">@style/TextViewLight</item>
+        <item name="primaryFlatButtonStyle">@style/PrimaryFlatButton</item>
         <item name="android:buttonStyle">@style/LightThemeButton</item>
         <item name="popupOverlayStyle">@style/AppTheme.PopupOverlay</item>
-    </style>
-
-    <style name="AppTheme.Dark" parent="Theme.AppCompat.DayNight.DarkActionBar">
-        <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
-
-        <item name="colorPrimary">@color/colorDarkPrimary</item>
-        <item name="colorAccent">@color/colorDarkAccent</item>
-
-        <item name="cardViewStyle">@style/CardView</item>
-        <item name="popupOverlayStyle">@style/AppTheme.PopupOverlay.Dark</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -32,16 +23,35 @@
         <item name="windowNoTitle">true</item>
 
         <item name="cardViewStyle">@style/CardView</item>
+        <item name="primaryTextViewStyle">@style/TextViewLight</item>
+        <item name="primaryFlatButtonStyle">@style/PrimaryFlatButton</item>
         <item name="popupOverlayStyle">@style/AppTheme.PopupOverlay</item>
     </style>
 
-    <style name="AppTheme.Dark.NoActionBar" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimaryDark">@color/colorDarkPrimaryDark</item>
-        <item name="colorPrimary">@color/colorDarkPrimary</item>
-        <item name="colorAccent">@color/colorDarkAccent</item>
-        <item name="android:navigationBarColor">@color/navigationBarDarkColor</item>
+    <style name="AppTheme.Dark" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkDark</item>
+        <item name="colorPrimary">@color/colorPrimaryD</item>
+        <item name="colorAccent">@color/colorAccentDark</item>
+        <item name="android:windowBackground">@color/colorBackgroundDark</item>
+        <item name="android:navigationBarColor">@color/navigationBarColorDark</item>
 
-        <item name="cardViewStyle">@style/CardView</item>
+        <item name="cardViewStyle">@style/CardView.Dark</item>
+        <item name="primaryTextViewStyle">@style/TextViewDark</item>
+        <item name="primaryFlatButtonStyle">@style/PrimaryFlatButtonDark</item>
+        <item name="popupOverlayStyle">@style/AppTheme.PopupOverlay.Dark</item>
+    </style>
+
+    <style name="AppTheme.Dark.NoActionBar" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkDark</item>
+        <item name="colorPrimary">@color/colorPrimaryD</item>
+        <item name="colorAccent">@color/colorAccentDark</item>
+        <item name="android:windowBackground">@color/colorBackgroundDark</item>
+        <item name="android:navigationBarColor">@color/navigationBarColorDark</item>
+
+        <item name="cardViewStyle">@style/CardView.Dark</item>
+        <item name="primaryTextViewStyle">@style/TextViewDark</item>
+        <item name="primaryFlatButtonStyle">@style/PrimaryFlatButtonDark</item>
         <item name="popupOverlayStyle">@style/AppTheme.PopupOverlay.Dark</item>
     </style>
 
@@ -53,20 +63,36 @@
 
     <style name="PrimaryFlatButton" parent="Theme.AppCompat.Light">
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
-        <item name="colorControlHighlight">@color/colorAccent</item>
-        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorPrimaryD</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="PrimaryFlatButtonDark" parent="Theme.AppCompat">
+        <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="LightThemeButton" parent="Widget.AppCompat.Button">
-        <item name="android:backgroundTint">@color/btn_answer_default</item>
+        <item name="android:backgroundTint">@color/buttonAnswerDefault</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="colorAccent">@color/colorDarkAccent</item>
+        <item name="colorAccent">@color/colorAccentDark</item>
     </style>
 
     <style name="AlertDialog" parent="Theme.AppCompat.Light">
         <item name="android:textColor">@color/colorAccent</item>
     </style>
 
-    <style name="DarkAlertDialog" parent="AppTheme.Dark.NoActionBar"></style>
+    <style name="DarkAlertDialog" parent="AppTheme.Dark.NoActionBar">
+        <!-- empty -->
+    </style>
+
+    <style name="TextViewLight">
+        <item name="android:textColor">@color/colorTextPrimary</item>
+    </style>
+
+    <style name="TextViewDark">
+        <item name="android:textColor">@color/colorTextPrimaryDark</item>
+    </style>
 
 </resources>

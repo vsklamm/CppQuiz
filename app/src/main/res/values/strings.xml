@@ -165,5 +165,7 @@
     <string name="favourite_questions">Favourite questions</string>
     <string name="question_item_text">Question #%d</string>
 
+    // CONTENT DESCRIPTION
+    <string name="app_icon_about">Application icon</string>
 
 </resources>
