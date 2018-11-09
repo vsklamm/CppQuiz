@@ -12,6 +12,7 @@
         <item name="primaryTextViewStyle">@style/TextViewLight</item>
         <item name="primaryFlatButtonStyle">@style/PrimaryFlatButton</item>
         <item name="explanationBackground">@drawable/style_triangular_halves</item>
+        <item name="sideNavBar">@drawable/side_nav_bar_dark</item>
         <item name="android:buttonStyle">@style/LightThemeButton</item>
         <item name="popupOverlayStyle">@style/AppTheme.PopupOverlay</item>
     </style>
@@ -26,6 +27,7 @@
         <item name="cardViewStyle">@style/CardView</item>
         <item name="primaryTextViewStyle">@style/TextViewLight</item>
         <item name="primaryFlatButtonStyle">@style/PrimaryFlatButton</item>
+        <item name="sideNavBar">@drawable/side_nav_bar_dark</item>
         <item name="explanationBackground">@drawable/style_triangular_halves</item>
         <item name="popupOverlayStyle">@style/AppTheme.PopupOverlay</item>
     </style>
@@ -41,6 +43,7 @@
         <item name="cardViewStyle">@style/CardView.Dark</item>
         <item name="primaryTextViewStyle">@style/TextViewDark</item>
         <item name="primaryFlatButtonStyle">@style/PrimaryFlatButtonDark</item>
+        <item name="sideNavBar">@drawable/side_nav_bar_dark</item>
         <item name="explanationBackground">@drawable/style_dark_triangular_halves</item>
         <item name="popupOverlayStyle">@style/AppTheme.PopupOverlay.Dark</item>
     </style>
@@ -55,6 +58,7 @@
         <item name="cardViewStyle">@style/CardView.Dark</item>
         <item name="primaryTextViewStyle">@style/TextViewDark</item>
         <item name="primaryFlatButtonStyle">@style/PrimaryFlatButtonDark</item>
+        <item name="sideNavBar">@drawable/side_nav_bar_dark</item>
         <item name="explanationBackground">@drawable/style_dark_triangular_halves</item>
         <item name="popupOverlayStyle">@style/AppTheme.PopupOverlay.Dark</item>
     </style>
