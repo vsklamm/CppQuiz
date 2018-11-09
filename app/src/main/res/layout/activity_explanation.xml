@@ -6,6 +6,7 @@
     android:id="@+id/scroll_explanation"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/explanationBackground"
     tools:context=".ui.explanation.ExplanationActivity">
 
     <LinearLayout

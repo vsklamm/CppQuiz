@@ -11,6 +11,7 @@
         <item name="cardViewStyle">@style/CardView</item>
         <item name="primaryTextViewStyle">@style/TextViewLight</item>
         <item name="primaryFlatButtonStyle">@style/PrimaryFlatButton</item>
+        <item name="explanationBackground">@drawable/style_triangular_halves</item>
         <item name="android:buttonStyle">@style/LightThemeButton</item>
         <item name="popupOverlayStyle">@style/AppTheme.PopupOverlay</item>
     </style>
@@ -25,6 +26,7 @@
         <item name="cardViewStyle">@style/CardView</item>
         <item name="primaryTextViewStyle">@style/TextViewLight</item>
         <item name="primaryFlatButtonStyle">@style/PrimaryFlatButton</item>
+        <item name="explanationBackground">@drawable/style_triangular_halves</item>
         <item name="popupOverlayStyle">@style/AppTheme.PopupOverlay</item>
     </style>
 
@@ -39,6 +41,7 @@
         <item name="cardViewStyle">@style/CardView.Dark</item>
         <item name="primaryTextViewStyle">@style/TextViewDark</item>
         <item name="primaryFlatButtonStyle">@style/PrimaryFlatButtonDark</item>
+        <item name="explanationBackground">@drawable/style_dark_triangular_halves</item>
         <item name="popupOverlayStyle">@style/AppTheme.PopupOverlay.Dark</item>
     </style>
 
@@ -52,6 +55,7 @@
         <item name="cardViewStyle">@style/CardView.Dark</item>
         <item name="primaryTextViewStyle">@style/TextViewDark</item>
         <item name="primaryFlatButtonStyle">@style/PrimaryFlatButtonDark</item>
+        <item name="explanationBackground">@drawable/style_dark_triangular_halves</item>
         <item name="popupOverlayStyle">@style/AppTheme.PopupOverlay.Dark</item>
     </style>
 
@@ -88,11 +92,19 @@
     </style>
 
     <style name="TextViewLight">
-        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="android:textColor">@android:color/tab_indicator_text</item>
     </style>
 
     <style name="TextViewDark">
         <item name="android:textColor">@color/colorTextPrimaryDark</item>
+    </style>
+
+    <style name="ExplanationBackground">
+        <item name="android:background">@drawable/style_triangular_halves</item>
+    </style>
+
+    <style name="ExplanationBackgroundDark">
+        <item name="android:background">@drawable/style_dark_triangular_halves</item>
     </style>
 
 </resources>

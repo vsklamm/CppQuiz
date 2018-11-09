@@ -8,6 +8,7 @@
     android:minHeight="55dp"
     android:paddingStart="12dp"
     android:paddingTop="8dp"
+    android:paddingEnd="12dp"
     android:paddingBottom="8dp"
     android:singleLine="false"
     android:textAlignment="gravity"

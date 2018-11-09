@@ -4,17 +4,15 @@ import com.squareup.moshi.JsonReader;
 import com.vsklamm.cppquiz.data.Question;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import okio.Okio;
+import okio.BufferedSource;
 
 public class Parser {
 
-    public static DumpDataType<List<Question>> readJsonStream(InputStream in) throws IOException {
-
-        try (JsonReader reader = JsonReader.of(Okio.buffer(Okio.source(in)))) {
+    public static DumpDataType<List<Question>> readJsonStream(BufferedSource in) throws IOException {
+        try (JsonReader reader = JsonReader.of(in)) {
             return readQuestionList(reader);
         }
     }

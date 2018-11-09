@@ -3,4 +3,5 @@
     <attr name="popupOverlayStyle" format="reference" />
     <attr name="primaryTextViewStyle" format="reference" />
     <attr name="primaryFlatButtonStyle" format="reference" />
+    <attr name="explanationBackground" format="reference" />
 </resources>
