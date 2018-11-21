@@ -721,7 +721,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         btnRandom.setText(getResources().getString(R.string.another_question));
 
         FloatingActionButton btnAnswer = findViewById(R.id.btn_answer);
-        btnAnswer.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.btn_answer_default));
+        btnAnswer.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.buttonAnswerDefault));
 
         ImageView imageViewLevel = findViewById(R.id.iv_linear_difficulty);
         TypedArray levels = getResources().obtainTypedArray(R.array.difficulty_levels);
@@ -757,7 +757,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onCorrectAnswered(@NonNull final Question question, final int attemptsRequired) {
         showAttempts(attemptsRequired);
         FloatingActionButton btnAnswer = findViewById(R.id.btn_answer);
-        btnAnswer.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.btn_answer_right));
+        btnAnswer.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.buttonAnswerRight));
 
         YoYo.with(Techniques.Bounce)
                 .duration(600)
@@ -774,7 +774,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         showAttempts(attemptsRequired);
 
         FloatingActionButton btnAnswer = findViewById(R.id.btn_answer);
-        btnAnswer.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.btn_answer_error));
+        btnAnswer.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.buttonAnswerError));
 
         showToast(getString(R.string.please_try_again));
 

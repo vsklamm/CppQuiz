@@ -5,6 +5,6 @@
         android:duration="400"
         android:repeatCount="1"
         android:repeatMode="reverse"
-        android:valueFrom="@color/btn_answer_error"
+        android:valueFrom="@color/buttonAnswerError"
         android:valueTo="#000000" />
 </set>

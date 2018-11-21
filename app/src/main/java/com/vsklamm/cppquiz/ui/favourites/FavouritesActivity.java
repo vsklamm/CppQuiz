@@ -8,10 +8,6 @@ import android.view.MenuItem;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.vsklamm.cppquiz.R;
@@ -23,15 +19,10 @@ import com.vsklamm.cppquiz.data.UserData;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
-import static com.vsklamm.cppquiz.ui.main.MainActivity.APP_PREFERENCES;
 import static com.vsklamm.cppquiz.ui.main.MainActivity.QUESTION;
-
+import static com.vsklamm.cppquiz.ui.main.MainActivity.THEME;
 
 public class FavouritesActivity extends AppCompatActivity {
 
@@ -59,7 +50,8 @@ public class FavouritesActivity extends AppCompatActivity {
 
         Collections.sort(listIds);
 
-        mAdapter = new MyAdapter(listIds, new MyAdapter.ClickListener() {
+        String codeTheme = appPreferences.getString(THEME, "GITHUB");
+        mAdapter = new MyAdapter(listIds, codeTheme, new MyAdapter.ClickListener() {
             @Override public void onPositionClicked(int position) {
                 Intent intent = new Intent();
                 intent.putExtra(QUESTION, listIds.get(position));

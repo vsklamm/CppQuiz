@@ -17,10 +17,10 @@
     </style>
 
     <style name="AppTheme.Dark.NoActionBar" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimaryDark">@color/colorDarkPrimaryDark</item>
-        <item name="colorPrimary">@color/colorDarkPrimary</item>
-        <item name="colorAccent">@color/colorDarkAccent</item>
-        <item name="android:navigationBarColor">@color/navigationBarDarkColor</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkDark</item>
+        <item name="colorPrimary">@color/colorPrimaryD</item>
+        <item name="colorAccent">@color/colorAccentDark</item>
+        <item name="android:navigationBarColor">@color/navigationBarColorDark</item>
     </style>
 
 </resources>

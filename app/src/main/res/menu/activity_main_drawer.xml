@@ -69,7 +69,7 @@
 
     <item
         android:title="@string/debug"
-        android:visible="true">
+        android:visible="false">
         <menu>
             <item
                 android:id="@+id/debug_no_questions"
