@@ -89,7 +89,7 @@ public class UserData implements Serializable {
         correctlyAnswered.clear();
         saveAttempts();
         saveCorrectlyAnswered();
-        GameLogic.getInstance().randomQuestion();
+        GameLogic.getInstance().ourQuestion();
     }
 
     public void addToFavouriteQuestions(final int questionId) {
