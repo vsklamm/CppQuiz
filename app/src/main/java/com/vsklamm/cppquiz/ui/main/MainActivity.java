@@ -59,6 +59,9 @@ import com.vsklamm.cppquiz.ui.dialogs.GoToDialog;
 import com.vsklamm.cppquiz.ui.dialogs.ThemeChangerDialog;
 import com.vsklamm.cppquiz.ui.explanation.ExplanationActivity;
 import com.vsklamm.cppquiz.ui.favourites.FavouritesActivity;
+import com.vsklamm.cppquiz.ui.main.quiz.QuizView;
+import com.vsklamm.cppquiz.ui.main.training.TrainingPresenterImpl;
+import com.vsklamm.cppquiz.ui.main.training.TrainingView;
 import com.vsklamm.cppquiz.utils.ActivityUtils;
 import com.vsklamm.cppquiz.utils.DeepLinksUtils;
 import com.vsklamm.cppquiz.utils.FlipperChild;
@@ -115,13 +118,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public TextView progressTextViewLoading;
     private ShineButton shineButton;
 
+    private GamePresenter gamePresenter;
+    private TrainingView trainingView;
+    private QuizView quizView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         appPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
         ActivityUtils.setUpThemeNoActionBar(this, appPreferences);
         super.onCreate(savedInstanceState);
-        // presenter = new MainPresenter();
-        // presenter.subscribe(this);
+        // TODO: here or not?
+        // gamePresenter = new TrainingPresenterImpl(this, );
+        //
         setContentView(R.layout.activity_main);
 
         toolbar = findViewById(R.id.toolbar); // TODO: disable OverflowMenu on non-MainContent views
