@@ -20,12 +20,12 @@ A special thanks to...
 
 -   [Anders Knatten](https://github.com/knatten) for the support
 -   [Ana Coimbra](https://github.com/anacoimbrag) for help with UI
--   [Sasha Drozdova](https://github.com/demon1999) for some commits :D
+-   [Sasha Drozdova](https://github.com/demon1999) for some commits
 
 Third Party Libraries
 ---------------------
 
--   [HighlightJs View - Android](https://github.com/PDDStudio/highlightjs-android) ❤
+-   [HighlightJs View - Android](https://github.com/PDDStudio/highlightjs-android)
 -   [Android markdown library](https://github.com/noties/Markwon)
 -   [ExpandableLayout](https://github.com/cachapa/ExpandableLayout)
 -   [Android Easing Functions](https://github.com/daimajia/AnimationEasingFunctions)
