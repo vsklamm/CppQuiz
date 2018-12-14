@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.vsklamm.cppquiz.data.Question;
 import com.vsklamm.cppquiz.ui.BaseView;
 
-public interface TrainingView extends BaseView {
+public interface TrainingView extends BaseView<TrainingPresenterImpl> {
 
     void onTrainingStateChanged(final int questionId, final int correct, final int all);
 

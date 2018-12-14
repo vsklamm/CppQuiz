@@ -60,7 +60,6 @@ import com.vsklamm.cppquiz.ui.dialogs.ThemeChangerDialog;
 import com.vsklamm.cppquiz.ui.explanation.ExplanationActivity;
 import com.vsklamm.cppquiz.ui.favourites.FavouritesActivity;
 import com.vsklamm.cppquiz.ui.main.quiz.QuizView;
-import com.vsklamm.cppquiz.ui.main.training.TrainingPresenterImpl;
 import com.vsklamm.cppquiz.ui.main.training.TrainingView;
 import com.vsklamm.cppquiz.utils.ActivityUtils;
 import com.vsklamm.cppquiz.utils.DeepLinksUtils;
@@ -99,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String APP_PREFERENCES = "APP_PREFERENCES", APP_PREF_ZOOM = "APP_PREF_ZOOM";
     public static final String APP_PREF_LINE_NUMBERS = "APP_PREF_LINE_NUMBERS", THEME = "THEME";
     public static final String REQUEST_TYPE = "REQUEST_TYPE", IS_GIVE_UP = "IS_GIVE_UP", QUESTION = "QUESTION";
+    public static final String GAME_MODE = "GAME_MODE", QUIZ_MODE = "QUIZ_MODE", TRAINING_MODE = "TRAINING_MODE";
     private static final String HAS_VISITED = "HAS_VISITED";
     private static final String USER_ANSWER = "USER_ANSWER";
     public static final int EXPLANATION_ACTIVITY = 0, FAVOURITES_ACTIVITY = 1;
@@ -127,9 +127,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         appPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
         ActivityUtils.setUpThemeNoActionBar(this, appPreferences);
         super.onCreate(savedInstanceState);
-        // TODO: here or not?
-        // gamePresenter = new TrainingPresenterImpl(this, );
-        //
+
+        // View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
+        // gamePresenter = new GameModeFactory.getPresenter(this, rootView, appPreferences.getString(GAME_MODE, TRAINING_MODE));
+
         setContentView(R.layout.activity_main);
 
         toolbar = findViewById(R.id.toolbar); // TODO: disable OverflowMenu on non-MainContent views

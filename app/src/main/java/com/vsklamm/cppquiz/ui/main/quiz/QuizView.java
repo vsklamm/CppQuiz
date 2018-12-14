@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.vsklamm.cppquiz.data.Question;
 import com.vsklamm.cppquiz.ui.BaseView;
 
-public interface QuizView extends BaseView {
+public interface QuizView extends BaseView<QuizPresenterImpl> {
 
     void onQuizStateChanged(final int passedQuestions, final int totalQuestions, final float points);
 
