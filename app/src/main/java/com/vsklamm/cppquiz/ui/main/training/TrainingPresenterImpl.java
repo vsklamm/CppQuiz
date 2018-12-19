@@ -3,6 +3,7 @@ package com.vsklamm.cppquiz.ui.main.training;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 
+import com.vsklamm.cppquiz.data.Question;
 import com.vsklamm.cppquiz.ui.main.GamePresenter;
 
 public class TrainingPresenterImpl implements GamePresenter {
@@ -48,5 +49,10 @@ public class TrainingPresenterImpl implements GamePresenter {
     @Override
     public void giveUp() {
 
+    }
+
+    @Override
+    public Question getCurrentQuestion() {
+        return null;
     }
 }
