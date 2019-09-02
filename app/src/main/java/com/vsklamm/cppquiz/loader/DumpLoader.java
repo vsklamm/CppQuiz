@@ -65,7 +65,11 @@ public class DumpLoader extends AsyncTaskLoader<LoadResult<String, LinkedHashSet
             updateProgress(System.currentTimeMillis(), "Loading questions");
             long startTime = System.currentTimeMillis();
 
-            newDump = Parser.readJsonStream(response.body().byteStream());
+            if (response.body() != null) {
+                newDump = Parser.readJsonStream(response.body().source());
+            } else {
+                throw new NullPointerException("Response would not be null");
+            }
 
             updateProgress(System.currentTimeMillis() - startTime, "Database processing");
 
@@ -101,7 +105,7 @@ public class DumpLoader extends AsyncTaskLoader<LoadResult<String, LinkedHashSet
 
             this.result = new LoadResult<>(ConnectSuccessType.OK, newDump.cppStandard, result, requestType, updated);
             return this.result;
-        } catch (IOException | InterruptedException ex) {
+        } catch (IOException | InterruptedException | NullPointerException ex) {
             ConnectSuccessType connectSuccessType = isOnline() ? ConnectSuccessType.ERROR : ConnectSuccessType.NO_INTERNET;
             return new LoadResult<>(connectSuccessType, null, null, requestType, false);
         }

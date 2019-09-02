@@ -75,6 +75,13 @@ public class GameLogic implements Serializable { // TODO: rename methods
         updateGameState();
     }
 
+    public void ourQuestion() {
+        if (currentQuestion.getId() == -1)
+            randomQuestion();
+        else
+            questionById(currentQuestion.getId());
+    }
+
     public void randomQuestion() {
         int randomId = getUnansweredQuestion();
         if (randomId == -1) {

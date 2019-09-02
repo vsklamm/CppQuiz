@@ -59,6 +59,8 @@ import com.vsklamm.cppquiz.ui.dialogs.GoToDialog;
 import com.vsklamm.cppquiz.ui.dialogs.ThemeChangerDialog;
 import com.vsklamm.cppquiz.ui.explanation.ExplanationActivity;
 import com.vsklamm.cppquiz.ui.favourites.FavouritesActivity;
+import com.vsklamm.cppquiz.ui.main.quiz.QuizView;
+import com.vsklamm.cppquiz.ui.main.training.TrainingView;
 import com.vsklamm.cppquiz.utils.ActivityUtils;
 import com.vsklamm.cppquiz.utils.DeepLinksUtils;
 import com.vsklamm.cppquiz.utils.FlipperChild;
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String APP_PREFERENCES = "APP_PREFERENCES", APP_PREF_ZOOM = "APP_PREF_ZOOM";
     public static final String APP_PREF_LINE_NUMBERS = "APP_PREF_LINE_NUMBERS", THEME = "THEME";
     public static final String REQUEST_TYPE = "REQUEST_TYPE", IS_GIVE_UP = "IS_GIVE_UP", QUESTION = "QUESTION";
+    public static final String GAME_MODE = "GAME_MODE", QUIZ_MODE = "QUIZ_MODE", TRAINING_MODE = "TRAINING_MODE";
     private static final String HAS_VISITED = "HAS_VISITED";
     private static final String USER_ANSWER = "USER_ANSWER";
     public static final int EXPLANATION_ACTIVITY = 0, FAVOURITES_ACTIVITY = 1;
@@ -115,13 +118,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public TextView progressTextViewLoading;
     private ShineButton shineButton;
 
+    private GamePresenter gamePresenter;
+    private TrainingView trainingView;
+    private QuizView quizView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         appPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
         ActivityUtils.setUpThemeNoActionBar(this, appPreferences);
         super.onCreate(savedInstanceState);
-        // presenter = new MainPresenter();
-        // presenter.subscribe(this);
+
+        // View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
+        // gamePresenter = new GameModeFactory.getPresenter(this, rootView, appPreferences.getString(GAME_MODE, TRAINING_MODE));
+
         setContentView(R.layout.activity_main);
 
         toolbar = findViewById(R.id.toolbar); // TODO: disable OverflowMenu on non-MainContent views
@@ -152,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     MainActivity.this,
                                     cppStandard,
                                     new LinkedHashSet<>(questionIds));
-                            showFirstQuestion();
+                             showFirstQuestion();
                         }
 
                         @Override
@@ -213,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         btnRandom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GameLogic.getInstance().randomQuestion();
+                gamePresenter.nextQuestion();
             }
         });
 
@@ -233,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         btnGiveUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GameLogic.getInstance().giveUp();
+                gamePresenter.giveUp();
             }
         });
 
@@ -260,13 +269,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         btnAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GameLogic gameLogic = GameLogic.getInstance();
+                //GameLogic gameLogic = GameLogic.getInstance();
                 UserData.getInstance().givenAnswer = new UsersAnswer(
-                        gameLogic.getCurrentQuestion().getId(),
+                        gamePresenter.getCurrentQuestion().getId(),
                         ResultBehaviourType.getType(spResult.getSelectedItemPosition()),
                         etAnswer.getText().toString()
                 );
-                gameLogic.checkAnswer();
+                gamePresenter.checkAnswer();
+                //gameLogic.checkAnswer();
             }
         });
 
@@ -296,11 +306,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         shineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GameLogic gameLogic = GameLogic.getInstance();
+                //GameLogic gameLogic = GameLogic.getInstance();
                 if (shineButton.isChecked()) {
-                    UserData.getInstance().addToFavouriteQuestions(gameLogic.getCurrentQuestion().getId());
+                    UserData.getInstance().addToFavouriteQuestions(/*gameLogic*/gamePresenter.getCurrentQuestion().getId());
                 } else {
-                    UserData.getInstance().deleteFromFavouriteQuestions(gameLogic.getCurrentQuestion().getId());
+                    UserData.getInstance().deleteFromFavouriteQuestions(/*gameLogic*/gamePresenter.getCurrentQuestion().getId());
                 }
             }
         });
@@ -332,7 +342,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (requestCode) {
             case EXPLANATION_ACTIVITY:
                 if (resultCode == RESULT_FIRST_USER) { // TODO: change Code or return value
-                    GameLogic.getInstance().randomQuestion();
+                    gamePresenter.nextQuestion();
                     break;
                 }
             case FAVOURITES_ACTIVITY:
@@ -463,13 +473,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         editor.commit(); // TODO: commit or apply
         Intent intent = getIntent();
         intent.putExtra(USER_ANSWER, new UsersAnswer(
-                GameLogic.getInstance().getCurrentQuestion().getId(),
+                gamePresenter.getCurrentQuestion().getId(),
                 ResultBehaviourType.getType(spResult.getSelectedItemPosition()),
                 etAnswer.getText().toString()
         ));
         finish();
         startActivity(intent);
     }
+
 
     private void onShowLineNumbersToggled(final boolean enableLineNumbers) {
         codeView.setShowLineNumbers(enableLineNumbers);
@@ -501,7 +512,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void shareQuestion() {
-        final int questionId = GameLogic.getInstance().getCurrentQuestion().getId();
+        final int questionId = gamePresenter.getCurrentQuestion().getId();
         final int stringResource;
         if (UserData.getInstance().isCorrectlyAnswered(questionId)) {
             stringResource = R.string.share_q_right;
@@ -614,14 +625,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             } else if (deepLinksUtils.isQuizLink()) {
                 // TODO: handle quiz links
             } else {
-                GameLogic.getInstance().randomQuestion();
+                gamePresenter.nextQuestion();
             }
         } else {
             UsersAnswer usersAnswer = (UsersAnswer) intent.getSerializableExtra(USER_ANSWER);
             if (usersAnswer != null) {
                 GameLogic.getInstance().questionById(usersAnswer.questionId);
             } else {
-                GameLogic.getInstance().randomQuestion();
+                gamePresenter.nextQuestion();
             }
         }
     }
@@ -643,7 +654,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onConfirmedHintLoad() {
-        GameLogic.getInstance().questionHint();
+        gamePresenter.getHint();
     }
 
     @Override

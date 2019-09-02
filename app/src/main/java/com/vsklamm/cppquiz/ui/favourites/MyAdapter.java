@@ -84,7 +84,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
-        Resources resources = holder.itemView.getContext().getResources();
+        final Resources resources = holder.itemView.getContext().getResources();
 
         Integer questionId = favouritesIds.get(position);
         holder.textView.setText(String.format(resources.getString(R.string.question_item_text), questionId));
@@ -103,7 +103,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
                     @Override
                     public void onError(Throwable ignored) {
-                        holder.codeView.setSource("This question is retracted"); // TODO: -> strings
+                        holder.codeView.setSource(resources.getString(R.string.retracted_question));
                     }
                 });
     }

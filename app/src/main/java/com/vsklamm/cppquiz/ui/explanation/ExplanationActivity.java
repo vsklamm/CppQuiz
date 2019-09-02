@@ -42,11 +42,6 @@ public class ExplanationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explanation);
 
-        ScrollView scrollView = findViewById(R.id.scroll_explanation);
-        boolean isDark = appPreferences.getBoolean(APP_THEME_IS_DARK, false);
-        int background = isDark ? R.drawable.style_dark_triangular_halves : R.drawable.style_triangular_halves;
-        scrollView.setBackground(getDrawable(background));
-
         Intent intent = getIntent();
         final boolean isGiveUp = intent.getBooleanExtra(IS_GIVE_UP, false);
         final Question question = (Question) intent.getSerializableExtra(QUESTION);

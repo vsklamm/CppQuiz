@@ -164,6 +164,7 @@
     // FAVOURITES ACTIVITY
     <string name="favourite_questions">Favourite questions</string>
     <string name="question_item_text">Question #%d</string>
+    <string name="retracted_question">// This question is retracted</string>
 
     // CONTENT DESCRIPTION
     <string name="app_icon_about">Application icon</string>
