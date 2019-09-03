@@ -10,14 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.pddstudio.highlightjs.HighlightJsView;
 import com.pddstudio.highlightjs.models.Language;
 import com.pddstudio.highlightjs.models.Theme;
 import com.vsklamm.cppquiz.R;
-import com.vsklamm.cppquiz.data.Question;
+import com.vsklamm.cppquiz.data.model.Question;
 import com.vsklamm.cppquiz.utils.ActivityUtils;
 import com.vsklamm.cppquiz.utils.ResultBehaviourType;
 
@@ -29,7 +28,6 @@ import static com.vsklamm.cppquiz.ui.main.MainActivity.APP_PREF_ZOOM;
 import static com.vsklamm.cppquiz.ui.main.MainActivity.IS_GIVE_UP;
 import static com.vsklamm.cppquiz.ui.main.MainActivity.QUESTION;
 import static com.vsklamm.cppquiz.ui.main.MainActivity.THEME;
-import static com.vsklamm.cppquiz.utils.ActivityUtils.APP_THEME_IS_DARK;
 
 public class ExplanationActivity extends AppCompatActivity {
 

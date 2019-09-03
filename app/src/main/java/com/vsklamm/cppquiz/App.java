@@ -1,9 +1,10 @@
 package com.vsklamm.cppquiz;
 
 import android.app.Application;
-import android.arch.persistence.room.Room;
 
-import com.vsklamm.cppquiz.data.UserData;
+import androidx.room.Room;
+
+import com.vsklamm.cppquiz.data.model.UserData;
 import com.vsklamm.cppquiz.data.database.AppDatabase;
 import com.vsklamm.cppquiz.ui.main.GameLogic;
 

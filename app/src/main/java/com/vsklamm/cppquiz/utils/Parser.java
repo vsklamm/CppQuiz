@@ -1,7 +1,7 @@
 package com.vsklamm.cppquiz.utils;
 
 import com.squareup.moshi.JsonReader;
-import com.vsklamm.cppquiz.data.Question;
+import com.vsklamm.cppquiz.data.model.Question;
 
 import java.io.IOException;
 import java.util.ArrayList;

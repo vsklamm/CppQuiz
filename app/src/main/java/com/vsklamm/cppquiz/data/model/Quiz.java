@@ -1,4 +1,6 @@
-package com.vsklamm.cppquiz.data;
+package com.vsklamm.cppquiz.data.model;
+
+import com.vsklamm.cppquiz.data.model.Question;
 
 import java.util.List;
 

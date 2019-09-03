@@ -2,7 +2,7 @@ package com.vsklamm.cppquiz.ui.main.quiz;
 
 import android.support.annotation.NonNull;
 
-import com.vsklamm.cppquiz.data.Question;
+import com.vsklamm.cppquiz.data.model.Question;
 import com.vsklamm.cppquiz.ui.BaseView;
 
 public interface QuizView extends BaseView<QuizPresenterImpl> {

@@ -16,7 +16,7 @@ import com.pddstudio.highlightjs.models.Language;
 import com.pddstudio.highlightjs.models.Theme;
 import com.vsklamm.cppquiz.App;
 import com.vsklamm.cppquiz.R;
-import com.vsklamm.cppquiz.data.Question;
+import com.vsklamm.cppquiz.data.model.Question;
 import com.vsklamm.cppquiz.data.database.AppDatabase;
 
 import java.lang.ref.WeakReference;

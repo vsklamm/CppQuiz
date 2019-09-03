@@ -15,7 +15,7 @@ import com.vsklamm.cppquiz.utils.ActivityUtils;
 
 import static com.vsklamm.cppquiz.ui.main.MainActivity.APP_PREFERENCES;
 
-import com.vsklamm.cppquiz.data.UserData;
+import com.vsklamm.cppquiz.data.model.UserData;
 
 import java.util.ArrayList;
 import java.util.Collections;
