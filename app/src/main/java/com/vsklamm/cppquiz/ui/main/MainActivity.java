@@ -6,19 +6,6 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.Loader;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.menu.MenuItemImpl;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,8 +22,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuItemImpl;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.loader.app.LoaderManager;
+
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.pddstudio.highlightjs.HighlightJsView;
 import com.pddstudio.highlightjs.models.Language;
 import com.pddstudio.highlightjs.models.Theme;
@@ -46,7 +45,6 @@ import com.vsklamm.cppquiz.R;
 import com.vsklamm.cppquiz.data.model.Question;
 import com.vsklamm.cppquiz.data.model.UserData;
 import com.vsklamm.cppquiz.data.model.UsersAnswer;
-import com.vsklamm.cppquiz.api.CppQuizLiteApi;
 import com.vsklamm.cppquiz.data.database.AppDatabase;
 import com.vsklamm.cppquiz.data.prefs.SharedPreferencesHelper;
 import com.vsklamm.cppquiz.loader.DumpLoader;
@@ -57,8 +55,6 @@ import com.vsklamm.cppquiz.ui.dialogs.GoToDialog;
 import com.vsklamm.cppquiz.ui.dialogs.ThemeChangerDialog;
 import com.vsklamm.cppquiz.ui.explanation.ExplanationActivity;
 import com.vsklamm.cppquiz.ui.favourites.FavouritesActivity;
-import com.vsklamm.cppquiz.ui.main.quiz.QuizView;
-import com.vsklamm.cppquiz.ui.main.training.TrainingView;
 import com.vsklamm.cppquiz.utils.ActivityUtils;
 import com.vsklamm.cppquiz.utils.DeepLinksUtils;
 import com.vsklamm.cppquiz.utils.FlipperChild;
@@ -72,13 +68,16 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import ru.noties.markwon.Markwon;
+import toothpick.Toothpick;
 
 import static com.vsklamm.cppquiz.ui.main.GameLogic.CPP_STANDARD;
 import static com.vsklamm.cppquiz.utils.ActivityUtils.APP_THEME_IS_DARK;
+import static com.vsklamm.cppquiz.utils.RequestType.LOAD_DUMP;
 import static com.vsklamm.cppquiz.utils.TimeWork.LAST_UPDATE;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
@@ -88,8 +87,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ConfirmHintDialog.DialogListener,
         GoToDialog.DialogListener,
         ConfirmResetDialog.DialogListener,
-        // QuizModeContract.View,
-        // TrainingModeContract.View,
         GameLogic.GameLogicCallbacks,
         View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
@@ -108,28 +105,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ConfirmResetDialog resetDialog;
     private ThemeChangerDialog themeChangerDialog;
 
-    private ViewFlipper viewFlipper;
-    private Toolbar toolbar;
-
-    private HighlightJsView codeView;
-    private ExpandableLayout expandableHint;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.view_flipper_main)
+    ViewFlipper viewFlipper;
+    @BindView(R.id.expandable_hint)
+    ExpandableLayout expandableHint;
+    @BindView(R.id.btn_give_up)
+    Button btnGiveUp;
+    @BindView(R.id.btn_random)
+    Button btnRandom;
+    @BindView(R.id.btn_hint)
+    Button btnHint;
+    @BindView(R.id.btn_answer)
+    FloatingActionButton btnAnswer;
+    @BindView(R.id.shine_button)
+    ShineButton shineButton;
+    @BindView(R.id.tv_progress)
     public TextView progressTextViewLoading;
-    private ShineButton shineButton;
-
-    private GamePresenter gamePresenter;
-    private TrainingView trainingView;
-    private QuizView quizView;
+    @BindView(R.id.et_card_view_answer)
+    EditText etAnswer;
+    @BindView(R.id.iv_linear_difficulty)
+    ImageView imageViewLevel;
+    @BindView(R.id.highlight_view_card_view)
+    HighlightJsView codeView;
+    @BindView(R.id.sp_main_result)
+    Spinner spResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         appPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
         ActivityUtils.setUpThemeNoActionBar(this, appPreferences);
         super.onCreate(savedInstanceState);
-
-        // View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
-        // gamePresenter = new GameModeFactory.getPresenter(this, rootView, appPreferences.getString(GAME_MODE, TRAINING_MODE));
-
         setContentView(R.layout.activity_main);
+        Toothpick.inject(this, scope);
+        setSupportActionBar(toolbar);
 
         toolbar = findViewById(R.id.toolbar); // TODO: disable OverflowMenu on non-MainContent views
         setSupportActionBar(toolbar);
@@ -140,13 +150,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean hasVisited = appPreferences.getBoolean(HAS_VISITED, false);
         if (!hasVisited) {
             viewFlipper.setDisplayedChild(FlipperChild.LOADING_VIEW.ordinal());
-            initDumpLoader(RequestType.LOAD_DUMP);
+            initDumpLoader(LOAD_DUMP);
         } else {
             if (TimeWork.isNextDay(appPreferences)) {
                 initDumpLoader(RequestType.UPDATE);
             }
 
-            AppDatabase db = App.getInstance().getDatabase();
             db.questionDao().getAllIds()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -159,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     MainActivity.this,
                                     cppStandard,
                                     new LinkedHashSet<>(questionIds));
-                             showFirstQuestion();
+                            showFirstQuestion();
                         }
 
                         @Override
@@ -169,35 +178,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     });
         }
 
-        /* HIGHLIGHT JS VIEW */
         String theme = appPreferences.getString(THEME, "GITHUB");
         codeView = findViewById(R.id.highlight_view_card_view);
         codeView.setOnThemeChangedListener(this);
         codeView.setTheme(Theme.valueOf(theme));
         codeView.setHighlightLanguage(Language.C_PLUS_PLUS);
 
-        /* EXPANSION PANELS */
         expandableHint = findViewById(R.id.expandable_hint);
         findViewById(R.id.expand_header_hint).setOnClickListener(this);
-        expandableHint.setOnExpansionUpdateListener(new ExpandableLayout.OnExpansionUpdateListener() {
-            @Override
-            public void onExpansionUpdate(float expansionFraction, int state) {
-                TextView expandHeaderHint = findViewById(R.id.expand_header_hint);
-                if (expandableHint.isExpanded()) {
-                    NestedScrollView nestedScrollView = findViewById(R.id.nested_scroll_view);
-                    nestedScrollView.smoothScrollTo(0, nestedScrollView.getBottom());
-                    expandHeaderHint.setText(R.string.hide_hint);
-                } else {
-                    expandHeaderHint.setText(R.string.show_hint);
-                }
+        expandableHint.setOnExpansionUpdateListener((expansionFraction, state) -> {
+            TextView expandHeaderHint = findViewById(R.id.expand_header_hint);
+            if (expandableHint.isExpanded()) {
+                NestedScrollView nestedScrollView = findViewById(R.id.nested_scroll_view);
+                nestedScrollView.smoothScrollTo(0, nestedScrollView.getBottom());
+                expandHeaderHint.setText(R.string.hide_hint);
+            } else {
+                expandHeaderHint.setText(R.string.show_hint);
             }
         });
 
-        /* APP SETTINGS */
         onZoomSupportToggled(appPreferences.getBoolean(APP_PREF_ZOOM, false));
         onShowLineNumbersToggled(appPreferences.getBoolean(APP_PREF_LINE_NUMBERS, false));
 
-        /* DRAWER LAYOUT */
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -215,39 +217,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mySwitch.setChecked(appPreferences.getBoolean(APP_THEME_IS_DARK, false));
         mySwitch.setOnCheckedChangeListener(this);
 
-        /* BUTTON RANDOM */
-        Button btnRandom = findViewById(R.id.btn_random);
-        btnRandom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gamePresenter.nextQuestion();
-            }
+        btnRandom.setOnClickListener(v -> gamePresenter.nextQuestion());
+
+        btnHint.setOnClickListener(v -> {
+            if (findViewById(R.id.expansion_panel_outer).getVisibility() == View.GONE) {
+                openConfirmDialog();
+            } else expandableHint.expand();
         });
 
-        /* BUTTON HINT */
-        Button btnHint = findViewById(R.id.btn_hint);
-        btnHint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (findViewById(R.id.expansion_panel_outer).getVisibility() == View.GONE) {
-                    openConfirmDialog();
-                } else expandableHint.expand();
-            }
-        });
-
-        /* BUTTON GIVE UP */
         final Button btnGiveUp = findViewById(R.id.btn_give_up);
-        btnGiveUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gamePresenter.giveUp();
-            }
-        });
+        btnGiveUp.setOnClickListener(v -> gamePresenter.giveUp());
 
-        /* BUTTON / EDIT_TEXT/ SPINNER ANSWER */
-        final FloatingActionButton btnAnswer = findViewById(R.id.btn_answer);
-        final EditText etAnswer = findViewById(R.id.et_card_view_answer);
-        final Spinner spResult = findViewById(R.id.sp_main_result);
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
                 R.layout.spinner_item,
@@ -264,52 +244,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        btnAnswer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //GameLogic gameLogic = GameLogic.getInstance();
-                UserData.getInstance().givenAnswer = new UsersAnswer(
-                        gamePresenter.getCurrentQuestion().getId(),
-                        ResultBehaviourType.getType(spResult.getSelectedItemPosition()),
-                        etAnswer.getText().toString()
-                );
-                gamePresenter.checkAnswer();
-                //gameLogic.checkAnswer();
-            }
+        btnAnswer.setOnClickListener(v -> {
+            //GameLogic gameLogic = GameLogic.getInstance();
+            UserData.getInstance().givenAnswer = new UsersAnswer(
+                    gamePresenter.getCurrentQuestion().getId(),
+                    ResultBehaviourType.getType(spResult.getSelectedItemPosition()),
+                    etAnswer.getText().toString()
+            );
+            gamePresenter.checkAnswer();
+            //gameLogic.checkAnswer();
         });
 
         Button buttonRetry = findViewById(R.id.btn_retry);
-        buttonRetry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewFlipper.setDisplayedChild(FlipperChild.LOADING_VIEW.ordinal());
-                Bundle args = new Bundle();
-                args.putInt(REQUEST_TYPE, RequestType.LOAD_DUMP.ordinal());
-                getSupportLoaderManager().restartLoader(0, args, MainActivity.this);
-            }
+        buttonRetry.setOnClickListener(v -> {
+            viewFlipper.setDisplayedChild(FlipperChild.LOADING_VIEW.ordinal());
+            Bundle args = new Bundle();
+            args.putInt(REQUEST_TYPE, LOAD_DUMP.ordinal());
+            getSupportLoaderManager().restartLoader(0, args, MainActivity.this);
         });
 
         Button buttonResetProgress = findViewById(R.id.btn_reset);
-        buttonResetProgress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UserData.getInstance().clearCorrectAnswers();
-                viewFlipper.setDisplayedChild(FlipperChild.MAIN_CONTENT.ordinal());
-            }
+        buttonResetProgress.setOnClickListener(v -> {
+            UserData.getInstance().clearCorrectAnswers();
+            viewFlipper.setDisplayedChild(FlipperChild.MAIN_CONTENT.ordinal());
         });
 
-        /* BUTTON FAVOURITE */
-        shineButton = findViewById(R.id.shine_button);
         shineButton.init(this);
-        shineButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //GameLogic gameLogic = GameLogic.getInstance();
-                if (shineButton.isChecked()) {
-                    UserData.getInstance().addToFavouriteQuestions(/*gameLogic*/gamePresenter.getCurrentQuestion().getId());
-                } else {
-                    UserData.getInstance().deleteFromFavouriteQuestions(/*gameLogic*/gamePresenter.getCurrentQuestion().getId());
-                }
+        shineButton.setOnClickListener(v -> {
+            if (shineButton.isChecked()) {
+                UserData.getInstance().addToFavouriteQuestions(/*gameLogic*/gamePresenter.getCurrentQuestion().getId());
+            } else {
+                UserData.getInstance().deleteFromFavouriteQuestions(/*gameLogic*/gamePresenter.getCurrentQuestion().getId());
             }
         });
 
@@ -463,12 +428,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        final EditText etAnswer = findViewById(R.id.et_card_view_answer);
         final Spinner spResult = findViewById(R.id.sp_main_result);
         SharedPreferences.Editor editor = appPreferences.edit();
 
-        editor.putBoolean(APP_THEME_IS_DARK, isChecked);
-        editor.commit(); // TODO: commit or apply
+        editor.putBoolean(APP_THEME_IS_DARK, isChecked).apply();
         Intent intent = getIntent();
         intent.putExtra(USER_ANSWER, new UsersAnswer(
                 gamePresenter.getCurrentQuestion().getId(),
@@ -554,6 +517,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public Loader<LoadResult<String, LinkedHashSet<Integer>>> onCreateLoader(final int id, final Bundle args) {
         return new DumpLoader(this, args.getInt(REQUEST_TYPE));
+    }
+
+    @Override
+    public void onLoadFinished(@androidx.annotation.NonNull Loader<LoadResult<String, LinkedHashSet<Integer>>> loader, LoadResult<String, LinkedHashSet<Integer>> data) {
+
     }
 
     @Override
@@ -712,27 +680,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onQuestionLoaded(@NonNull final Question question, final int attemptsRequired) {
         setExpandablePanel(View.GONE);
 
-        EditText etAnswer = findViewById(R.id.et_card_view_answer);
         etAnswer.getText().clear();
 
-        ShineButton shineButton = findViewById(R.id.shine_button);
         boolean checked = UserData.getInstance().isFavouriteQuestion(question.getId());
         shineButton.setChecked(checked, false);
 
-        Button btnGiveUp = findViewById(R.id.btn_give_up);
         if (attemptsRequired == 0) {
             btnGiveUp.setText(getResources().getString(R.string.give_up_default));
         } else {
             btnGiveUp.setText(String.format(getResources().getString(R.string.give_up_attempts), attemptsRequired));
         }
 
-        Button btnRandom = findViewById(R.id.btn_random);
         btnRandom.setText(getResources().getString(R.string.another_question));
-
-        FloatingActionButton btnAnswer = findViewById(R.id.btn_answer);
         btnAnswer.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.buttonAnswerDefault));
 
-        ImageView imageViewLevel = findViewById(R.id.iv_linear_difficulty);
         TypedArray levels = getResources().obtainTypedArray(R.array.difficulty_levels);
         imageViewLevel.setImageResource(levels.getResourceId(question.getDifficulty() - 1, -1));
         levels.recycle();
@@ -765,14 +726,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onCorrectAnswered(@NonNull final Question question, final int attemptsRequired) {
         showAttempts(attemptsRequired);
-        FloatingActionButton btnAnswer = findViewById(R.id.btn_answer);
         btnAnswer.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.buttonAnswerRight));
-
         YoYo.with(Techniques.Bounce)
                 .duration(600)
                 .playOn(btnAnswer);
-
-        Button btnRandom = findViewById(R.id.btn_random);
         btnRandom.setText(getResources().getString(R.string.next));
 
         startExplanationActivity(false, question);
@@ -785,7 +742,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FloatingActionButton btnAnswer = findViewById(R.id.btn_answer);
         btnAnswer.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.buttonAnswerError));
 
-        showToast(getString(R.string.please_try_again));
+        Toast.makeText(getApplicationContext(), getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
 
         YoYo.with(Techniques.Shake)
                 .duration(200)
@@ -799,7 +756,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void tooEarlyToGiveUp(final int attemptsRequired) {
-        showToast(getString(R.string.give_up_help));
+        Toast.makeText(getApplicationContext(), getString(R.string.give_up_help), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -812,11 +769,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onErrorHappens() {
         // TODO: handle errors
-    }
-
-    private void showToast(String message) {
-        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        toast.show();
     }
 
     public class RetryLoadingListener implements View.OnClickListener {

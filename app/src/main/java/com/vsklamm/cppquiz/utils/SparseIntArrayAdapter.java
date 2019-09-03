@@ -4,7 +4,6 @@ import com.squareup.moshi.JsonReader;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -44,7 +43,7 @@ public class SparseIntArrayAdapter {
         }
         jsonReader.endObject();
         HashMap<Integer, Integer> result = new HashMap<>();
-        for (int i = 0; i < size; ++i) {
+        for (int i = 0; i < size; i++) {
             result.put(keys.get(i), values.get(i));
         }
         return result;

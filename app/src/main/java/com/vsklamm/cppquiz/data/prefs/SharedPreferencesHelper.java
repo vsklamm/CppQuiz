@@ -3,7 +3,6 @@ package com.vsklamm.cppquiz.data.prefs;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.util.SparseIntArray;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.JsonDataException;

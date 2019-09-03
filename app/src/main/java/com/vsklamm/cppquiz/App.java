@@ -2,33 +2,29 @@ package com.vsklamm.cppquiz;
 
 import android.app.Application;
 
-import androidx.room.Room;
+import com.vsklamm.cppquiz.di.module.AppModule;
+import com.vsklamm.cppquiz.di.module.NetworkModule;
 
-import com.vsklamm.cppquiz.data.model.UserData;
-import com.vsklamm.cppquiz.data.database.AppDatabase;
-import com.vsklamm.cppquiz.ui.main.GameLogic;
+import toothpick.Scope;
+import toothpick.Toothpick;
+import toothpick.configuration.Configuration;
+import toothpick.smoothie.module.SmoothieApplicationModule;
 
 public class App extends Application {
 
-    private static App instance;
-
-    private AppDatabase database;
-
-    public static App getInstance() {
-        return instance;
-    }
+    private static Scope appScope;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        instance = this;
-        database = Room.databaseBuilder(this, AppDatabase.class, "questions")
-                .build();
-        UserData.getInstance();
-        GameLogic.getInstance();
+
+        Toothpick.setConfiguration(Configuration.forDevelopment());
+
+        appScope = Toothpick.openScope(App.class);
+        appScope.installTestModules(new SmoothieApplicationModule(this), new NetworkModule(), new AppModule(this));
     }
 
-    public AppDatabase getDatabase() {
-        return database;
+    public static Scope getAppScope() {
+        return appScope;
     }
 }

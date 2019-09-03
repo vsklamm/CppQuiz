@@ -5,16 +5,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.AsyncTaskLoader;
 
 import com.vsklamm.cppquiz.App;
 import com.vsklamm.cppquiz.data.model.Question;
-import com.vsklamm.cppquiz.api.CppQuizLiteApi;
 import com.vsklamm.cppquiz.data.database.AppDatabase;
 import com.vsklamm.cppquiz.data.database.QuestionDao;
 import com.vsklamm.cppquiz.ui.main.MainActivity;
-import com.vsklamm.cppquiz.utils.DumpDataType;
-import com.vsklamm.cppquiz.utils.Parser;
 import com.vsklamm.cppquiz.utils.RequestType;
 import com.vsklamm.cppquiz.utils.TimeWork;
 

@@ -2,9 +2,7 @@ package com.vsklamm.cppquiz.ui.main;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.view.View;
 
-import com.vsklamm.cppquiz.ui.BaseView;
 import com.vsklamm.cppquiz.ui.main.quiz.QuizPresenterImpl;
 import com.vsklamm.cppquiz.ui.main.training.TrainingPresenterImpl;
 

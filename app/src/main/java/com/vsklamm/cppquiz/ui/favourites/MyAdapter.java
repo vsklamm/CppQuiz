@@ -3,13 +3,14 @@ package com.vsklamm.cppquiz.ui.favourites;
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.pddstudio.highlightjs.HighlightJsView;
 import com.pddstudio.highlightjs.models.Language;
@@ -34,7 +35,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     private final String codeTheme;
 
-    public MyAdapter(@NonNull ArrayList<Integer> favouritesIds, final String codeTheme, ClickListener listener) {
+    MyAdapter(@NonNull ArrayList<Integer> favouritesIds, final String codeTheme, ClickListener listener) {
         this.codeTheme = codeTheme;
         this.favouritesIds = favouritesIds;
         this.listener = listener;
@@ -42,14 +43,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
-        public CardView cardView;
-        public TextView textView;
-        public ImageButton imageButton;
-        public HighlightJsView codeView;
+        CardView cardView;
+        TextView textView;
+        ImageButton imageButton;
+        HighlightJsView codeView;
         private WeakReference<ClickListener> listenerRef;
 
         @SuppressLint("ClickableViewAccessibility")
-        public MyViewHolder(View itemView, ClickListener clickListener) {
+        MyViewHolder(View itemView, ClickListener clickListener) {
             super(itemView);
             this.cardView = itemView.findViewById(R.id.cv_recycler);
             this.textView = itemView.findViewById(R.id.question_name);
@@ -66,7 +67,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         @Override
         public void onClick(View v) {
-            listenerRef.get().onPositionClicked( getAdapterPosition());
+            listenerRef.get().onPositionClicked(getAdapterPosition());
         }
 
         @Override

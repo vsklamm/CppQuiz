@@ -1,7 +1,8 @@
 package com.vsklamm.cppquiz.utils;
 
-import android.arch.persistence.room.TypeConverter;
 import android.support.annotation.NonNull;
+
+import androidx.room.TypeConverter;
 
 /**
  * What the c++ program will do

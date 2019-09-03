@@ -2,18 +2,20 @@ package com.vsklamm.cppquiz.ui.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatDialogFragment;
-import android.support.v7.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.appcompat.view.ContextThemeWrapper;
+
 import com.vsklamm.cppquiz.R;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -44,21 +46,13 @@ public class GoToDialog extends AppCompatDialogFragment {
         dialogBuilder.setView(view)
                 .setTitle(R.string.goto_dialog_title)
                 .setMessage(R.string.goto_dialog_text)
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .setPositiveButton(R.string.go, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            int number = Integer.parseInt(editTextNumber.getText().toString());
-                            listener.applyGoTo(number);
-                        } catch (NumberFormatException e) {
-                            dialog.dismiss();
-                        }
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel())
+                .setPositiveButton(R.string.go, (dialog, which) -> {
+                    try {
+                        int number = Integer.parseInt(editTextNumber.getText().toString());
+                        listener.applyGoTo(number);
+                    } catch (NumberFormatException e) {
+                        dialog.dismiss();
                     }
                 });
         editTextNumber = view.findViewById(R.id.ed_dialog_goto_id);
@@ -68,7 +62,7 @@ public class GoToDialog extends AppCompatDialogFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         try {
             listener = (GoToDialog.DialogListener) context;

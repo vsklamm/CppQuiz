@@ -13,9 +13,9 @@ public class TimeWork {
 
     public static final long LOADING_VIEW_DELAY = 200;
 
-    public static boolean isNextDay(SharedPreferences appPreferences) { // TODO: is it legal
-        DateTime lastUpdate = new DateTime(appPreferences.getLong(LAST_UPDATE, 0));
-        DateTime currentDate = new DateTime()
+    public static boolean isNextDay(SharedPreferences appPreferences) {
+        final DateTime lastUpdate = new DateTime(appPreferences.getLong(LAST_UPDATE, 0));
+        final DateTime currentDate = new DateTime()
                 .withTimeAtStartOfDay()
                 .withZone(DateTimeZone.forTimeZone(TimeZone.getTimeZone("CET")));
         return lastUpdate.isBefore(currentDate);

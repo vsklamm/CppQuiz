@@ -2,13 +2,14 @@ package com.vsklamm.cppquiz.ui.favourites;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.vsklamm.cppquiz.R;
 import com.vsklamm.cppquiz.utils.ActivityUtils;
@@ -51,20 +52,13 @@ public class FavouritesActivity extends AppCompatActivity {
         Collections.sort(listIds);
 
         String codeTheme = appPreferences.getString(THEME, "GITHUB");
-        mAdapter = new MyAdapter(listIds, codeTheme, new MyAdapter.ClickListener() {
-            @Override public void onPositionClicked(int position) {
-                Intent intent = new Intent();
-                intent.putExtra(QUESTION, listIds.get(position));
-                setResult(RESULT_FIRST_USER, intent);
-                finish();
-            }
+        mAdapter = new MyAdapter(listIds, codeTheme, position -> {
+            Intent intent = new Intent();
+            intent.putExtra(QUESTION, listIds.get(position));
+            setResult(RESULT_FIRST_USER, intent);
+            finish();
         });
         mRecyclerView.setAdapter(mAdapter);
-    }
-
-    private void showToast(String message) {
-        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        toast.show();
     }
 
     @Override
