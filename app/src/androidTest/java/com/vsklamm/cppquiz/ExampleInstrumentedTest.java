@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.vsklamm.cppquizdroid", appContext.getPackageName());
+        assertEquals("com.vsklamm.cppquiz", appContext.getPackageName());
     }
 }

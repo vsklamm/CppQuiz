@@ -42,11 +42,13 @@ import com.pddstudio.highlightjs.models.Theme;
 import com.sackcentury.shinebuttonlib.ShineButton;
 import com.vsklamm.cppquiz.App;
 import com.vsklamm.cppquiz.R;
+import com.vsklamm.cppquiz.data.UserRepository;
 import com.vsklamm.cppquiz.data.model.Question;
 import com.vsklamm.cppquiz.data.model.UserData;
 import com.vsklamm.cppquiz.data.model.UsersAnswer;
 import com.vsklamm.cppquiz.data.database.AppDatabase;
 import com.vsklamm.cppquiz.data.prefs.SharedPreferencesHelper;
+import com.vsklamm.cppquiz.di.scope.Scopes;
 import com.vsklamm.cppquiz.loader.DumpLoader;
 import com.vsklamm.cppquiz.ui.about.AboutActivity;
 import com.vsklamm.cppquiz.ui.dialogs.ConfirmHintDialog;
@@ -68,11 +70,14 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import ru.noties.markwon.Markwon;
+import toothpick.Scope;
 import toothpick.Toothpick;
 
 import static com.vsklamm.cppquiz.ui.main.GameLogic.CPP_STANDARD;
@@ -132,20 +137,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @BindView(R.id.sp_main_result)
     Spinner spResult;
 
+    @Inject
+    UserRepository userRepository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         appPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
         ActivityUtils.setUpThemeNoActionBar(this, appPreferences);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toothpick.inject(this, scope);
         setSupportActionBar(toolbar);
 
-        toolbar = findViewById(R.id.toolbar); // TODO: disable OverflowMenu on non-MainContent views
-        setSupportActionBar(toolbar);
-
-        viewFlipper = findViewById(R.id.view_flipper_main);
-        progressTextViewLoading = findViewById(R.id.tv_progress);
+        Scope appScope = Toothpick.openScope(Scopes.APP);
+        Toothpick.inject(this, appScope);
 
         boolean hasVisited = appPreferences.getBoolean(HAS_VISITED, false);
         if (!hasVisited) {
@@ -155,7 +159,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (TimeWork.isNextDay(appPreferences)) {
                 initDumpLoader(RequestType.UPDATE);
             }
-
             db.questionDao().getAllIds()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
