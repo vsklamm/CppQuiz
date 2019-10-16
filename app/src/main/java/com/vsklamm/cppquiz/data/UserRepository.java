@@ -7,6 +7,12 @@ import java.util.Set;
 
 public interface UserRepository {
 
+    boolean isNewUser();
+
+    String getCodeTheme();
+
+    Long getLastUpdateTime();
+
     void saveCollection(String key, Set<Integer> collection);
 
     void saveCollection(String key, Map<Integer, Integer> collection);

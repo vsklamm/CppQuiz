@@ -22,12 +22,31 @@ import javax.inject.Inject;
 public class UserRepositoryImpl implements UserRepository {
 
     private final static String className = Log.class.getName();
+    private static final String HAS_VISITED = "HAS_VISITED";
+    private static final String THEME = "THEME";
+    private static final String LAST_UPDATE = "LAST_UPDATE";
 
     private final SharedPreferences sharedPreferences;
+
 
     @Inject
     public UserRepositoryImpl(SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
+    }
+
+    @Override
+    public boolean isNewUser() {
+        return sharedPreferences.getBoolean(HAS_VISITED, false);
+    }
+
+    @Override
+    public String getCodeTheme() {
+        return sharedPreferences.getString(THEME, "GITHUB");
+    }
+
+    @Override
+    public Long getLastUpdateTime() {
+        return sharedPreferences.getLong(LAST_UPDATE, 0);
     }
 
     @Override

@@ -27,9 +27,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuItemImpl;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.loader.app.LoaderManager;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -40,16 +40,14 @@ import com.pddstudio.highlightjs.HighlightJsView;
 import com.pddstudio.highlightjs.models.Language;
 import com.pddstudio.highlightjs.models.Theme;
 import com.sackcentury.shinebuttonlib.ShineButton;
-import com.vsklamm.cppquiz.App;
 import com.vsklamm.cppquiz.R;
 import com.vsklamm.cppquiz.data.UserRepository;
+import com.vsklamm.cppquiz.data.model.PublishedDatabase;
 import com.vsklamm.cppquiz.data.model.Question;
 import com.vsklamm.cppquiz.data.model.UserData;
 import com.vsklamm.cppquiz.data.model.UsersAnswer;
-import com.vsklamm.cppquiz.data.database.AppDatabase;
 import com.vsklamm.cppquiz.data.prefs.SharedPreferencesHelper;
 import com.vsklamm.cppquiz.di.scope.Scopes;
-import com.vsklamm.cppquiz.loader.DumpLoader;
 import com.vsklamm.cppquiz.ui.about.AboutActivity;
 import com.vsklamm.cppquiz.ui.dialogs.ConfirmHintDialog;
 import com.vsklamm.cppquiz.ui.dialogs.ConfirmResetDialog;
@@ -57,7 +55,6 @@ import com.vsklamm.cppquiz.ui.dialogs.GoToDialog;
 import com.vsklamm.cppquiz.ui.dialogs.ThemeChangerDialog;
 import com.vsklamm.cppquiz.ui.explanation.ExplanationActivity;
 import com.vsklamm.cppquiz.ui.favourites.FavouritesActivity;
-import com.vsklamm.cppquiz.utils.ActivityUtils;
 import com.vsklamm.cppquiz.utils.DeepLinksUtils;
 import com.vsklamm.cppquiz.utils.FlipperChild;
 import com.vsklamm.cppquiz.utils.RequestType;
@@ -77,6 +74,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import ru.noties.markwon.Markwon;
+import rx.Subscriber;
 import toothpick.Scope;
 import toothpick.Toothpick;
 
@@ -88,22 +86,18 @@ import static com.vsklamm.cppquiz.utils.TimeWork.LAST_UPDATE;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         HighlightJsView.OnThemeChangedListener,
         ThemeChangerDialog.ThemeChangeListener,
-        LoaderManager.LoaderCallbacks<LoadResult<String, LinkedHashSet<Integer>>>,
         ConfirmHintDialog.DialogListener,
         GoToDialog.DialogListener,
         ConfirmResetDialog.DialogListener,
         GameLogic.GameLogicCallbacks,
         View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
-    public static final String APP_PREFERENCES = "APP_PREFERENCES", APP_PREF_ZOOM = "APP_PREF_ZOOM";
-    public static final String APP_PREF_LINE_NUMBERS = "APP_PREF_LINE_NUMBERS", THEME = "THEME";
+    public static final String APP_PREF_ZOOM = "APP_PREF_ZOOM";
+    public static final String APP_PREF_LINE_NUMBERS = "APP_PREF_LINE_NUMBERS";
     public static final String REQUEST_TYPE = "REQUEST_TYPE", IS_GIVE_UP = "IS_GIVE_UP", QUESTION = "QUESTION";
-    public static final String GAME_MODE = "GAME_MODE", QUIZ_MODE = "QUIZ_MODE", TRAINING_MODE = "TRAINING_MODE";
-    private static final String HAS_VISITED = "HAS_VISITED";
+    public static final String QUIZ_MODE = "QUIZ_MODE", TRAINING_MODE = "TRAINING_MODE";
     private static final String USER_ANSWER = "USER_ANSWER";
     public static final int EXPLANATION_ACTIVITY = 0, FAVOURITES_ACTIVITY = 1;
-
-    private SharedPreferences appPreferences;
 
     private ConfirmHintDialog confirmHintDialog;
     private GoToDialog goToDialog;
@@ -116,20 +110,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ViewFlipper viewFlipper;
     @BindView(R.id.expandable_hint)
     ExpandableLayout expandableHint;
+
+    @BindView(R.id.expand_header_hint)
+    TextView expandHeaderHint;
+    @BindView(R.id.tv_progress)
+    public TextView progressTextViewLoading;
+    @BindView(R.id.et_card_view_answer)
+    EditText etAnswer;
     @BindView(R.id.btn_give_up)
     Button btnGiveUp;
     @BindView(R.id.btn_random)
     Button btnRandom;
     @BindView(R.id.btn_hint)
     Button btnHint;
+    @BindView(R.id.btn_retry)
+    Button btnRetry;
     @BindView(R.id.btn_answer)
     FloatingActionButton btnAnswer;
     @BindView(R.id.shine_button)
     ShineButton shineButton;
-    @BindView(R.id.tv_progress)
-    public TextView progressTextViewLoading;
-    @BindView(R.id.et_card_view_answer)
-    EditText etAnswer;
+
     @BindView(R.id.iv_linear_difficulty)
     ImageView imageViewLevel;
     @BindView(R.id.highlight_view_card_view)
@@ -142,8 +142,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        appPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
-        ActivityUtils.setUpThemeNoActionBar(this, appPreferences);
+        // ActivityUtils.setUpThemeNoActionBar(this, appPreferences);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar(toolbar);
@@ -151,12 +150,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Scope appScope = Toothpick.openScope(Scopes.APP);
         Toothpick.inject(this, appScope);
 
-        boolean hasVisited = appPreferences.getBoolean(HAS_VISITED, false);
+        final boolean hasVisited = userRepository.isNewUser();
         if (!hasVisited) {
             viewFlipper.setDisplayedChild(FlipperChild.LOADING_VIEW.ordinal());
-            initDumpLoader(LOAD_DUMP);
+            // load database
         } else {
-            if (TimeWork.isNextDay(appPreferences)) {
+            if (TimeWork.isNextDay(userRepository.getLastUpdateTime())) {
                 initDumpLoader(RequestType.UPDATE);
             }
             db.questionDao().getAllIds()
@@ -166,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         @Override
                         public void onSuccess(List<Integer> questionIds) {
                             GameLogic gameLogic = GameLogic.getInstance();
-                            String cppStandard = appPreferences.getString(CPP_STANDARD, "C++17"); // for many years
+                            final String cppStandard = appPreferences.getString(CPP_STANDARD, "C++17"); // for many years
                             gameLogic.initNewData(
                                     MainActivity.this,
                                     cppStandard,
@@ -181,16 +180,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     });
         }
 
-        String theme = appPreferences.getString(THEME, "GITHUB");
-        codeView = findViewById(R.id.highlight_view_card_view);
+        final String theme = userRepository.getCodeTheme();
         codeView.setOnThemeChangedListener(this);
         codeView.setTheme(Theme.valueOf(theme));
         codeView.setHighlightLanguage(Language.C_PLUS_PLUS);
 
-        expandableHint = findViewById(R.id.expandable_hint);
         findViewById(R.id.expand_header_hint).setOnClickListener(this);
         expandableHint.setOnExpansionUpdateListener((expansionFraction, state) -> {
-            TextView expandHeaderHint = findViewById(R.id.expand_header_hint);
             if (expandableHint.isExpanded()) {
                 NestedScrollView nestedScrollView = findViewById(R.id.nested_scroll_view);
                 nestedScrollView.smoothScrollTo(0, nestedScrollView.getBottom());
@@ -228,7 +224,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             } else expandableHint.expand();
         });
 
-        final Button btnGiveUp = findViewById(R.id.btn_give_up);
         btnGiveUp.setOnClickListener(v -> gamePresenter.giveUp());
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -248,18 +243,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         btnAnswer.setOnClickListener(v -> {
-            //GameLogic gameLogic = GameLogic.getInstance();
             UserData.getInstance().givenAnswer = new UsersAnswer(
                     gamePresenter.getCurrentQuestion().getId(),
                     ResultBehaviourType.getType(spResult.getSelectedItemPosition()),
                     etAnswer.getText().toString()
             );
             gamePresenter.checkAnswer();
-            //gameLogic.checkAnswer();
         });
 
-        Button buttonRetry = findViewById(R.id.btn_retry);
-        buttonRetry.setOnClickListener(v -> {
+        btnRetry.setOnClickListener(v -> {
             viewFlipper.setDisplayedChild(FlipperChild.LOADING_VIEW.ordinal());
             Bundle args = new Bundle();
             args.putInt(REQUEST_TYPE, LOAD_DUMP.ordinal());
@@ -296,11 +288,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             confirmHintDialog.dismiss();
         if (resetDialog != null)
             resetDialog.dismiss();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
@@ -516,15 +503,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(Intent.createChooser(sendIntent, title));
     }
 
-    @NonNull
-    @Override
-    public Loader<LoadResult<String, LinkedHashSet<Integer>>> onCreateLoader(final int id, final Bundle args) {
-        return new DumpLoader(this, args.getInt(REQUEST_TYPE));
-    }
+    private void loadPublishedDatabase() {
+        apiService.getPublishedQuestions()
+                .subscribeOn(rx.schedulers.Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<PublishedDatabase>() {
+                    @Override
+                    public void onCompleted() {
+                        // ignore
+                    }
 
-    @Override
-    public void onLoadFinished(@androidx.annotation.NonNull Loader<LoadResult<String, LinkedHashSet<Integer>>> loader, LoadResult<String, LinkedHashSet<Integer>> data) {
+                    @Override
+                    public void onError(Throwable e) {
 
+                    }
+
+                    @Override
+                    public void onNext(PublishedDatabase publishedDatabase) {
+
+                    }
+                });
     }
 
     @Override
@@ -660,19 +657,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onLoaderReset(@NonNull Loader<LoadResult<String, LinkedHashSet<Integer>>> loader) {
-    }
-
-    @Override
     public void onCppStandardChanged(@NonNull final String cppStandard) {
         TextView tvTask = findViewById(R.id.tv_task);
-        String task = String.format(getResources().getString(R.string.task_whole), cppStandard);
+        final String task = String.format(getResources().getString(R.string.task_whole), cppStandard);
         tvTask.setText(task);
     }
 
     @Override
     public void onGameStateChanged(final int questionId, final int correct, final int all) {
-        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(String.format(getResources().getString(R.string.toolbar_title_training),
                 questionId,
                 correct,
@@ -706,19 +698,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onQuestionNotFound(final int questionId) {
-        showToast(getString(R.string.question_not_found));
+        Toast.makeText(getApplicationContext(), getString(R.string.question_not_found), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onHintReceived(@NonNull final String hint) {
         TextView tvHint = findViewById(R.id.tv_hint);
         Markwon.setMarkdown(tvHint, hint);
-
         setExpandablePanel(View.VISIBLE);
     }
 
     public void showAttempts(final int attemptsRequired) {
-        Button btnGiveUp = findViewById(R.id.btn_give_up);
         if (attemptsRequired == 0) {
             btnGiveUp.setText(getResources().getString(R.string.give_up_default));
         } else {
@@ -734,19 +724,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .duration(600)
                 .playOn(btnAnswer);
         btnRandom.setText(getResources().getString(R.string.next));
-
         startExplanationActivity(false, question);
     }
 
     @Override
     public void onIncorrectAnswered(final int attemptsRequired) {
         showAttempts(attemptsRequired);
-
-        FloatingActionButton btnAnswer = findViewById(R.id.btn_answer);
         btnAnswer.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.buttonAnswerError));
-
         Toast.makeText(getApplicationContext(), getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
-
         YoYo.with(Techniques.Shake)
                 .duration(200)
                 .playOn(btnAnswer);
@@ -764,7 +749,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void noMoreQuestions() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.toolbar_no_questions));
         viewFlipper.setDisplayedChild(FlipperChild.NO_QUESTIONS_VIEW.ordinal());
     }
