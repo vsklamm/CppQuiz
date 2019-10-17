@@ -11,7 +11,6 @@ import com.squareup.moshi.Types;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -105,7 +104,7 @@ public class SharedPreferencesHelper {
             Log.e(className, json);
             HashMap<Integer, Integer> result = new HashMap<>(adapter.fromJson(json));
             Log.e(className, "moshi works");
-            return result == null ? new HashMap<Integer, Integer>() : result;
+            return result == null ? new HashMap<>() : result;
         } catch (IOException | NullPointerException ex) {
             return new HashMap<>();
         } catch (JsonDataException | ClassCastException ex) {

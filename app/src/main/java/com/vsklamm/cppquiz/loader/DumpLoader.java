@@ -3,9 +3,10 @@ package com.vsklamm.cppquiz.loader;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.AsyncTaskLoader;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.loader.content.AsyncTaskLoader;
 
 import com.vsklamm.cppquiz.App;
 import com.vsklamm.cppquiz.data.Question;
@@ -123,12 +124,7 @@ public class DumpLoader extends AsyncTaskLoader<LoadResult<String, LinkedHashSet
             Thread.sleep(TimeWork.LOADING_VIEW_DELAY - timePeriod);
         }
         if (callingActivity.get() != null) {
-            callingActivity.get().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    callingActivity.get().progressTextViewLoading.setText(action);
-                }
-            });
+            callingActivity.get().runOnUiThread(() -> callingActivity.get().progressTextViewLoading.setText(action));
         }
         Thread.sleep(TimeWork.LOADING_VIEW_DELAY);
     }

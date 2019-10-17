@@ -1,7 +1,8 @@
 package com.vsklamm.cppquiz.ui.main;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.vsklamm.cppquiz.App;
 import com.vsklamm.cppquiz.data.Question;

@@ -2,16 +2,16 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 29
+    buildToolsVersion '29.0.2'
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 29
         versionCode 8
         versionName "1.5.1"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -19,11 +19,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     androidTestImplementation 'junit:junit:4.12'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

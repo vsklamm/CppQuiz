@@ -3,15 +3,13 @@ package com.vsklamm.cppquiz.ui.explanation;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
-import android.widget.ScrollView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.pddstudio.highlightjs.HighlightJsView;
 import com.pddstudio.highlightjs.models.Language;
@@ -29,7 +27,6 @@ import static com.vsklamm.cppquiz.ui.main.MainActivity.APP_PREF_ZOOM;
 import static com.vsklamm.cppquiz.ui.main.MainActivity.IS_GIVE_UP;
 import static com.vsklamm.cppquiz.ui.main.MainActivity.QUESTION;
 import static com.vsklamm.cppquiz.ui.main.MainActivity.THEME;
-import static com.vsklamm.cppquiz.utils.ActivityUtils.APP_THEME_IS_DARK;
 
 public class ExplanationActivity extends AppCompatActivity {
 
@@ -74,25 +71,13 @@ public class ExplanationActivity extends AppCompatActivity {
         String resultText = results[question.getResult().ordinal()];
         String answerText = (question.getResult() == ResultBehaviourType.OK) ? (" `" + question.getAnswer() + "`") : "";
 
-        /*int color;
-        if (isGiveUp) {
-            color = ContextCompat.getColor(this, R.color.git_background);
-        } else {
-            color = ContextCompat.getColor(this, R.color.explanation_correct);
-        }
-        tvAnswer.setBackgroundColor(color);
-        tvExplanation.setBackgroundColor(color);*/
-
         Markwon.setMarkdown(tvAnswer, resultText + answerText);
         Markwon.setMarkdown(tvExplanation, question.getExplanation());
 
         Button btnNextQuestion = findViewById(R.id.btn_next_question);
-        btnNextQuestion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(RESULT_FIRST_USER);
-                finish();
-            }
+        btnNextQuestion.setOnClickListener(v -> {
+            setResult(RESULT_FIRST_USER);
+            finish();
         });
     }
 

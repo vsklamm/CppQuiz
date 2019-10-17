@@ -2,13 +2,13 @@ package com.vsklamm.cppquiz.ui.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatDialogFragment;
-import android.support.v7.view.ContextThemeWrapper;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.appcompat.view.ContextThemeWrapper;
 
 import com.vsklamm.cppquiz.R;
 
@@ -35,18 +35,8 @@ public class ConfirmHintDialog extends AppCompatDialogFragment {
         dialogBuilder
                 .setTitle(R.string.dialog_hint_title)
                 .setMessage(R.string.dialog_hint_text)
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        listener.onConfirmedHintLoad();
-                    }
-                });
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel())
+                .setPositiveButton(R.string.yes, (dialog, which) -> listener.onConfirmedHintLoad());
         return dialogBuilder.create();
     }
 

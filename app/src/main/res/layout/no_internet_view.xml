@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -11,6 +11,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/btn_retry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:background="@color/buttonAnswerDefault"
+            android:text="@string/retry"
+            android:textColor="@android:color/white" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,18 +55,6 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_retry"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-            android:background="@color/buttonAnswerDefault"
-            android:text="@string/retry"
-            android:textColor="@android:color/white" />
-
     </RelativeLayout>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

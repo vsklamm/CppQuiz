@@ -2,7 +2,7 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
+        <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -18,7 +18,7 @@
     </style>
 
     <style name="AppTheme.NoActionBar">
-        <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
+        <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
         <item name="android:navigationBarColor">@color/navigationBarColor</item>
 
         <item name="windowActionBar">false</item>
@@ -33,7 +33,7 @@
     </style>
 
     <style name="AppTheme.Dark" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
+        <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkDark</item>
         <item name="colorPrimary">@color/colorPrimaryD</item>
         <item name="colorAccent">@color/colorAccentDark</item>

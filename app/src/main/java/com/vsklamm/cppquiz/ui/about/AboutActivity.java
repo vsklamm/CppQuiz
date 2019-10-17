@@ -2,8 +2,9 @@ package com.vsklamm.cppquiz.ui.about;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.vsklamm.cppquiz.R;
 import com.vsklamm.cppquiz.utils.ActivityUtils;

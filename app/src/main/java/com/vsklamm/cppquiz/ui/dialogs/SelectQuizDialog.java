@@ -2,11 +2,11 @@ package com.vsklamm.cppquiz.ui.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatDialogFragment;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.vsklamm.cppquiz.R;
 
@@ -21,18 +21,8 @@ public class SelectQuizDialog extends AppCompatDialogFragment {
 
         alertDialogBuilder
                 .setTitle(R.string.select_quiz_title)
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        listener.onQuizSelected();
-                    }
-                });
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel())
+                .setPositiveButton(R.string.yes, (dialog, which) -> listener.onQuizSelected());
         return alertDialogBuilder.create();
     }
 

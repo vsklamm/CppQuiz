@@ -3,12 +3,13 @@ package com.pddstudio.highlightjs;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+
+import androidx.annotation.NonNull;
 
 import com.pddstudio.highlightjs.models.Language;
 import com.pddstudio.highlightjs.models.Theme;

@@ -1,14 +1,12 @@
 package com.vsklamm.cppquiz.utils;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public class DeepLinksUtils {
 
     private final String link;
 
     private boolean questionLinkParsed;
-
-    private boolean quizLinkParsed;
 
     private int questionId;
 
@@ -21,12 +19,6 @@ public class DeepLinksUtils {
     private void ensureQuestionParse() {
         if (!questionLinkParsed) {
             throw new IllegalStateException("No question link found so far");
-        }
-    }
-
-    private void ensureQuizParse() {
-        if (!quizLinkParsed) {
-            throw new IllegalStateException("No quiz link found so far");
         }
     }
 
@@ -55,11 +47,6 @@ public class DeepLinksUtils {
     public int getQuestionId() {
         ensureQuestionParse();
         return questionId;
-    }
-
-    public String getQuizKey() {
-        isQuizLink();
-        return quizKey;
     }
 
 }
