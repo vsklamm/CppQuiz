@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
@@ -58,9 +59,11 @@ public class GameLogic implements Serializable { // TODO: rename methods
         setCppStandard(cppStandard);
         // Class contract says that UserData is initialized now
         LinkedHashSet<Integer> correctlyAnswered = UserData.getInstance().getCorrectlyAnsweredQuestions();
-        for (Integer id : correctlyAnswered) {
-            if (!questionsIds.contains(id)) {
-                correctlyAnswered.remove(id);
+        Iterator<Integer> itLHS = correctlyAnswered.iterator();
+        while(itLHS.hasNext()) {
+            Integer val = itLHS.next();
+            if (!questionsIds.contains(val)) {
+                itLHS.remove();
             }
         }
         HashMap<Integer, Integer> attempts = UserData.getInstance().getAttempts();
@@ -70,17 +73,19 @@ public class GameLogic implements Serializable { // TODO: rename methods
                 erased.add(id);
             }
         }
-        for (Integer id : erased)
+        for (Integer id : erased) {
             attempts.remove(id);
-
+        }
         updateGameState();
     }
 
     public void ourQuestion() {
-        if (currentQuestion.getId() == -1)
+        if (currentQuestion.getId() == -1) {
             randomQuestion();
-        else
+        }
+        else {
             questionById(currentQuestion.getId());
+        }
     }
 
     public void randomQuestion() {
@@ -94,7 +99,6 @@ public class GameLogic implements Serializable { // TODO: rename methods
 
     public void questionById(final int questionId) {
         AppDatabase db = App.getInstance().getDatabase();
-
         db.questionDao().findById(questionId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -120,7 +124,7 @@ public class GameLogic implements Serializable { // TODO: rename methods
     }
 
     public void questionHint() {
-        String hint = currentQuestion.getHint();
+        final String hint = currentQuestion.getHint();
         listener.get().onHintReceived(hint);
     }
 
@@ -212,7 +216,5 @@ public class GameLogic implements Serializable { // TODO: rename methods
         void tooEarlyToGiveUp(final int attemptsRequired); // none
 
         void noMoreQuestions(); // onFinishQuiz instead
-
-        void onErrorHappens();
     }
 }
