@@ -78,9 +78,10 @@ public class UserData implements Serializable {
     }
 
     public void registerAttempt(final int questionId) {
-        if (attempts.get(questionId) == null)
+        if (attempts.get(questionId) == null) {
             attempts.put(questionId, 0);
-        Integer old = attempts.get(questionId);
+        }
+        final Integer old = attempts.get(questionId);
         attempts.put(questionId, old + 1);
     }
 
@@ -103,8 +104,9 @@ public class UserData implements Serializable {
     }
 
     public int attemptsGivenFor(final int questionId) {
-        if (attempts.get(questionId) == null)
+        if (attempts.get(questionId) == null) {
             attempts.put(questionId, 0);
+        }
         return attempts.get(questionId);
     }
 
@@ -119,5 +121,4 @@ public class UserData implements Serializable {
     public void saveCorrectlyAnswered() {
         SharedPreferencesHelper.saveCollection(userQuizData, CORRECTLY_ANSWERED, correctlyAnswered);
     }
-
 }

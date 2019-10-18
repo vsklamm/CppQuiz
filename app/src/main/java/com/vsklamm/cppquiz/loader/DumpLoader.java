@@ -128,5 +128,4 @@ public class DumpLoader extends AsyncTaskLoader<LoadResult<String, LinkedHashSet
         }
         Thread.sleep(TimeWork.LOADING_VIEW_DELAY);
     }
-
 }

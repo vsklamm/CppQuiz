@@ -379,7 +379,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             case R.id.debug_no_questions:
                 noMoreQuestions();
-                // viewFlipper.setDisplayedChild(FlipperChild.NO_QUESTIONS_VIEW.ordinal());
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
@@ -551,8 +550,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             DeepLinksUtils deepLinksUtils = new DeepLinksUtils(data);
             if (deepLinksUtils.isQuestionLink()) {
                 GameLogic.getInstance().questionById(deepLinksUtils.getQuestionId());
-            } else if (deepLinksUtils.isQuizLink()) {
-                // TODO: handle quiz links
             } else {
                 GameLogic.getInstance().randomQuestion();
             }
@@ -641,12 +638,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onQuestionLoaded(@NonNull final Question question, final int attemptsRequired) {
         setExpandablePanel(View.GONE);
-
         etAnswer.getText().clear();
-
         boolean checked = UserData.getInstance().isFavouriteQuestion(question.getId());
         shineButton.setChecked(checked, false);
-
         if (attemptsRequired == 0) {
             btnGiveUp.setText(getResources().getString(R.string.give_up_default));
         } else {
@@ -718,11 +712,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void noMoreQuestions() {
         toolbar.setTitle(getResources().getString(R.string.toolbar_no_questions));
         viewFlipper.setDisplayedChild(FlipperChild.NO_QUESTIONS_VIEW.ordinal());
-    }
-
-    @Override
-    public void onErrorHappens() {
-        // TODO: handle errors
     }
 
     public class RetryLoadingListener implements View.OnClickListener {

@@ -24,7 +24,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static java.lang.Math.max;
 
-public class GameLogic implements Serializable { // TODO: rename methods
+public class GameLogic implements Serializable {
 
     public static final String CPP_STANDARD = "CPP_STANDARD";
     private static volatile GameLogic gameLogicInstance;
@@ -59,13 +59,6 @@ public class GameLogic implements Serializable { // TODO: rename methods
         setCppStandard(cppStandard);
         // Class contract says that UserData is initialized now
         LinkedHashSet<Integer> correctlyAnswered = UserData.getInstance().getCorrectlyAnsweredQuestions();
-        Iterator<Integer> itLHS = correctlyAnswered.iterator();
-        while(itLHS.hasNext()) {
-            Integer val = itLHS.next();
-            if (!questionsIds.contains(val)) {
-                itLHS.remove();
-            }
-        }
         HashMap<Integer, Integer> attempts = UserData.getInstance().getAttempts();
         List<Integer> erased = new ArrayList<>();
         for (Integer id : attempts.keySet()) {
@@ -74,6 +67,7 @@ public class GameLogic implements Serializable { // TODO: rename methods
             }
         }
         for (Integer id : erased) {
+            correctlyAnswered.remove(id);
             attempts.remove(id);
         }
         updateGameState();

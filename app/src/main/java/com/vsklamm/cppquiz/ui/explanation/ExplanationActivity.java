@@ -19,6 +19,8 @@ import com.vsklamm.cppquiz.data.Question;
 import com.vsklamm.cppquiz.utils.ActivityUtils;
 import com.vsklamm.cppquiz.utils.ResultBehaviourType;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ru.noties.markwon.Markwon;
 
 import static com.vsklamm.cppquiz.ui.main.MainActivity.APP_PREFERENCES;
@@ -30,6 +32,13 @@ import static com.vsklamm.cppquiz.ui.main.MainActivity.THEME;
 
 public class ExplanationActivity extends AppCompatActivity {
 
+    @BindView(R.id.tv_answer)
+    TextView tvAnswer;
+    @BindView(R.id.tv_explanation)
+    TextView tvExplanation;
+    @BindView(R.id.btn_next_question)
+    Button btnNextQuestion;
+    @BindView(R.id.highlight_view_card_view_2)
     HighlightJsView codeView;
 
     @Override
@@ -38,6 +47,7 @@ public class ExplanationActivity extends AppCompatActivity {
         ActivityUtils.setUpTheme(this, appPreferences);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explanation);
+        ButterKnife.bind(this);
 
         Intent intent = getIntent();
         final boolean isGiveUp = intent.getBooleanExtra(IS_GIVE_UP, false);
@@ -56,7 +66,6 @@ public class ExplanationActivity extends AppCompatActivity {
         }
 
         final String theme = appPreferences.getString(THEME, "GITHUB");
-        codeView = findViewById(R.id.highlight_view_card_view_2);
         codeView.setTheme(Theme.valueOf(theme));
         codeView.setHighlightLanguage(Language.C_PLUS_PLUS);
         codeView.setSource(question.getCode());
@@ -64,22 +73,42 @@ public class ExplanationActivity extends AppCompatActivity {
         onZoomSupportToggled(appPreferences.getBoolean(APP_PREF_ZOOM, false));
         onShowLineNumbersToggled(appPreferences.getBoolean(APP_PREF_LINE_NUMBERS, false));
 
-        TextView tvAnswer = findViewById(R.id.tv_answer);
-        TextView tvExplanation = findViewById(R.id.tv_explanation);
-
-        String[] results = getResources().getStringArray(R.array.result_behaviour_type);
-        String resultText = results[question.getResult().ordinal()];
-        String answerText = (question.getResult() == ResultBehaviourType.OK) ? (" `" + question.getAnswer() + "`") : "";
+        final String[] results = getResources().getStringArray(R.array.result_behaviour_type);
+        final String resultText = results[question.getResult().ordinal()];
+        final String answerText = (question.getResult() == ResultBehaviourType.OK) ? (" `" + question.getAnswer() + "`") : "";
 
         Markwon.setMarkdown(tvAnswer, resultText + answerText);
-        Markwon.setMarkdown(tvExplanation, question.getExplanation());
+		String exp = question.getExplanation();
+        Markwon.setMarkdown(tvExplanation, exp);
 
-        Button btnNextQuestion = findViewById(R.id.btn_next_question);
         btnNextQuestion.setOnClickListener(v -> {
             setResult(RESULT_FIRST_USER);
             finish();
         });
     }
+
+//	private String addLinks(String explanation) {
+//		final String possibleSectionName = "(\[(?P<section_name>\w+(\.\w+)*)\])?";
+//		final String sectionNumber = "�\d+(\.\d+)*";
+//    	final String possibleParagraph = "(\u00B6(?P<paragraph>\d+(\.\d+)*))*";
+//		Pattern patternLink = Pattern.compile("(" + possibleSectionName + sectionNumber + possibleParagraph + ")");
+//		// Matcher matcherLink = patternLink.matcher(explanation);
+//		StringReplacer.replace(explanation, patternLink, m -> {
+//			String fullReference = m.group();
+//    		String sectionName = m.group("section_name");
+//    		String paragraphNumber = m.group("paragraph");
+//    		if (!sectionName.isEmpty()) {
+//        		String fullLink = "https://timsong-cpp.github.io/cppwp/n4659/" + sectionName;
+//        		if (!paragraphNumber.isEmpty()) {
+//    	    	    fullLink += "#" + paragraphNumber;
+//				}
+//	    	    return "(" + fullReference + ")[" + fullLink + "]";
+//			}
+//    		else {
+//        		return fullReference;
+//			}
+//		});
+//	}
 
     private void onShowLineNumbersToggled(final boolean enableLineNumbers) {
         codeView.setShowLineNumbers(enableLineNumbers);
@@ -93,10 +122,9 @@ public class ExplanationActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

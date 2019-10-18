@@ -86,8 +86,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
         final Resources resources = holder.itemView.getContext().getResources();
-
-        Integer questionId = favouritesIds.get(position);
+        final Integer questionId = favouritesIds.get(position);
         holder.textView.setText(String.format(resources.getString(R.string.question_item_text), questionId));
         holder.codeView.setTheme(Theme.valueOf(codeTheme));
         holder.codeView.setHighlightLanguage(Language.C_PLUS_PLUS);

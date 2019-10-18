@@ -36,16 +36,6 @@ public class SharedPreferencesHelper {
         editor.apply();
     }
 
-    /*public static <T> void saveCollection(SharedPreferences prefs, String key, T collection) {
-        SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(collection);
-        Log.e(className, collection.getClass().getName() + " is recorded using gson:");
-        Log.e(className, json);
-        editor.putString(key, json);
-        editor.apply();
-    }*/
-
     public static void saveCollection(SharedPreferences prefs, String key, Set<Integer> collection) {
         SharedPreferences.Editor editor = prefs.edit();
         Moshi moshi = new Moshi.Builder().build();
@@ -82,7 +72,7 @@ public class SharedPreferencesHelper {
             Log.e(className, json);
             LinkedHashSet<Integer> result = new LinkedHashSet<>(adapter.fromJson(json));
             Log.e(className, "moshi works");
-            return result == null ? new LinkedHashSet<Integer>() : result;
+            return result == null ? new LinkedHashSet<>() : result;
         } catch (IOException | NullPointerException ex) {
             return new LinkedHashSet<>();
         } catch (JsonDataException | ClassCastException ex) {

@@ -12,6 +12,8 @@ import androidx.appcompat.view.ContextThemeWrapper;
 
 import com.vsklamm.cppquiz.R;
 
+import org.jetbrains.annotations.NotNull;
+
 import static android.content.Context.MODE_PRIVATE;
 import static com.vsklamm.cppquiz.ui.main.MainActivity.APP_PREFERENCES;
 
@@ -32,8 +34,7 @@ public class ConfirmHintDialog extends AppCompatDialogFragment {
                 new ContextThemeWrapper(getActivity(), theme)
         );
 
-        dialogBuilder
-                .setTitle(R.string.dialog_hint_title)
+        dialogBuilder.setTitle(R.string.dialog_hint_title)
                 .setMessage(R.string.dialog_hint_text)
                 .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel())
                 .setPositiveButton(R.string.yes, (dialog, which) -> listener.onConfirmedHintLoad());
@@ -41,7 +42,7 @@ public class ConfirmHintDialog extends AppCompatDialogFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         try {
             listener = (DialogListener) context;

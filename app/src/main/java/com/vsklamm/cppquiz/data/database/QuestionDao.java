@@ -49,5 +49,4 @@ public interface QuestionDao { // TODO: rename methods
     @SuppressWarnings("unused")
     @Delete
     void delete(Question question);
-
 }

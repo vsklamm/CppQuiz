@@ -15,6 +15,8 @@ import androidx.appcompat.view.ContextThemeWrapper;
 
 import com.vsklamm.cppquiz.R;
 
+import org.jetbrains.annotations.NotNull;
+
 import static android.content.Context.MODE_PRIVATE;
 import static com.vsklamm.cppquiz.ui.main.MainActivity.APP_PREFERENCES;
 import static com.vsklamm.cppquiz.utils.ActivityUtils.APP_THEME_IS_DARK;
@@ -58,7 +60,7 @@ public class GoToDialog extends AppCompatDialogFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         try {
             listener = (GoToDialog.DialogListener) context;

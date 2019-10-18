@@ -10,8 +10,6 @@ public class DeepLinksUtils {
 
     private int questionId;
 
-    private String quizKey;
-
     public DeepLinksUtils(@NonNull final String link) {
         this.link = link;
     }
@@ -26,17 +24,6 @@ public class DeepLinksUtils {
         try {
             questionId = Integer.parseInt(link.substring(link.lastIndexOf("/") + 1)); // TODO: more smart parse
             questionLinkParsed = true;
-        } catch (NumberFormatException ignored) {
-            questionLinkParsed = false;
-            return false;
-        }
-        return true;
-    }
-
-    public boolean isQuizLink() {
-        try {
-            quizKey = link.substring(link.lastIndexOf("/") + 1); // TODO: more smart parse
-            questionLinkParsed = quizKey.length() == 5;
         } catch (NumberFormatException ignored) {
             questionLinkParsed = false;
             return false;
