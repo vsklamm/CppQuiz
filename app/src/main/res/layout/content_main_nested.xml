@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nested_scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:isScrollContainer="false"
@@ -14,27 +14,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".ui.main.MainActivity"
         tools:showIn="@layout/app_bar_main">
-
-        <include
-            android:id="@+id/cv_code_view"
-            layout="@layout/card_view_code"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/cv_sp_result"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="spread" />
-
-        <include
-            android:id="@+id/cv_sp_result"
-            layout="@layout/card_view_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cv_code_view"
-            app:layout_constraintVertical_chainStyle="spread" />
 
         <LinearLayout
             android:id="@+id/linear_answer"
@@ -65,7 +44,7 @@
                 android:textColorHint="@color/edit_text_hint_color"
                 android:textSize="20sp" />
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btn_answer"
                 android:layout_width="52dp"
                 android:layout_height="52dp"
@@ -77,6 +56,8 @@
                 app:backgroundTint="@color/buttonAnswerDefault"
                 app:borderWidth="0dp"
                 app:elevation="4dp"
+                app:fabCustomSize="52dp"
+                app:pressedTranslationZ="6dp"
                 app:srcCompat="@drawable/ic_done_white_24dp" />
 
         </LinearLayout>
@@ -120,6 +101,27 @@
         </LinearLayout>
 
         <include
+            android:id="@+id/cv_code_view"
+            layout="@layout/card_view_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/cv_sp_result"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread" />
+
+        <include
+            android:id="@+id/cv_sp_result"
+            layout="@layout/card_view_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cv_code_view"
+            app:layout_constraintVertical_chainStyle="spread" />
+
+        <include
             android:id="@+id/expansion_panel_outer"
             layout="@layout/expansion_panel_group"
             android:layout_width="0dp"
@@ -134,6 +136,6 @@
             app:layout_constraintTop_toBottomOf="@id/linear_main_buttons"
             app:layout_constraintVertical_chainStyle="spread" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</android.support.v4.widget.NestedScrollView>
+</androidx.core.widget.NestedScrollView>

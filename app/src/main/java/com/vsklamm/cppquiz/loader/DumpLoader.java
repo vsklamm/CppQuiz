@@ -3,11 +3,13 @@ package com.vsklamm.cppquiz.loader;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.AsyncTaskLoader;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.loader.content.AsyncTaskLoader;
 
 import com.vsklamm.cppquiz.App;
+import com.vsklamm.cppquiz.R;
 import com.vsklamm.cppquiz.data.Question;
 import com.vsklamm.cppquiz.data.api.CppQuizLiteApi;
 import com.vsklamm.cppquiz.data.database.AppDatabase;
@@ -62,12 +64,16 @@ public class DumpLoader extends AsyncTaskLoader<LoadResult<String, LinkedHashSet
             LinkedHashSet<Integer> result = new LinkedHashSet<>();
             DumpDataType<List<Question>> newDump;
 
-            updateProgress(System.currentTimeMillis(), "Loading questions");
+            updateProgress(System.currentTimeMillis(), callingActivity.get().getString(R.string.load_state_loading_questions));
             long startTime = System.currentTimeMillis();
 
-            newDump = Parser.readJsonStream(response.body().byteStream());
+            if (response.body() != null) {
+                newDump = Parser.readJsonStream(response.body().source());
+            } else {
+                throw new NullPointerException("Response would not be null");
+            }
 
-            updateProgress(System.currentTimeMillis() - startTime, "Database processing");
+            updateProgress(System.currentTimeMillis() - startTime, callingActivity.get().getString(R.string.load_state_database_processing));
 
             AppDatabase db = App.getInstance().getDatabase();
             QuestionDao questionDao = db.questionDao();
@@ -101,7 +107,7 @@ public class DumpLoader extends AsyncTaskLoader<LoadResult<String, LinkedHashSet
 
             this.result = new LoadResult<>(ConnectSuccessType.OK, newDump.cppStandard, result, requestType, updated);
             return this.result;
-        } catch (IOException | InterruptedException ex) {
+        } catch (IOException | InterruptedException | NullPointerException ex) {
             ConnectSuccessType connectSuccessType = isOnline() ? ConnectSuccessType.ERROR : ConnectSuccessType.NO_INTERNET;
             return new LoadResult<>(connectSuccessType, null, null, requestType, false);
         }
@@ -119,14 +125,8 @@ public class DumpLoader extends AsyncTaskLoader<LoadResult<String, LinkedHashSet
             Thread.sleep(TimeWork.LOADING_VIEW_DELAY - timePeriod);
         }
         if (callingActivity.get() != null) {
-            callingActivity.get().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    callingActivity.get().progressTextViewLoading.setText(action);
-                }
-            });
+            callingActivity.get().runOnUiThread(() -> callingActivity.get().progressTextViewLoading.setText(action));
         }
         Thread.sleep(TimeWork.LOADING_VIEW_DELAY);
     }
-
 }

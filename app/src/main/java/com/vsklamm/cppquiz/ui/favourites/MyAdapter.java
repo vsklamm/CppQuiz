@@ -2,14 +2,15 @@ package com.vsklamm.cppquiz.ui.favourites;
 
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.pddstudio.highlightjs.HighlightJsView;
 import com.pddstudio.highlightjs.models.Language;
@@ -84,9 +85,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
-        Resources resources = holder.itemView.getContext().getResources();
-
-        Integer questionId = favouritesIds.get(position);
+        final Resources resources = holder.itemView.getContext().getResources();
+        final Integer questionId = favouritesIds.get(position);
         holder.textView.setText(String.format(resources.getString(R.string.question_item_text), questionId));
         holder.codeView.setTheme(Theme.valueOf(codeTheme));
         holder.codeView.setHighlightLanguage(Language.C_PLUS_PLUS);
@@ -103,7 +103,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
                     @Override
                     public void onError(Throwable ignored) {
-                        holder.codeView.setSource("This question is retracted"); // TODO: -> strings
+                        holder.codeView.setSource(resources.getString(R.string.retracted_question));
                     }
                 });
     }

@@ -2,9 +2,10 @@ package com.vsklamm.cppquiz.ui.dialogs;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.util.Pair;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 
 import com.pddstudio.highlightjs.models.Theme;
 import com.vsklamm.cppquiz.R;
@@ -70,29 +71,23 @@ public class ThemeChangerDialog implements DialogInterface.OnClickListener {
     }
 
     private Theme findThemeWithMatchingName(String themeName) {
-
         if (themeName == null || themeName.isEmpty()) {
             return Theme.DEFAULT;
         }
-
         for (Theme theme : Theme.values()) {
             if (theme.getName().equalsIgnoreCase(themeName)) {
                 return theme;
             }
         }
-
         return Theme.DEFAULT;
     }
 
     private Theme getSelectedTheme(int selectedIndex) {
-
         CharSequence[] themes = buildThemeList();
         String themeName = null;
-
         if (selectedIndex > 0 && selectedIndex < themes.length) {
             themeName = themes[selectedIndex].toString();
         }
-
         return findThemeWithMatchingName(themeName);
     }
 

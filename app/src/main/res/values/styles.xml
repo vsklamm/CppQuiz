@@ -2,7 +2,7 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
+        <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -11,12 +11,14 @@
         <item name="cardViewStyle">@style/CardView</item>
         <item name="primaryTextViewStyle">@style/TextViewLight</item>
         <item name="primaryFlatButtonStyle">@style/PrimaryFlatButton</item>
+        <item name="explanationBackground">@drawable/style_triangular_halves</item>
+        <item name="sideNavBar">@drawable/side_nav_bar_dark</item>
         <item name="android:buttonStyle">@style/LightThemeButton</item>
         <item name="popupOverlayStyle">@style/AppTheme.PopupOverlay</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
-        <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
+        <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
         <item name="android:navigationBarColor">@color/navigationBarColor</item>
 
         <item name="windowActionBar">false</item>
@@ -25,11 +27,13 @@
         <item name="cardViewStyle">@style/CardView</item>
         <item name="primaryTextViewStyle">@style/TextViewLight</item>
         <item name="primaryFlatButtonStyle">@style/PrimaryFlatButton</item>
+        <item name="sideNavBar">@drawable/side_nav_bar_dark</item>
+        <item name="explanationBackground">@drawable/style_triangular_halves</item>
         <item name="popupOverlayStyle">@style/AppTheme.PopupOverlay</item>
     </style>
 
     <style name="AppTheme.Dark" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
+        <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkDark</item>
         <item name="colorPrimary">@color/colorPrimaryD</item>
         <item name="colorAccent">@color/colorAccentDark</item>
@@ -39,6 +43,8 @@
         <item name="cardViewStyle">@style/CardView.Dark</item>
         <item name="primaryTextViewStyle">@style/TextViewDark</item>
         <item name="primaryFlatButtonStyle">@style/PrimaryFlatButtonDark</item>
+        <item name="sideNavBar">@drawable/side_nav_bar_dark</item>
+        <item name="explanationBackground">@drawable/style_dark_triangular_halves</item>
         <item name="popupOverlayStyle">@style/AppTheme.PopupOverlay.Dark</item>
     </style>
 
@@ -52,6 +58,8 @@
         <item name="cardViewStyle">@style/CardView.Dark</item>
         <item name="primaryTextViewStyle">@style/TextViewDark</item>
         <item name="primaryFlatButtonStyle">@style/PrimaryFlatButtonDark</item>
+        <item name="sideNavBar">@drawable/side_nav_bar_dark</item>
+        <item name="explanationBackground">@drawable/style_dark_triangular_halves</item>
         <item name="popupOverlayStyle">@style/AppTheme.PopupOverlay.Dark</item>
     </style>
 
@@ -88,11 +96,19 @@
     </style>
 
     <style name="TextViewLight">
-        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="android:textColor">@android:color/tab_indicator_text</item>
     </style>
 
     <style name="TextViewDark">
         <item name="android:textColor">@color/colorTextPrimaryDark</item>
+    </style>
+
+    <style name="ExplanationBackground">
+        <item name="android:background">@drawable/style_triangular_halves</item>
+    </style>
+
+    <style name="ExplanationBackgroundDark">
+        <item name="android:background">@drawable/style_dark_triangular_halves</item>
     </style>
 
 </resources>

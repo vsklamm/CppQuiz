@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -9,7 +8,6 @@
 
     <TextView
         android:id="@+id/expand_header_hint"
-        android:theme="@style/AppTheme"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@drawable/style_round_expanded"
@@ -19,7 +17,8 @@
         android:paddingEnd="24dp"
         android:text="@string/show_hint"
         android:textAlignment="gravity"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:theme="@style/AppTheme" />
 
     <net.cachapa.expandablelayout.ExpandableLayout
         android:id="@+id/expandable_hint"
@@ -30,7 +29,6 @@
 
         <TextView
             android:id="@+id/tv_hint"
-            android:theme="@style/AppTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
@@ -41,7 +39,8 @@
             android:padding="8dp"
             android:text="@string/hint_tv_default_text"
             android:textIsSelectable="true"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:theme="@style/AppTheme" />
 
     </net.cachapa.expandablelayout.ExpandableLayout>
 

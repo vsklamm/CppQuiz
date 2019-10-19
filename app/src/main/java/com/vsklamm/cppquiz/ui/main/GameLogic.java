@@ -1,7 +1,8 @@
 package com.vsklamm.cppquiz.ui.main;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.vsklamm.cppquiz.App;
 import com.vsklamm.cppquiz.data.Question;
@@ -12,6 +13,7 @@ import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
@@ -22,7 +24,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static java.lang.Math.max;
 
-public class GameLogic implements Serializable { // TODO: rename methods
+public class GameLogic implements Serializable {
 
     public static final String CPP_STANDARD = "CPP_STANDARD";
     private static volatile GameLogic gameLogicInstance;
@@ -57,11 +59,6 @@ public class GameLogic implements Serializable { // TODO: rename methods
         setCppStandard(cppStandard);
         // Class contract says that UserData is initialized now
         LinkedHashSet<Integer> correctlyAnswered = UserData.getInstance().getCorrectlyAnsweredQuestions();
-        for (Integer id : correctlyAnswered) {
-            if (!questionsIds.contains(id)) {
-                correctlyAnswered.remove(id);
-            }
-        }
         HashMap<Integer, Integer> attempts = UserData.getInstance().getAttempts();
         List<Integer> erased = new ArrayList<>();
         for (Integer id : attempts.keySet()) {
@@ -69,14 +66,24 @@ public class GameLogic implements Serializable { // TODO: rename methods
                 erased.add(id);
             }
         }
-        for (Integer id : erased)
+        for (Integer id : erased) {
+            correctlyAnswered.remove(id);
             attempts.remove(id);
-
+        }
         updateGameState();
     }
 
+    public void ourQuestion() {
+        if (currentQuestion.getId() == -1) {
+            randomQuestion();
+        }
+        else {
+            questionById(currentQuestion.getId());
+        }
+    }
+
     public void randomQuestion() {
-        int randomId = getUnansweredQuestion();
+        final int randomId = getUnansweredQuestion();
         if (randomId == -1) {
             listener.get().noMoreQuestions();
         } else {
@@ -86,7 +93,6 @@ public class GameLogic implements Serializable { // TODO: rename methods
 
     public void questionById(final int questionId) {
         AppDatabase db = App.getInstance().getDatabase();
-
         db.questionDao().findById(questionId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -112,15 +118,15 @@ public class GameLogic implements Serializable { // TODO: rename methods
     }
 
     public void questionHint() {
-        String hint = currentQuestion.getHint();
+        final String hint = currentQuestion.getHint();
         listener.get().onHintReceived(hint);
     }
 
     public void checkAnswer() {
-        int currentId = currentQuestion.getId();
+        final int currentId = currentQuestion.getId();
         UserData.getInstance().registerAttempt(currentId);
 
-        boolean correct = currentQuestion.compareWithAnswer(UserData.getInstance().givenAnswer);
+        final boolean correct = currentQuestion.compareWithAnswer(UserData.getInstance().givenAnswer);
         if (correct) {
             UserData.getInstance().registerCorrectAnswer(currentId);
             UserData.getInstance().saveAttempts();
@@ -135,7 +141,7 @@ public class GameLogic implements Serializable { // TODO: rename methods
     }
 
     public void giveUp() {
-        int attemptsGivenFor = UserData.getInstance().attemptsGivenFor(currentQuestion.getId());
+        final int attemptsGivenFor = UserData.getInstance().attemptsGivenFor(currentQuestion.getId());
         if (attemptsGivenFor >= 3) {
             listener.get().onGiveUp(currentQuestion);
         } else {
@@ -204,7 +210,5 @@ public class GameLogic implements Serializable { // TODO: rename methods
         void tooEarlyToGiveUp(final int attemptsRequired); // none
 
         void noMoreQuestions(); // onFinishQuiz instead
-
-        void onErrorHappens();
     }
 }

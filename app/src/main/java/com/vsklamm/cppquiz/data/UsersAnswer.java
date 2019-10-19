@@ -1,6 +1,6 @@
 package com.vsklamm.cppquiz.data;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.vsklamm.cppquiz.utils.ResultBehaviourType;
 

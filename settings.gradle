@@ -1,2 +1,2 @@
 include ':app'
-include ':library'
+include ':hltjs_code_lib', ':exp_lay_lib'

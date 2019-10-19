@@ -1,7 +1,8 @@
 package com.vsklamm.cppquiz;
 
 import android.app.Application;
-import android.arch.persistence.room.Room;
+
+import androidx.room.Room;
 
 import com.vsklamm.cppquiz.data.UserData;
 import com.vsklamm.cppquiz.data.database.AppDatabase;
