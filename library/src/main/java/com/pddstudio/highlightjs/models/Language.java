@@ -8,8 +8,6 @@ package com.pddstudio.highlightjs.models;
 
 public enum Language {
     AUTO_DETECT(null),
-    DISABLE_HIGHLIGHT("nohighlight"),
-    C("c"),
     C_PLUS_PLUS("cpp");
 
     private final String className;

@@ -10,7 +10,6 @@ import java.util.TimeZone;
 public class TimeWork {
 
     public static final String LAST_UPDATE = "LAST_UPDATE";
-
     public static final long LOADING_VIEW_DELAY = 200;
 
     public static boolean isNextDay(SharedPreferences appPreferences) { // TODO: is it legal

@@ -83,7 +83,7 @@ public class GameLogic implements Serializable {
     }
 
     public void randomQuestion() {
-        int randomId = getUnansweredQuestion();
+        final int randomId = getUnansweredQuestion();
         if (randomId == -1) {
             listener.get().noMoreQuestions();
         } else {
@@ -123,10 +123,10 @@ public class GameLogic implements Serializable {
     }
 
     public void checkAnswer() {
-        int currentId = currentQuestion.getId();
+        final int currentId = currentQuestion.getId();
         UserData.getInstance().registerAttempt(currentId);
 
-        boolean correct = currentQuestion.compareWithAnswer(UserData.getInstance().givenAnswer);
+        final boolean correct = currentQuestion.compareWithAnswer(UserData.getInstance().givenAnswer);
         if (correct) {
             UserData.getInstance().registerCorrectAnswer(currentId);
             UserData.getInstance().saveAttempts();
@@ -141,7 +141,7 @@ public class GameLogic implements Serializable {
     }
 
     public void giveUp() {
-        int attemptsGivenFor = UserData.getInstance().attemptsGivenFor(currentQuestion.getId());
+        final int attemptsGivenFor = UserData.getInstance().attemptsGivenFor(currentQuestion.getId());
         if (attemptsGivenFor >= 3) {
             listener.get().onGiveUp(currentQuestion);
         } else {

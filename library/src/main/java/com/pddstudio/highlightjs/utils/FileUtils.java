@@ -1,6 +1,7 @@
 package com.pddstudio.highlightjs.utils;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Objects;
 
 /**
  * This Class was created by Patrick J
@@ -18,32 +20,23 @@ import java.net.URLConnection;
 
 public class FileUtils {
 
+    private static String LOG = "FileUtilsHighlightjsLib";
+
     public interface Callback {
         void onDataLoaded(boolean success, String source);
     }
 
     public static String loadSourceFromFile(File file) {
-        BufferedReader bufferedReader = null;
-        try {
-            bufferedReader = new BufferedReader(new FileReader(file), 16384);
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file), 16384)) {
             StringBuilder stringBuilder = new StringBuilder();
             String line;
-            while((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line).append("\n");
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line).append(System.lineSeparator());
             }
-
             return stringBuilder.toString();
-        } catch (IOException io) {
-            io.printStackTrace();
+        } catch (IOException e) {
+            Log.e(LOG, Objects.requireNonNull(e.getMessage())); // TODO: really?
             return null;
-        } finally {
-            if(bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (IOException e) {
-                    // ignore
-                }
-            }
         }
     }
 
@@ -63,26 +56,23 @@ public class FileUtils {
 
         @Override
         protected String doInBackground(Void... params) {
-            BufferedReader bufferedReader = null;
+            URLConnection urlConnection;
             try {
-                URLConnection urlConnection = url.openConnection();
-                bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()), 16384);
-                StringBuilder stringBuilder = new StringBuilder();
-                String line;
-                while((line = bufferedReader.readLine()) != null) stringBuilder.append(line).append("\n");
-                bufferedReader.close();
-                return stringBuilder.toString();
-            } catch (IOException io) {
-                io.printStackTrace();
-                return null;
-            } finally {
-                if(bufferedReader != null) {
-                    try {
-                        bufferedReader.close();
-                    } catch (IOException e) {
-                        // ignore
+                urlConnection = url.openConnection();
+                try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()), 16384)) {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(line).append(System.lineSeparator());
                     }
+                    return stringBuilder.toString();
+                } catch (IOException e) {
+                    Log.e(LOG, Objects.requireNonNull(e.getMessage())); // TODO: really?
+                    return null;
                 }
+            } catch (IOException e) {
+                Log.e(LOG, Objects.requireNonNull(e.getMessage())); // TODO: really?
+                return null;
             }
         }
 
@@ -96,5 +86,4 @@ public class FileUtils {
             callback.onDataLoaded(s != null, s);
         }
     }
-
 }
