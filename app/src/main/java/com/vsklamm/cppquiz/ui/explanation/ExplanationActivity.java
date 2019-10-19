@@ -18,6 +18,7 @@ import com.vsklamm.cppquiz.R;
 import com.vsklamm.cppquiz.data.Question;
 import com.vsklamm.cppquiz.utils.ActivityUtils;
 import com.vsklamm.cppquiz.utils.ResultBehaviourType;
+import com.vsklamm.cppquiz.utils.StandardLinksUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -78,37 +79,13 @@ public class ExplanationActivity extends AppCompatActivity {
         final String answerText = (question.getResult() == ResultBehaviourType.OK) ? (" `" + question.getAnswer() + "`") : "";
 
         Markwon.setMarkdown(tvAnswer, resultText + answerText);
-		String exp = question.getExplanation();
-        Markwon.setMarkdown(tvExplanation, exp);
+        Markwon.setMarkdown(tvExplanation, StandardLinksUtils.addLinks(question.getExplanation()));
 
         btnNextQuestion.setOnClickListener(v -> {
             setResult(RESULT_FIRST_USER);
             finish();
         });
     }
-
-//	private String addLinks(String explanation) {
-//		final String possibleSectionName = "(\[(?P<section_name>\w+(\.\w+)*)\])?";
-//		final String sectionNumber = "�\d+(\.\d+)*";
-//    	final String possibleParagraph = "(\u00B6(?P<paragraph>\d+(\.\d+)*))*";
-//		Pattern patternLink = Pattern.compile("(" + possibleSectionName + sectionNumber + possibleParagraph + ")");
-//		// Matcher matcherLink = patternLink.matcher(explanation);
-//		StringReplacer.replace(explanation, patternLink, m -> {
-//			String fullReference = m.group();
-//    		String sectionName = m.group("section_name");
-//    		String paragraphNumber = m.group("paragraph");
-//    		if (!sectionName.isEmpty()) {
-//        		String fullLink = "https://timsong-cpp.github.io/cppwp/n4659/" + sectionName;
-//        		if (!paragraphNumber.isEmpty()) {
-//    	    	    fullLink += "#" + paragraphNumber;
-//				}
-//	    	    return "(" + fullReference + ")[" + fullLink + "]";
-//			}
-//    		else {
-//        		return fullReference;
-//			}
-//		});
-//	}
 
     private void onShowLineNumbersToggled(final boolean enableLineNumbers) {
         codeView.setShowLineNumbers(enableLineNumbers);
