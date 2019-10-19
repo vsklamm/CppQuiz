@@ -290,10 +290,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onPause() {
         super.onPause();
-        if (confirmHintDialog != null)
+        if (confirmHintDialog != null) {
             confirmHintDialog.dismiss();
-        if (resetDialog != null)
+        }
+        if (resetDialog != null) {
             resetDialog.dismiss();
+        }
     }
 
     @Override
@@ -489,7 +491,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onLoadFinished(@NonNull Loader<LoadResult<String, LinkedHashSet<Integer>>> loader, LoadResult<String, LinkedHashSet<Integer>> data) {
         if (data.connectSuccessType == ConnectSuccessType.OK && data.questionsIds != null && data.cppStandard != null) { // TODO: remove extra checks
             SharedPreferences.Editor editor = appPreferences.edit();
-
             if (data.updated) {
                 GameLogic gameLogic = GameLogic.getInstance();
                 gameLogic.initNewData(this, data.cppStandard, data.questionsIds);
@@ -498,7 +499,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     showFirstQuestion();
                 }
             }
-
             switch (data.requestType) {
                 case LOAD_DUMP:
                     editor.putBoolean(HAS_VISITED, true);
