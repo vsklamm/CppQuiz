@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         codeView.setTheme(Theme.valueOf(theme));
         codeView.setHighlightLanguage(Language.C_PLUS_PLUS);
 
-        expandHeaderHint.setOnClickListener(v -> expandableHint.toggle());
+        expandHeaderHint.setOnClickListener(v -> expandableHint.toggle(true));
         expandableHint.setDuration(300);
         expandableHint.setOnExpansionUpdateListener((expansionFraction, state) -> {
             if (expandableHint.isExpanded()) {
@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         btnHint.setOnClickListener(v -> {
             if (findViewById(R.id.expansion_panel_outer).getVisibility() == View.GONE) {
                 openConfirmDialog();
-            } else expandableHint.expand();
+            } else expandableHint.expand(true);
         });
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -601,9 +601,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         LinearLayout outer = findViewById(R.id.expansion_panel_outer);
         outer.setVisibility(visibility);
         if (visibility == View.GONE) {
-            expandableHint.collapse();
+            expandableHint.collapse(false);
         } else {
-            expandableHint.expand();
+            expandableHint.expand(true);
         }
     }
 
