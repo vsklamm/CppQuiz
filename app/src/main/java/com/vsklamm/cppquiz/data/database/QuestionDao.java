@@ -7,7 +7,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.vsklamm.cppquiz.data.Question;
+import com.vsklamm.cppquiz.data.model.Question;
 
 import java.util.List;
 

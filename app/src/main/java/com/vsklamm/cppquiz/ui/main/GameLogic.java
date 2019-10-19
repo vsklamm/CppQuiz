@@ -5,15 +5,14 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.vsklamm.cppquiz.App;
-import com.vsklamm.cppquiz.data.Question;
-import com.vsklamm.cppquiz.data.UserData;
+import com.vsklamm.cppquiz.data.model.Question;
+import com.vsklamm.cppquiz.data.model.UserData;
 import com.vsklamm.cppquiz.data.database.AppDatabase;
 
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;

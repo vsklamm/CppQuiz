@@ -1,4 +1,4 @@
-package com.vsklamm.cppquiz.data
+package com.vsklamm.cppquiz.data.model
 
 import androidx.room.Entity
 import androidx.room.Ignore

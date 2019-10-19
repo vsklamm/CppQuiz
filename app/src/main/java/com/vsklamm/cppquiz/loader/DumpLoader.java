@@ -10,7 +10,7 @@ import androidx.loader.content.AsyncTaskLoader;
 
 import com.vsklamm.cppquiz.App;
 import com.vsklamm.cppquiz.R;
-import com.vsklamm.cppquiz.data.Question;
+import com.vsklamm.cppquiz.data.model.Question;
 import com.vsklamm.cppquiz.data.api.CppQuizLiteApi;
 import com.vsklamm.cppquiz.data.database.AppDatabase;
 import com.vsklamm.cppquiz.data.database.QuestionDao;
