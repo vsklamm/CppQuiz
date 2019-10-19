@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.loader.content.AsyncTaskLoader;
 
 import com.vsklamm.cppquiz.App;
+import com.vsklamm.cppquiz.R;
 import com.vsklamm.cppquiz.data.Question;
 import com.vsklamm.cppquiz.data.api.CppQuizLiteApi;
 import com.vsklamm.cppquiz.data.database.AppDatabase;
@@ -63,7 +64,7 @@ public class DumpLoader extends AsyncTaskLoader<LoadResult<String, LinkedHashSet
             LinkedHashSet<Integer> result = new LinkedHashSet<>();
             DumpDataType<List<Question>> newDump;
 
-            updateProgress(System.currentTimeMillis(), "Loading questions");
+            updateProgress(System.currentTimeMillis(), callingActivity.get().getString(R.string.load_state_loading_questions));
             long startTime = System.currentTimeMillis();
 
             if (response.body() != null) {
@@ -72,7 +73,7 @@ public class DumpLoader extends AsyncTaskLoader<LoadResult<String, LinkedHashSet
                 throw new NullPointerException("Response would not be null");
             }
 
-            updateProgress(System.currentTimeMillis() - startTime, "Database processing");
+            updateProgress(System.currentTimeMillis() - startTime, callingActivity.get().getString(R.string.load_state_database_processing));
 
             AppDatabase db = App.getInstance().getDatabase();
             QuestionDao questionDao = db.questionDao();

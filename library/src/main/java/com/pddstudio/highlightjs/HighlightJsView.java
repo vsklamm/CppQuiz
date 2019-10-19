@@ -1,5 +1,6 @@
 package com.pddstudio.highlightjs;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
@@ -77,6 +78,7 @@ public class HighlightJsView extends WebView implements FileUtils.Callback {
         initView(context);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void initView(Context context) {
         //make sure the view is blank
         loadUrl("about:blank");
@@ -139,8 +141,9 @@ public class HighlightJsView extends WebView implements FileUtils.Callback {
     public void setHighlightLanguage(Language language) {
         this.language = language;
         //notify the callback (if set)
-        if (onLanguageChangedListener != null)
+        if (onLanguageChangedListener != null) {
             onLanguageChangedListener.onLanguageChanged(language);
+        }
     }
 
     /**
@@ -179,20 +182,21 @@ public class HighlightJsView extends WebView implements FileUtils.Callback {
      * @param source - The source as {@linkplain String}
      */
     public void setSource(String source) {
-        if (source != null && !(source.length() == 0)) {
-            //generate and load the content
+        if (source != null && !source.isEmpty()) {
             this.content = source;
             String page = SourceUtils.generateContent(source, theme.getName(), language.getName(), zoomSupport, showLineNumbers);
-
-            long start = System.currentTimeMillis();
+            final long start = System.currentTimeMillis();
             try {
                 loadDataWithBaseURL("file:///android_asset/", page, "text/html", "utf-8", null);
             } finally {
                 System.out.println("로딩 : " + (System.currentTimeMillis() - start));
             }
-            //notify the callback (if set)
-            if (onContentChangedListener != null) onContentChangedListener.onContentChanged();
-        } else Log.e(getClass().getSimpleName(), "Source can't be null or empty.");
+            if (onContentChangedListener != null) {
+                onContentChangedListener.onContentChanged();
+            }
+        } else {
+            Log.e(getClass().getSimpleName(), "Source can't be null or empty.");
+        }
     }
 
     /**
@@ -201,11 +205,12 @@ public class HighlightJsView extends WebView implements FileUtils.Callback {
      * @param source - The source as {@linkplain File}
      */
     public void setSource(File source) {
-        //try to encode and set the source
-        String encSource = FileUtils.loadSourceFromFile(source);
+        final String encSource = FileUtils.loadSourceFromFile(source);
         if (encSource == null) {
             Log.e(getClass().getSimpleName(), "Unable to encode file: " + source.getAbsolutePath());
-        } else setSource(encSource);
+        } else {
+            setSource(encSource);
+        }
     }
 
     /**
@@ -213,8 +218,7 @@ public class HighlightJsView extends WebView implements FileUtils.Callback {
      *
      * @param url - The source as {@linkplain URL}
      */
-    public void setSource(URL url) {
-        //try to encode and set the source
+    public void setSource(final URL url) {
         FileUtils.loadSourceFromUrl(this, url);
     }
 
@@ -248,5 +252,4 @@ public class HighlightJsView extends WebView implements FileUtils.Callback {
     public void setShowLineNumbers(boolean showLineNumbers) {
         this.showLineNumbers = showLineNumbers;
     }
-
 }

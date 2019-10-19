@@ -10,7 +10,6 @@
 
     // TOOLBAR
     <string name="toolbar_title_training">Question #%d (%d of %d)</string>
-    <string name="toolbar_title_quiz">Question #%d</string>
     <string name="toolbar_give_up">You gave up! #%d</string>
     <string name="toolbar_correct">Correct! #%d</string>
     <string name="toolbar_no_questions">The end</string>
@@ -45,9 +44,7 @@
     <string name="next">NEXT</string>
     <string name="hint">HINT</string>
     <string name="give_up_default">GIVE UP</string>
-    <string name="answer">ANSWER</string>
     <string name="give_up_attempts">GIVE UP (%d)</string>
-    <string name="explanation">EXPLANATION</string>
     <string name="next_question">NEXT QUESTION</string>
 
     // NAVIGATION VIEW
@@ -57,19 +54,13 @@
     <string name="reset_progress">Reset progress</string>
 
     <string name="dark_side">Dark side</string>
-    <string name="start_a_new_quiz">"Start a new quiz"</string>
-    <string name="training_mode">Training mode</string>
     <string name="about">About</string>
 
     <string name="communicate">Communicate</string>
     <string name="share_question">Share question</string>
-    <string name="share_quiz">Share quiz</string>
 
     <string name="debug">Debug</string>
     <string name="debug_no_questions">No questions view</string>
-
-    <string name="follow">Follow @CppQuiz</string>
-    <string name="version">Version</string>
 
     // COMMON IN DIALOGS
     <string name="cancel">Cancel</string>
@@ -82,9 +73,6 @@
     <string name="show_hint">SHOW HINT</string>
     <string name="hide_hint">HIDE HINT</string>
     <string name="hint_tv_default_text">No hint</string>
-
-    // ABOUT EXPLANATION
-    <string name="explanation_tv_default_text">No explanation</string>
 
     // ERROR DIALOG
     <string name="no_internet_dialog_title">Whoops!</string>
@@ -99,9 +87,6 @@
 
     // DELETE DIALOG
     <string name="reset_dialog_title">Reset progress?</string>
-
-    // SELECT QUIZ DIALOG
-    <string name="select_quiz_title">Start new quiz</string>
 
     // TOAST MESSAGES
     <string name="please_try_again">Wrong answer, please, try again</string>
@@ -127,13 +112,11 @@
 
     // COMMUNICATION
     <string name="send_question_to">Send current question to</string>
-    <string name="send_quiz_to">Send quiz to</string>
 
     <string name="share_q_unans">Can you answer the question №%d from @CppQuiz?</string>
     <string name="share_q_right">I correctly answered the question №%d from @CppQuiz. But how could you?</string>
     <string name="share_question_text">%s Visit the site: %s\nOr open it in the android app: %s
     </string>
-    <string name="share_quiz_text">I got %1%f of %2%d points on this @CppQuiz %3%s ! Can you match that?</string>
 
     <string name="google_play_link">https://play.google.com/store/apps/details?id=com.vsklamm.cppquiz</string>
 
@@ -168,5 +151,7 @@
 
     // CONTENT DESCRIPTION
     <string name="app_icon_about">Application icon</string>
+    <string name="load_state_loading_questions">Loading questions</string>
+    <string name="load_state_database_processing">Database processing</string>
 
 </resources>
