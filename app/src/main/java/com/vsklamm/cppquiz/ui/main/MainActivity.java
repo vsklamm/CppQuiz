@@ -75,6 +75,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         GoToDialog.DialogListener,
         ConfirmResetDialog.DialogListener,
         GameLogic.GameLogicCallbacks,
-        View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+        CompoundButton.OnCheckedChangeListener {
 
     public static final String APP_PREFERENCES = "APP_PREFERENCES", APP_PREF_ZOOM = "APP_PREF_ZOOM";
     public static final String APP_PREF_LINE_NUMBERS = "APP_PREF_LINE_NUMBERS", THEME = "THEME";
@@ -189,7 +190,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         codeView.setTheme(Theme.valueOf(theme));
         codeView.setHighlightLanguage(Language.C_PLUS_PLUS);
 
-        findViewById(R.id.expand_header_hint).setOnClickListener(this);
+        expandHeaderHint.setOnClickListener(v -> expandableHint.toggle());
+        expandableHint.setDuration(300);
         expandableHint.setOnExpansionUpdateListener((expansionFraction, state) -> {
             if (expandableHint.isExpanded()) {
                 NestedScrollView nestedScrollView = findViewById(R.id.nested_scroll_view);
@@ -220,14 +222,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mySwitch.setOnCheckedChangeListener(this);
 
         btnRandom.setOnClickListener(v -> GameLogic.getInstance().randomQuestion());
-
+        btnGiveUp.setOnClickListener(v -> GameLogic.getInstance().giveUp());
         btnHint.setOnClickListener(v -> {
             if (findViewById(R.id.expansion_panel_outer).getVisibility() == View.GONE) {
                 openConfirmDialog();
             } else expandableHint.expand();
         });
-
-        btnGiveUp.setOnClickListener(v -> GameLogic.getInstance().giveUp());
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
@@ -238,7 +238,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         spResult.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent,
                                        View itemSelected, int selectedItemPosition, long selectedId) {
-                etAnswer.setEnabled(selectedItemPosition == 0); // OK behaviour type
+                final boolean hasOutput = selectedItemPosition == 0;
+                etAnswer.setCursorVisible(hasOutput);
+                etAnswer.setFocusable(selectedItemPosition == 0);
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -277,7 +279,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 UserData.getInstance().deleteFromFavouriteQuestions(gameLogic.getCurrentQuestion().getId());
             }
         });
-
     }
 
     @Override
@@ -325,14 +326,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.expand_header_hint) {
-            if (expandableHint.isExpanded()) {
-                expandableHint.collapse();
-            } else {
-                expandableHint.expand();
-            }
+    @OnClick(R.id.et_card_view_answer)
+    public void spinResultShake() {
+        if (ResultBehaviourType.getType(spResult.getSelectedItemPosition()) != ResultBehaviourType.OK) {
+            YoYo.with(Techniques.Shake)
+                    .duration(200)
+                    .playOn(spResult);
         }
     }
 
@@ -410,9 +409,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         final Spinner spResult = findViewById(R.id.sp_main_result);
         SharedPreferences.Editor editor = appPreferences.edit();
-
         editor.putBoolean(APP_THEME_IS_DARK, isChecked);
-        editor.commit(); // TODO: commit or apply
+        editor.commit(); // TODO: rewrite it
         Intent intent = getIntent();
         intent.putExtra(USER_ANSWER, new UsersAnswer(
                 GameLogic.getInstance().getCurrentQuestion().getId(),
@@ -460,8 +458,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             stringResource = R.string.share_q_unans;
         }
-        String questionURL = CppQuizLiteApi.getQuestionURL(questionId);
-        String contentText = String.format(
+        final String questionURL = CppQuizLiteApi.getQuestionURL(questionId);
+        final String contentText = String.format(
                 getResources().getString(R.string.share_question_text),
                 String.format(getResources().getString(stringResource), questionId),
                 questionURL,
@@ -694,7 +692,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         btnAnswer.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.buttonAnswerError));
         Toast.makeText(getApplicationContext(), getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
         YoYo.with(Techniques.Shake)
-                .duration(200)
+                .duration(250)
                 .playOn(btnAnswer);
     }
 
@@ -706,6 +704,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void tooEarlyToGiveUp(final int attemptsRequired) {
         Toast.makeText(getApplicationContext(), getString(R.string.give_up_help), Toast.LENGTH_SHORT).show();
+        YoYo.with(Techniques.Swing)
+                .duration(600)
+                .playOn(btnGiveUp);
     }
 
     @Override
