@@ -7,9 +7,8 @@ import androidx.annotation.NonNull;
 import com.vsklamm.cppquiz.App;
 import com.vsklamm.cppquiz.data.model.Question;
 import com.vsklamm.cppquiz.data.model.UserData;
-import com.vsklamm.cppquiz.data.database.AppDatabase;
+import com.vsklamm.cppquiz.data.local.AppDatabase;
 
-import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,11 +22,11 @@ import io.reactivex.schedulers.Schedulers;
 
 import static java.lang.Math.max;
 
-public class GameLogic implements Serializable {
+public class GameLogic {
 
-    public static final String CPP_STANDARD = "CPP_STANDARD";
     private static volatile GameLogic gameLogicInstance;
     private WeakReference<GameLogic.GameLogicCallbacks> listener;
+
     private LinkedHashSet<Integer> questionsIds;
     private Question currentQuestion;
 
@@ -48,7 +47,7 @@ public class GameLogic implements Serializable {
         return gameLogicInstance;
     }
 
-    public void initNewData(@NonNull Context context, @NonNull final String cppStandard, @NonNull LinkedHashSet<Integer> questionsIds) {
+    void initNewData(@NonNull Context context, @NonNull final String cppStandard, @NonNull LinkedHashSet<Integer> questionsIds) {
         this.questionsIds = questionsIds;
         try {
             listener = new WeakReference<>((GameLogic.GameLogicCallbacks) context); // TODO: zabotat'
@@ -81,7 +80,7 @@ public class GameLogic implements Serializable {
         }
     }
 
-    public void randomQuestion() {
+    void randomQuestion() {
         final int randomId = getUnansweredQuestion();
         if (randomId == -1) {
             listener.get().noMoreQuestions();
@@ -90,7 +89,7 @@ public class GameLogic implements Serializable {
         }
     }
 
-    public void questionById(final int questionId) {
+    void questionById(final int questionId) {
         AppDatabase db = App.getInstance().getDatabase();
         db.questionDao().findById(questionId)
                 .subscribeOn(Schedulers.io())
@@ -116,12 +115,12 @@ public class GameLogic implements Serializable {
                 });
     }
 
-    public void questionHint() {
+    void questionHint() {
         final String hint = currentQuestion.getHint();
         listener.get().onHintReceived(hint);
     }
 
-    public void checkAnswer() {
+    void checkAnswer() {
         final int currentId = currentQuestion.getId();
         UserData.getInstance().registerAttempt(currentId);
 
@@ -139,7 +138,7 @@ public class GameLogic implements Serializable {
         }
     }
 
-    public void giveUp() {
+    void giveUp() {
         final int attemptsGivenFor = UserData.getInstance().attemptsGivenFor(currentQuestion.getId());
         if (attemptsGivenFor >= 3) {
             listener.get().onGiveUp(currentQuestion);
@@ -165,7 +164,7 @@ public class GameLogic implements Serializable {
         }
     }
 
-    public Question getCurrentQuestion() {
+    Question getCurrentQuestion() {
         return currentQuestion;
     }
 

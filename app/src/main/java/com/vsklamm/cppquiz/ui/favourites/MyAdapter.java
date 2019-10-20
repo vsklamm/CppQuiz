@@ -18,7 +18,7 @@ import com.pddstudio.highlightjs.models.Theme;
 import com.vsklamm.cppquiz.App;
 import com.vsklamm.cppquiz.R;
 import com.vsklamm.cppquiz.data.model.Question;
-import com.vsklamm.cppquiz.data.database.AppDatabase;
+import com.vsklamm.cppquiz.data.local.AppDatabase;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

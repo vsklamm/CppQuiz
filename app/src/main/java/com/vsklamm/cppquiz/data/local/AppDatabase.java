@@ -1,4 +1,4 @@
-package com.vsklamm.cppquiz.data.database;
+package com.vsklamm.cppquiz.data.local;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;

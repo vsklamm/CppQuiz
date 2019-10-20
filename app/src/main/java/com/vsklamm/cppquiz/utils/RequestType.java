@@ -2,7 +2,7 @@ package com.vsklamm.cppquiz.utils;
 
 public enum RequestType {
 
-    LOAD_DUMP(0),
+    LOAD(0),
 
     UPDATE(1);
 
@@ -18,6 +18,6 @@ public enum RequestType {
                 return ds;
             }
         }
-        return LOAD_DUMP;
+        return LOAD;
     }
 }

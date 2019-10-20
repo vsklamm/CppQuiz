@@ -11,9 +11,8 @@ import androidx.loader.content.AsyncTaskLoader;
 import com.vsklamm.cppquiz.App;
 import com.vsklamm.cppquiz.R;
 import com.vsklamm.cppquiz.data.model.Question;
-import com.vsklamm.cppquiz.data.api.CppQuizLiteApi;
-import com.vsklamm.cppquiz.data.database.AppDatabase;
-import com.vsklamm.cppquiz.data.database.QuestionDao;
+import com.vsklamm.cppquiz.data.local.AppDatabase;
+import com.vsklamm.cppquiz.data.local.QuestionDao;
 import com.vsklamm.cppquiz.ui.main.MainActivity;
 import com.vsklamm.cppquiz.utils.DumpDataType;
 import com.vsklamm.cppquiz.utils.Parser;
@@ -93,7 +92,7 @@ public class DumpLoader extends AsyncTaskLoader<LoadResult<String, LinkedHashSet
                             break;
                         }
                     }
-                case LOAD_DUMP:
+                case LOAD:
                     if (questionDao.getSize() != 0) {
                         questionDao.clearTable();
                     }
@@ -111,13 +110,6 @@ public class DumpLoader extends AsyncTaskLoader<LoadResult<String, LinkedHashSet
             ConnectSuccessType connectSuccessType = isOnline() ? ConnectSuccessType.ERROR : ConnectSuccessType.NO_INTERNET;
             return new LoadResult<>(connectSuccessType, null, null, requestType, false);
         }
-    }
-
-    private boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager)
-                getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm != null ? cm.getActiveNetworkInfo() : null;
-        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
     private void updateProgress(final long timePeriod, final String action) throws InterruptedException {

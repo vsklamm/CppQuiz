@@ -1,4 +1,4 @@
-package com.vsklamm.cppquiz.data.database;
+package com.vsklamm.cppquiz.data.local;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -17,14 +17,14 @@ import io.reactivex.Single;
 public interface QuestionDao { // TODO: rename methods
 
     @Query("SELECT * FROM question")
-    List<Question> getAll();
+    Single<List<Question>> getAll();
 
     @Query("SELECT id FROM question")
     Single<List<Integer>> getAllIds();
 
     @SuppressWarnings("unused")
     @Query("SELECT * FROM question WHERE id IN (:userIds)")
-    List<Question> loadAllByIDs(int[] userIds);
+    Single<List<Question>> loadAllByIDs(int[] userIds);
 
     @Query("SELECT * FROM question WHERE id = :number")
     Single<Question> findById(int number);
@@ -34,10 +34,6 @@ public interface QuestionDao { // TODO: rename methods
 
     @Query("DELETE FROM question")
     void clearTable();
-
-    @SuppressWarnings("unused")
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertReplace(Question question);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(List<Question> question);

@@ -30,8 +30,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -39,25 +37,18 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.pddstudio.highlightjs.HighlightJsView;
-import com.pddstudio.highlightjs.models.Language;
-import com.pddstudio.highlightjs.models.Theme;
+import com.pddstudio.highlightjs.models.*;
 import com.sackcentury.shinebuttonlib.ShineButton;
-import com.vsklamm.cppquiz.App;
 import com.vsklamm.cppquiz.R;
 import com.vsklamm.cppquiz.data.model.Question;
 import com.vsklamm.cppquiz.data.model.UserData;
 import com.vsklamm.cppquiz.data.model.UsersAnswer;
-import com.vsklamm.cppquiz.data.api.CppQuizLiteApi;
-import com.vsklamm.cppquiz.data.database.AppDatabase;
 import com.vsklamm.cppquiz.data.prefs.SharedPreferencesHelper;
+import com.vsklamm.cppquiz.data.remore.APIService;
+import com.vsklamm.cppquiz.data.remore.APIUtils;
 import com.vsklamm.cppquiz.loader.ConnectSuccessType;
-import com.vsklamm.cppquiz.loader.DumpLoader;
-import com.vsklamm.cppquiz.loader.LoadResult;
 import com.vsklamm.cppquiz.ui.about.AboutActivity;
-import com.vsklamm.cppquiz.ui.dialogs.ConfirmHintDialog;
-import com.vsklamm.cppquiz.ui.dialogs.ConfirmResetDialog;
-import com.vsklamm.cppquiz.ui.dialogs.GoToDialog;
-import com.vsklamm.cppquiz.ui.dialogs.ThemeChangerDialog;
+import com.vsklamm.cppquiz.ui.dialogs.*;
 import com.vsklamm.cppquiz.ui.explanation.ExplanationActivity;
 import com.vsklamm.cppquiz.ui.favourites.FavouritesActivity;
 import com.vsklamm.cppquiz.utils.ActivityUtils;
@@ -65,43 +56,39 @@ import com.vsklamm.cppquiz.utils.DeepLinksUtils;
 import com.vsklamm.cppquiz.utils.FlipperChild;
 import com.vsklamm.cppquiz.utils.RequestType;
 import com.vsklamm.cppquiz.utils.ResultBehaviourType;
-import com.vsklamm.cppquiz.utils.TimeWork;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableSingleObserver;
-import io.reactivex.schedulers.Schedulers;
 import ru.noties.markwon.Markwon;
 
 import static com.vsklamm.cppquiz.ui.main.GameLogic.CPP_STANDARD;
 import static com.vsklamm.cppquiz.utils.ActivityUtils.APP_THEME_IS_DARK;
+import static com.vsklamm.cppquiz.utils.RequestType.LOAD;
 import static com.vsklamm.cppquiz.utils.TimeWork.LAST_UPDATE;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         HighlightJsView.OnThemeChangedListener,
-        ThemeChangerDialog.ThemeChangeListener,
-        LoaderManager.LoaderCallbacks<LoadResult<String, LinkedHashSet<Integer>>>,
-        ConfirmHintDialog.DialogListener,
+        CompoundButton.OnCheckedChangeListener,
         GoToDialog.DialogListener,
+        ConfirmHintDialog.DialogListener,
         ConfirmResetDialog.DialogListener,
+        ThemeChangerDialog.ThemeChangeListener,
         GameLogic.GameLogicCallbacks,
-        CompoundButton.OnCheckedChangeListener {
+        MainPresenter.MainPresenterCallbacks {
 
     public static final String APP_PREFERENCES = "APP_PREFERENCES", APP_PREF_ZOOM = "APP_PREF_ZOOM";
     public static final String APP_PREF_LINE_NUMBERS = "APP_PREF_LINE_NUMBERS", THEME = "THEME";
     public static final String REQUEST_TYPE = "REQUEST_TYPE", IS_GIVE_UP = "IS_GIVE_UP", QUESTION = "QUESTION";
-    private static final String HAS_VISITED = "HAS_VISITED";
     private static final String USER_ANSWER = "USER_ANSWER";
     public static final int EXPLANATION_ACTIVITY = 0, FAVOURITES_ACTIVITY = 1;
 
+    private APIService apiService;
     private SharedPreferences appPreferences;
 
     private ConfirmHintDialog confirmHintDialog;
@@ -132,10 +119,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Button btnHint;
     @BindView(R.id.btn_retry)
     Button btnRetry;
-    @BindView(R.id.btn_answer)
-    FloatingActionButton btnAnswer;
     @BindView(R.id.shine_button)
     ShineButton shineButton;
+    @BindView(R.id.btn_answer)
+    FloatingActionButton btnAnswer;
 
     @BindView(R.id.iv_linear_difficulty)
     ImageView imageViewLevel;
@@ -152,38 +139,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+        apiService = APIUtils.getAPIService();
 
-        boolean hasVisited = appPreferences.getBoolean(HAS_VISITED, false);
-        if (!hasVisited) {
-            viewFlipper.setDisplayedChild(FlipperChild.LOADING_VIEW.ordinal());
-            initDumpLoader(RequestType.LOAD_DUMP);
-        } else {
-            if (TimeWork.isNextDay(appPreferences)) {
-                initDumpLoader(RequestType.UPDATE);
-            }
-
-            AppDatabase db = App.getInstance().getDatabase();
-            db.questionDao().getAllIds()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableSingleObserver<List<Integer>>() {
-                        @Override
-                        public void onSuccess(List<Integer> questionIds) {
-                            GameLogic gameLogic = GameLogic.getInstance();
-                            final String cppStandard = appPreferences.getString(CPP_STANDARD, "C++17"); // for many years
-                            gameLogic.initNewData(
-                                    MainActivity.this,
-                                    cppStandard,
-                                    new LinkedHashSet<>(questionIds));
-                            showFirstQuestion();
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            // ignore
-                        }
-                    });
-        }
+        MainPresenter mainPresenter = MainPresenter.getInstance();
+        mainPresenter.initGame(this, apiService, appPreferences);
 
         final String theme = appPreferences.getString(THEME, "GITHUB");
         codeView.setOnThemeChangedListener(this);
@@ -260,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         btnRetry.setOnClickListener(v -> {
             viewFlipper.setDisplayedChild(FlipperChild.LOADING_VIEW.ordinal());
             Bundle args = new Bundle();
-            args.putInt(REQUEST_TYPE, RequestType.LOAD_DUMP.ordinal());
+            args.putInt(REQUEST_TYPE, LOAD.ordinal());
             getSupportLoaderManager().restartLoader(0, args, MainActivity.this);
         });
 
@@ -296,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (resetDialog != null) {
             resetDialog.dismiss();
         }
+        appPreferences.edit().apply();
     }
 
     @Override
@@ -446,12 +406,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         codeView.refresh();
     }
 
-    private void initDumpLoader(RequestType requestType) {
-        Bundle args = new Bundle();
-        args.putInt(REQUEST_TYPE, requestType.ordinal());
-        getSupportLoaderManager().initLoader(0, args, this);
-    }
-
     private void shareQuestion() {
         final int questionId = GameLogic.getInstance().getCurrentQuestion().getId();
         final int stringResource;
@@ -479,65 +433,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         sendIntent.putExtra(Intent.EXTRA_TEXT, content);
         sendIntent.setType("text/plain");
         startActivity(Intent.createChooser(sendIntent, title));
-    }
-
-    @NonNull
-    @Override
-    public Loader<LoadResult<String, LinkedHashSet<Integer>>> onCreateLoader(final int id, final Bundle args) {
-        return new DumpLoader(this, args.getInt(REQUEST_TYPE));
-    }
-
-    @Override
-    public void onLoadFinished(@NonNull Loader<LoadResult<String, LinkedHashSet<Integer>>> loader, LoadResult<String, LinkedHashSet<Integer>> data) {
-        if (data.connectSuccessType == ConnectSuccessType.OK && data.questionsIds != null && data.cppStandard != null) { // TODO: remove extra checks
-            SharedPreferences.Editor editor = appPreferences.edit();
-            if (data.updated) {
-                GameLogic gameLogic = GameLogic.getInstance();
-                gameLogic.initNewData(this, data.cppStandard, data.questionsIds);
-                Question currentQuestion = gameLogic.getCurrentQuestion();
-                if (currentQuestion == null || !data.questionsIds.contains(currentQuestion.getId())) {
-                    showFirstQuestion();
-                }
-            }
-            switch (data.requestType) {
-                case LOAD_DUMP:
-                    editor.putBoolean(HAS_VISITED, true);
-                    viewFlipper.setDisplayedChild(FlipperChild.MAIN_CONTENT.ordinal());
-                    drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                    break;
-                case UPDATE:
-                    String message;
-                    if (data.updated) {
-                        message = getResources().getString(R.string.update_new_questions);
-                    } else {
-                        message = getResources().getString(R.string.update_no_change);
-                    }
-                    Snackbar.make(findViewById(R.id.ll_main_task), message, Snackbar.LENGTH_LONG).show(); // TODO: make button orange
-                    break;
-            }
-            editor.putString(CPP_STANDARD, data.cppStandard);
-            editor.putLong(LAST_UPDATE, new Date().getTime());
-            editor.apply();
-        } else {
-            switch (data.requestType) {
-                case LOAD_DUMP:
-                    viewFlipper.setDisplayedChild(FlipperChild.NO_INTERNET_VIEW.ordinal());
-                    break;
-                case UPDATE:
-                    int message;
-                    if (data.connectSuccessType == ConnectSuccessType.ERROR) {
-                        message = R.string.error_text;
-                    } else {
-                        message = R.string.unavailable_update_dialog_text;
-                    }
-                    Snackbar snackbar = Snackbar.make(findViewById(R.id.nested_scroll_view), message, 4000);
-                    snackbar.setAction(R.string.retry, new RetryLoadingListener());
-                    snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.shackbar_action_retry));
-                    snackbar.show();
-                    break;
-            }
-        }
-        getSupportLoaderManager().destroyLoader(0);
     }
 
     private void showFirstQuestion() {
@@ -612,10 +507,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         intent.putExtra(IS_GIVE_UP, isGaveUp);
         intent.putExtra(QUESTION, question);
         startActivityForResult(intent, EXPLANATION_ACTIVITY);
-    }
-
-    @Override
-    public void onLoaderReset(@NonNull Loader<LoadResult<String, LinkedHashSet<Integer>>> loader) {
     }
 
     @Override
@@ -715,11 +606,87 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         viewFlipper.setDisplayedChild(FlipperChild.NO_QUESTIONS_VIEW.ordinal());
     }
 
+    @Override
+    public void onLoadingDatabaseFirstTime() {
+        viewFlipper.setDisplayedChild(FlipperChild.LOADING_VIEW.ordinal());
+    }
+
+    @Override
+    public void onDatabaseLoaded() {
+
+        // @NonNull Loader<LoadResult<String, LinkedHashSet<Integer>>> loader, LoadResult<String, LinkedHashSet<Integer>> data
+        if (data.connectSuccessType == ConnectSuccessType.OK && data.questionsIds != null && data.cppStandard != null) { // TODO: remove extra checks
+            SharedPreferences.Editor editor = appPreferences.edit();
+            if (data.updated) {
+                GameLogic gameLogic = GameLogic.getInstance();
+                gameLogic.initNewData(this, data.cppStandard, data.questionsIds);
+                Question currentQuestion = gameLogic.getCurrentQuestion();
+                if (currentQuestion == null || !data.questionsIds.contains(currentQuestion.getId())) {
+                    showFirstQuestion();
+                }
+            }
+            switch (data.requestType) {
+                case LOAD:
+                    editor.putBoolean(HAS_VISITED, true);
+                    viewFlipper.setDisplayedChild(FlipperChild.MAIN_CONTENT.ordinal());
+                    drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                    break;
+                case UPDATE:
+                    String message;
+                    if (data.updated) {
+                        message = getResources().getString(R.string.update_new_questions);
+                    } else {
+                        message = getResources().getString(R.string.update_no_change);
+                    }
+                    Snackbar.make(findViewById(R.id.ll_main_task), message, Snackbar.LENGTH_LONG).show(); // TODO: make button orange
+                    break;
+            }
+            editor.putString(CPP_STANDARD, data.cppStandard);
+            editor.putLong(LAST_UPDATE, new Date().getTime());
+            editor.apply();
+        } else {
+            switch (data.requestType) {
+                case LOAD:
+                    viewFlipper.setDisplayedChild(FlipperChild.NO_INTERNET_VIEW.ordinal());
+                    break;
+                case UPDATE:
+                    int message;
+                    if (data.connectSuccessType == ConnectSuccessType.ERROR) {
+                        message = R.string.error_text;
+                    } else {
+                        message = R.string.unavailable_update_dialog_text;
+                    }
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.nested_scroll_view), message, 4000);
+                    snackbar.setAction(R.string.retry, new RetryLoadingListener());
+                    snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.shackbar_action_retry));
+                    snackbar.show();
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void onDatabaseUpdated(boolean changed, LinkedHashSet<Integer> questionIds) {
+
+    }
+
+    @Override
+    public void onDatabaseReady(String cppStandard, LinkedHashSet<Integer> questionIds) {
+        GameLogic gameLogic = GameLogic.getInstance();
+        gameLogic.initNewData(this, cppStandard, questionIds);
+        showFirstQuestion();
+    }
+
+    @Override
+    public void onLoadDatabaseError() {
+
+    }
+
     public class RetryLoadingListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
-            initDumpLoader(RequestType.UPDATE);
+            MainPresenter.getInstance().updateDatabase(apiService);
         }
     }
 }

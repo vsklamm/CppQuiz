@@ -5,8 +5,9 @@ import android.app.Application;
 import androidx.room.Room;
 
 import com.vsklamm.cppquiz.data.model.UserData;
-import com.vsklamm.cppquiz.data.database.AppDatabase;
+import com.vsklamm.cppquiz.data.local.AppDatabase;
 import com.vsklamm.cppquiz.ui.main.GameLogic;
+import com.vsklamm.cppquiz.ui.main.MainPresenter;
 
 public class App extends Application {
 
@@ -24,6 +25,7 @@ public class App extends Application {
         instance = this;
         database = Room.databaseBuilder(this, AppDatabase.class, "questions")
                 .build();
+        MainPresenter.getInstance();
         UserData.getInstance();
         GameLogic.getInstance();
     }
