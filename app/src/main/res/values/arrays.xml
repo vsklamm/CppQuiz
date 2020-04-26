@@ -7,4 +7,11 @@
         <item>@drawable/ic_level_3</item>
     </integer-array>
 
+    <integer-array name="choose_difficulty_array">
+        <item>@drawable/ic_multi_level</item>
+        <item>@drawable/ic_only_level_1</item>
+        <item>@drawable/ic_only_level_2</item>
+        <item>@drawable/ic_only_level_3</item>
+    </integer-array>
+
 </resources>

@@ -45,6 +45,7 @@ import com.sackcentury.shinebuttonlib.ShineButton;
 import com.vsklamm.cppquiz.App;
 import com.vsklamm.cppquiz.R;
 import com.vsklamm.cppquiz.data.Question;
+import com.vsklamm.cppquiz.data.QuestionIds;
 import com.vsklamm.cppquiz.data.UserData;
 import com.vsklamm.cppquiz.data.UsersAnswer;
 import com.vsklamm.cppquiz.data.api.CppQuizLiteApi;
@@ -70,12 +71,12 @@ import com.vsklamm.cppquiz.utils.TimeWork;
 import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.Date;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import ca.abushawish.multistatetogglebutton.MultiStateToggleButton;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -88,12 +89,13 @@ import static com.vsklamm.cppquiz.utils.TimeWork.LAST_UPDATE;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         HighlightJsView.OnThemeChangedListener,
         ThemeChangerDialog.ThemeChangeListener,
-        LoaderManager.LoaderCallbacks<LoadResult<String, LinkedHashSet<Integer>>>,
+        LoaderManager.LoaderCallbacks<LoadResult<String, QuestionIds>>,
         ConfirmHintDialog.DialogListener,
         GoToDialog.DialogListener,
         ConfirmResetDialog.DialogListener,
         GameLogic.GameLogicCallbacks,
-        CompoundButton.OnCheckedChangeListener {
+        CompoundButton.OnCheckedChangeListener,
+        MultiStateToggleButton.OnStateChangeListener {
 
     public static final String APP_PREFERENCES = "APP_PREFERENCES", APP_PREF_ZOOM = "APP_PREF_ZOOM";
     public static final String APP_PREF_LINE_NUMBERS = "APP_PREF_LINE_NUMBERS", THEME = "THEME";
@@ -163,18 +165,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
             AppDatabase db = App.getInstance().getDatabase();
-            db.questionDao().getAllIds()
+            db.questionDao().getAllSingle()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableSingleObserver<List<Integer>>() {
+                    .subscribe(new DisposableSingleObserver<List<Question>>() {
                         @Override
-                        public void onSuccess(List<Integer> questionIds) {
+                        public void onSuccess(List<Question> questions) {
+                            QuestionIds questionIds = new QuestionIds();
+                            for (Question q : questions) {
+                                questionIds.addId(q);
+                            }
                             GameLogic gameLogic = GameLogic.getInstance();
                             final String cppStandard = appPreferences.getString(CPP_STANDARD, "C++17"); // for many years
                             gameLogic.initNewData(
                                     MainActivity.this,
                                     cppStandard,
-                                    new LinkedHashSet<>(questionIds));
+                                    questionIds);
                             showFirstQuestion();
                         }
 
@@ -216,10 +222,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        final MenuItem item = navigationView.getMenu().findItem(R.id.dark_side);
+        MenuItem item = navigationView.getMenu().findItem(R.id.dark_side);
         final Switch mySwitch = item.getActionView().findViewById(R.id.switch_app_theme);
         mySwitch.setChecked(appPreferences.getBoolean(APP_THEME_IS_DARK, false));
         mySwitch.setOnCheckedChangeListener(this);
+
+        item = navigationView.getMenu().findItem(R.id.choose_difficulty);
+        final MultiStateToggleButton btnChooseDifficulty = item.getActionView().findViewById(R.id.mstb_choose_difficulty);
+        btnChooseDifficulty.setOnStateChangesListener(this);
 
         btnRandom.setOnClickListener(v -> GameLogic.getInstance().randomQuestion());
         btnGiveUp.setOnClickListener(v -> GameLogic.getInstance().giveUp());
@@ -239,8 +249,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onItemSelected(AdapterView<?> parent,
                                        View itemSelected, int selectedItemPosition, long selectedId) {
                 final boolean hasOutput = selectedItemPosition == 0;
-                etAnswer.setCursorVisible(hasOutput);
-                etAnswer.setFocusable(selectedItemPosition == 0);
+                etAnswer.setFocusableInTouchMode(hasOutput);
+                etAnswer.setFocusable(hasOutput);
+                etAnswer.setClickable(hasOutput);
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -249,11 +260,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         btnAnswer.setOnClickListener(v -> {
             GameLogic gameLogic = GameLogic.getInstance();
-            UserData.getInstance().givenAnswer = new UsersAnswer(
+            UserData.getInstance().setGivenAnswer(new UsersAnswer(
                     gameLogic.getCurrentQuestion().getId(),
                     ResultBehaviourType.getType(spResult.getSelectedItemPosition()),
                     etAnswer.getText().toString()
-            );
+            ));
             gameLogic.checkAnswer();
         });
 
@@ -367,6 +378,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 args.putInt(REQUEST_TYPE, RequestType.UPDATE.ordinal());
                 getSupportLoaderManager().initLoader(0, args, MainActivity.this);
                 break;
+            case R.id.choose_difficulty:
+                final MultiStateToggleButton btnChooseLevel = item.getActionView().findViewById(R.id.mstb_choose_difficulty);
+                btnChooseLevel.performClick();
+                return true;
             case R.id.res_progress:
                 openResetDialog();
                 break;
@@ -421,6 +436,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ));
         finish();
         startActivity(intent);
+    }
+
+    @Override
+    public void onStateChanged(View view, int newState) {
+        switch (view.getId()) {
+            case R.id.mstb_choose_difficulty:
+                UserData.getInstance().saveDifficulty(newState);
+                final NavigationView navigationView = findViewById(R.id.nav_view);
+                final MenuItem item = navigationView.getMenu().findItem(R.id.choose_difficulty);
+                final MultiStateToggleButton btnChooseLevel = item.getActionView().findViewById(R.id.mstb_choose_difficulty);
+                YoYo.with(Techniques.Pulse)
+                        .duration(350)
+                        .repeat(1)
+                        .playOn(btnChooseLevel);
+                break;
+        }
     }
 
     private void onShowLineNumbersToggled(final boolean enableLineNumbers) {
@@ -483,19 +514,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @NonNull
     @Override
-    public Loader<LoadResult<String, LinkedHashSet<Integer>>> onCreateLoader(final int id, final Bundle args) {
+    public Loader<LoadResult<String, QuestionIds>> onCreateLoader(final int id, final Bundle args) {
         return new DumpLoader(this, args.getInt(REQUEST_TYPE));
     }
 
     @Override
-    public void onLoadFinished(@NonNull Loader<LoadResult<String, LinkedHashSet<Integer>>> loader, LoadResult<String, LinkedHashSet<Integer>> data) {
+    public void onLoadFinished(@NonNull Loader<LoadResult<String, QuestionIds>> loader, LoadResult<String, QuestionIds> data) {
         if (data.connectSuccessType == ConnectSuccessType.OK && data.questionsIds != null && data.cppStandard != null) { // TODO: remove extra checks
             SharedPreferences.Editor editor = appPreferences.edit();
             if (data.updated) {
                 GameLogic gameLogic = GameLogic.getInstance();
                 gameLogic.initNewData(this, data.cppStandard, data.questionsIds);
                 Question currentQuestion = gameLogic.getCurrentQuestion();
-                if (currentQuestion == null || !data.questionsIds.contains(currentQuestion.getId())) {
+                if (currentQuestion == null || !data.questionsIds.all.contains(currentQuestion.getId())) {
                     showFirstQuestion();
                 }
             }
@@ -615,14 +646,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onLoaderReset(@NonNull Loader<LoadResult<String, LinkedHashSet<Integer>>> loader) {
+    public void onLoaderReset(@NonNull Loader<LoadResult<String, QuestionIds>> loader) {
     }
 
     @Override
-    public void onCppStandardChanged(@NonNull final String cppStandard) {
+    public void onCppStandardInit(@NonNull final String cppStandard) {
         TextView tvTask = findViewById(R.id.tv_task);
         final String task = String.format(getResources().getString(R.string.task_whole), cppStandard);
         tvTask.setText(task);
+    }
+
+    @Override
+    public void onDifficultyLevelInit(@NonNull Integer difficulty) {
+        final NavigationView navigationView = findViewById(R.id.nav_view);
+        final MenuItem item = navigationView.getMenu().findItem(R.id.choose_difficulty);
+        final MultiStateToggleButton btnChooseDifficulty = item.getActionView().findViewById(R.id.mstb_choose_difficulty);
+        btnChooseDifficulty.setState(difficulty);
     }
 
     @Override

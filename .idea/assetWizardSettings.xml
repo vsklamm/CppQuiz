@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/D:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/av/ic_play_arrow_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/F:/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_whatshot_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -33,9 +33,11 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="autoMirrored" value="true" />
                             <entry key="color" value="757575" />
-                            <entry key="outputName" value="ic_play_arrow_black_24dp" />
-                            <entry key="sourceFile" value="E:\download\icons8-darth-vader.svg" />
+                            <entry key="outputName" value="ic_llvl" />
+                            <entry key="sourceFile" value="D:\unic\old\cppquiz-1\VectorDrawable2Svg\ic_level_1-svg.svg" />
                           </map>
                         </option>
                       </PersistentState>

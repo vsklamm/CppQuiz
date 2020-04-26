@@ -51,9 +51,9 @@
     <string name="favourites">Favourites</string>
     <string name="go_to">Go to question</string>
     <string name="update_base">Update questions</string>
-    <string name="reset_progress">Reset progress</string>
-
     <string name="dark_side">Dark side</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="reset_progress">Reset progress</string>
     <string name="about">About</string>
 
     <string name="communicate">Communicate</string>

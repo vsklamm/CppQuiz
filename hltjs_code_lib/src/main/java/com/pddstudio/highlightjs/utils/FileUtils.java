@@ -35,7 +35,6 @@ public class FileUtils {
             }
             return stringBuilder.toString();
         } catch (IOException e) {
-            Log.e(LOG, Objects.requireNonNull(e.getMessage())); // TODO: really?
             return null;
         }
     }
@@ -45,7 +44,6 @@ public class FileUtils {
     }
 
     private static class NetworkLoader extends AsyncTask<Void, Void, String> {
-
         private final Callback callback;
         private final URL url;
 
@@ -67,11 +65,9 @@ public class FileUtils {
                     }
                     return stringBuilder.toString();
                 } catch (IOException e) {
-                    Log.e(LOG, Objects.requireNonNull(e.getMessage())); // TODO: really?
                     return null;
                 }
             } catch (IOException e) {
-                Log.e(LOG, Objects.requireNonNull(e.getMessage())); // TODO: really?
                 return null;
             }
         }

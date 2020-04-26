@@ -1,4 +1,4 @@
-C++ Quiz for android
+C++Quiz for android
 ====================
 
 [![Pull Requests Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)

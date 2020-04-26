@@ -21,6 +21,13 @@
             android:icon="@drawable/ic_darth_vader"
             android:title="@string/dark_side"
             app:actionLayout="@layout/switch_item"
+            app:showAsAction="ifRoom" />
+        <item
+            android:id="@+id/choose_difficulty"
+            android:checkable="false"
+            android:icon="@drawable/ic_choose_difficulty_24dp"
+            android:title="@string/difficulty"
+            app:actionLayout="@layout/multi_toggle_item"
             app:showAsAction="always" />
         <item
             android:id="@+id/update_base"
