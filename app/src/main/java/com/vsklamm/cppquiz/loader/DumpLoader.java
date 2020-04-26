@@ -11,6 +11,7 @@ import androidx.loader.content.AsyncTaskLoader;
 import com.vsklamm.cppquiz.App;
 import com.vsklamm.cppquiz.R;
 import com.vsklamm.cppquiz.data.Question;
+import com.vsklamm.cppquiz.data.QuestionIds;
 import com.vsklamm.cppquiz.data.api.CppQuizLiteApi;
 import com.vsklamm.cppquiz.data.database.AppDatabase;
 import com.vsklamm.cppquiz.data.database.QuestionDao;
@@ -23,19 +24,18 @@ import com.vsklamm.cppquiz.utils.TimeWork;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class DumpLoader extends AsyncTaskLoader<LoadResult<String, LinkedHashSet<Integer>>> {
+public class DumpLoader extends AsyncTaskLoader<LoadResult<String, QuestionIds>> {
 
     private final RequestType requestType;
 
     private WeakReference<MainActivity> callingActivity;
-    private LoadResult<String, LinkedHashSet<Integer>> result;
+    private LoadResult<String, QuestionIds> result;
 
     public DumpLoader(@NonNull MainActivity activity, final int requestType) {
         super(activity.getBaseContext());
@@ -53,7 +53,7 @@ public class DumpLoader extends AsyncTaskLoader<LoadResult<String, LinkedHashSet
 
     @Nullable
     @Override
-    public LoadResult<String, LinkedHashSet<Integer>> loadInBackground() {
+    public LoadResult<String, QuestionIds> loadInBackground() {
         if (!isOnline()) {
             return new LoadResult<>(ConnectSuccessType.NO_INTERNET, null, null, requestType, false);
         }
@@ -61,7 +61,7 @@ public class DumpLoader extends AsyncTaskLoader<LoadResult<String, LinkedHashSet
         OkHttpClient client = new OkHttpClient();
         Request request = CppQuizLiteApi.getDumpRequest();
         try (Response response = client.newCall(request).execute()) {
-            LinkedHashSet<Integer> result = new LinkedHashSet<>();
+            QuestionIds questionsIds = new QuestionIds();
             DumpDataType<List<Question>> newDump;
 
             updateProgress(System.currentTimeMillis(), callingActivity.get().getString(R.string.load_state_loading_questions));
@@ -99,13 +99,12 @@ public class DumpLoader extends AsyncTaskLoader<LoadResult<String, LinkedHashSet
                     }
                     questionDao.insert(newDump.questions);
                     for (Question q : newDump.questions) {
-                        result.add(q.getId());
+                        questionsIds.addId(q);
                     }
                     updated = true;
                     break;
             }
-
-            this.result = new LoadResult<>(ConnectSuccessType.OK, newDump.cppStandard, result, requestType, updated);
+            this.result = new LoadResult<>(ConnectSuccessType.OK, newDump.cppStandard, questionsIds, requestType, updated);
             return this.result;
         } catch (IOException | InterruptedException | NullPointerException ex) {
             ConnectSuccessType connectSuccessType = isOnline() ? ConnectSuccessType.ERROR : ConnectSuccessType.NO_INTERNET;

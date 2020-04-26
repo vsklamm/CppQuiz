@@ -14,11 +14,15 @@ import java.util.List;
 import io.reactivex.Single;
 
 @Dao
-public interface QuestionDao { // TODO: rename methods
+public interface QuestionDao {
 
     @Query("SELECT * FROM question")
     List<Question> getAll();
 
+    @Query("SELECT * FROM question")
+    Single<List<Question>> getAllSingle();
+
+    @SuppressWarnings("unused")
     @Query("SELECT id FROM question")
     Single<List<Integer>> getAllIds();
 

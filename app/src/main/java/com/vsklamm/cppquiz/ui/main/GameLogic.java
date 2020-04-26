@@ -6,17 +6,17 @@ import androidx.annotation.NonNull;
 
 import com.vsklamm.cppquiz.App;
 import com.vsklamm.cppquiz.data.Question;
+import com.vsklamm.cppquiz.data.QuestionIds;
 import com.vsklamm.cppquiz.data.UserData;
 import com.vsklamm.cppquiz.data.database.AppDatabase;
 
-import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -24,12 +24,12 @@ import io.reactivex.schedulers.Schedulers;
 
 import static java.lang.Math.max;
 
-public class GameLogic implements Serializable {
+public class GameLogic {
 
     public static final String CPP_STANDARD = "CPP_STANDARD";
     private static volatile GameLogic gameLogicInstance;
     private WeakReference<GameLogic.GameLogicCallbacks> listener;
-    private LinkedHashSet<Integer> questionsIds;
+    private QuestionIds questionsIds;
     private Question currentQuestion;
 
     private GameLogic() {
@@ -49,20 +49,23 @@ public class GameLogic implements Serializable {
         return gameLogicInstance;
     }
 
-    public void initNewData(@NonNull Context context, @NonNull final String cppStandard, @NonNull LinkedHashSet<Integer> questionsIds) {
+    void initNewData(@NonNull Context context, @NonNull final String cppStandard, @NonNull QuestionIds questionsIds) {
         this.questionsIds = questionsIds;
         try {
             listener = new WeakReference<>((GameLogic.GameLogicCallbacks) context); // TODO: zabotat'
         } catch (ClassCastException e) {
             // ignore
         }
-        setCppStandard(cppStandard);
         // Class contract says that UserData is initialized now
+        // Only one init per launch
+        listener.get().onCppStandardInit(cppStandard);
+        listener.get().onDifficultyLevelInit(UserData.getInstance().getDifficulty());
+        // May be updated many times per launch
         LinkedHashSet<Integer> correctlyAnswered = UserData.getInstance().getCorrectlyAnsweredQuestions();
         HashMap<Integer, Integer> attempts = UserData.getInstance().getAttempts();
         List<Integer> erased = new ArrayList<>();
         for (Integer id : attempts.keySet()) {
-            if (!questionsIds.contains(id)) {
+            if (!questionsIds.all.contains(id)) {
                 erased.add(id);
             }
         }
@@ -76,14 +79,14 @@ public class GameLogic implements Serializable {
     public void ourQuestion() {
         if (currentQuestion.getId() == -1) {
             randomQuestion();
-        }
-        else {
+        } else {
             questionById(currentQuestion.getId());
         }
     }
 
-    public void randomQuestion() {
-        final int randomId = getUnansweredQuestion();
+    void randomQuestion() {
+        final Integer difficulty = UserData.getInstance().getDifficulty();
+        final int randomId = getUnansweredOrWithDifficultyQuestion(difficulty);
         if (randomId == -1) {
             listener.get().noMoreQuestions();
         } else {
@@ -91,7 +94,7 @@ public class GameLogic implements Serializable {
         }
     }
 
-    public void questionById(final int questionId) {
+    void questionById(final int questionId) {
         AppDatabase db = App.getInstance().getDatabase();
         db.questionDao().findById(questionId)
                 .subscribeOn(Schedulers.io())
@@ -117,16 +120,16 @@ public class GameLogic implements Serializable {
                 });
     }
 
-    public void questionHint() {
+    void questionHint() {
         final String hint = currentQuestion.getHint();
         listener.get().onHintReceived(hint);
     }
 
-    public void checkAnswer() {
+    void checkAnswer() {
         final int currentId = currentQuestion.getId();
         UserData.getInstance().registerAttempt(currentId);
 
-        final boolean correct = currentQuestion.compareWithAnswer(UserData.getInstance().givenAnswer);
+        final boolean correct = currentQuestion.compareWithAnswer(UserData.getInstance().getGivenAnswer());
         if (correct) {
             UserData.getInstance().registerCorrectAnswer(currentId);
             UserData.getInstance().saveAttempts();
@@ -140,7 +143,7 @@ public class GameLogic implements Serializable {
         }
     }
 
-    public void giveUp() {
+    void giveUp() {
         final int attemptsGivenFor = UserData.getInstance().attemptsGivenFor(currentQuestion.getId());
         if (attemptsGivenFor >= 3) {
             listener.get().onGiveUp(currentQuestion);
@@ -149,37 +152,35 @@ public class GameLogic implements Serializable {
         }
     }
 
-    private int getUnansweredQuestion() { // TODO: too long & create exception
+    private int getUnansweredOrWithDifficultyQuestion(Integer difficulty) { // TODO: too long & create exception
         try {
-            LinkedHashSet<Integer> availableQuestions = new LinkedHashSet<>(questionsIds);
-            LinkedHashSet<Integer> correctlyAnswered = UserData.getInstance().getCorrectlyAnsweredQuestions();
+            Set<Integer> availableQuestions = new LinkedHashSet<>(questionsIds.difficultySet(difficulty));
+            Set<Integer> correctlyAnswered = UserData.getInstance().getCorrectlyAnsweredQuestions();
             availableQuestions.removeAll(correctlyAnswered);
-
-            if (availableQuestions.size() == 0) {
-                return -1;
-            } else {
-                List<Integer> availableAsList = new ArrayList<>(availableQuestions);
-                return availableAsList.get(new Random().nextInt(availableAsList.size()));
+            if (availableQuestions.isEmpty()) {
+                if (difficulty != 0) {
+                    availableQuestions = new LinkedHashSet<>(questionsIds.difficultySet(difficulty));
+                } else {
+                    return -1;
+                }
             }
+            List<Integer> availableAsList = new ArrayList<>(availableQuestions);
+            return availableAsList.get(new Random().nextInt(availableAsList.size()));
         } catch (NullPointerException e) { // TODO: handle this
             return 1;
         }
     }
 
-    public Question getCurrentQuestion() {
+    Question getCurrentQuestion() {
         return currentQuestion;
     }
 
-    private void setCppStandard(final String cppStandard) {
-        listener.get().onCppStandardChanged(cppStandard);
-    }
-
     private void updateGameState() { // TODO: kludge ?
-        if (currentQuestion != null && questionsIds != null) {
+        if (currentQuestion != null && questionsIds != null) { // TODO: questionIds can't be null
             listener.get().onGameStateChanged(
                     currentQuestion.getId(),
                     UserData.getInstance().getCorrectlyAnsweredQuestions().size(),
-                    questionsIds.size()
+                    questionsIds.all.size()
             );
         }
     }
@@ -191,23 +192,25 @@ public class GameLogic implements Serializable {
 
     public interface GameLogicCallbacks {
 
-        void onCppStandardChanged(@NonNull final String cppStandard); // same
+        void onCppStandardInit(@NonNull final String cppStandard);
 
-        void onGameStateChanged(final int questionId, final int correct, final int all); // diff
+        void onDifficultyLevelInit(@NonNull final Integer difficulty);
 
-        void onQuestionLoaded(@NonNull final Question question, int attemptsRequired); // diff or with extra method (progress)
+        void onGameStateChanged(final int questionId, final int correct, final int all);
+
+        void onQuestionLoaded(@NonNull final Question question, int attemptsRequired);
 
         void onQuestionNotFound(final int questionId);
 
-        void onHintReceived(@NonNull final String hint); // diff or with extra method (score)
+        void onHintReceived(@NonNull final String hint);
 
-        void onCorrectAnswered(@NonNull final Question question, final int attemptsRequired); // diff or with extra method (progress)
+        void onCorrectAnswered(@NonNull final Question question, final int attemptsRequired);
 
-        void onIncorrectAnswered(final int attemptsRequired); // diff or with extra method (progress)
+        void onIncorrectAnswered(final int attemptsRequired);
 
-        void onGiveUp(@NonNull final Question question); // none
+        void onGiveUp(@NonNull final Question question);
 
-        void tooEarlyToGiveUp(final int attemptsRequired); // none
+        void tooEarlyToGiveUp(final int attemptsRequired);
 
         void noMoreQuestions(); // onFinishQuiz instead
     }

@@ -25,6 +25,7 @@
             android:inputType="textPersonName"
             android:maxLength="200"
             android:textColorHint="#737373"
+            android:importantForAutofill="no"
             android:textSize="20sp" />
 
     </androidx.cardview.widget.CardView>
