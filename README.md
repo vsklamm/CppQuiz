@@ -13,7 +13,7 @@ C++Quiz for android
 Screenshots
 -----------
 
-<img src="https://github.com/vsklamm/CppQuiz/blob/master/gfx/1.jpg" width="170"> <img src="https://github.com/vsklamm/CppQuiz/blob/master/gfx/2.jpg" width="170"> <img src="https://github.com/vsklamm/CppQuiz/blob/master/gfx/3.jpg" width="170"> <img src="https://github.com/vsklamm/CppQuiz/blob/master/gfx/4.jpg" width="170">
+
 
 A special thanks to...
 ----------------------
